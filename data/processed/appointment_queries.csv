@@ -1,0 +1,136 @@
+case_id,sub_intent,text,category
+appt_0001,cancel,How do I cancel an appointment I made for vaccination center?,Appointment
+appt_0002,reschedule,Is it possible to postpone my visit to the pediatrician?,Appointment
+appt_0003,availability,What time does the ENT doctor doctor see patients?,Appointment
+appt_0004,reschedule,Can we reschedule to next Saturday instead?,Appointment
+appt_0005,book,Is it possible to book vaccination center appointment for 3 PM?,Appointment
+appt_0006,general_info,How long is the waiting time for pediatrician appointments?,Appointment
+appt_0007,availability,Are there any slots available for gynecologist this Wednesday?,Appointment
+appt_0008,book,I would like to fix an appointment with pediatrician,Appointment
+appt_0009,availability,What time does the orthopedic doctor see patients?,Appointment
+appt_0010,reschedule,Is it possible to postpone my visit to the vaccination center?,Appointment
+appt_0011,follow_up,Can I get a follow-up slot with the diabetes clinic doctor?,Appointment
+appt_0012,reschedule,Can we reschedule to next Wednesday instead?,Appointment
+appt_0013,camp_or_special,Is there a free health camp coming up for Tuesday?,Appointment
+appt_0014,reschedule,Please shift my gynecologist appointment to 3 PM,Appointment
+appt_0015,camp_or_special,Is there a free health camp coming up for Friday?,Appointment
+appt_0016,cancel,"I won't be able to come for my dentist visit, please cancel it",Appointment
+appt_0017,reschedule,"My ENT doctor appointment clashes with something, can it be moved to Friday?",Appointment
+appt_0018,follow_up,I need a follow-up appointment with dentist after my last visit,Appointment
+appt_0019,book,I would like to fix an appointment with vaccination center,Appointment
+appt_0020,cancel,How do I cancel an appointment I made for dentist?,Appointment
+appt_0021,availability,What time does the skin specialist doctor see patients?,Appointment
+appt_0022,reschedule,Is it possible to postpone my visit to the diabetes clinic?,Appointment
+appt_0023,cancel,"Cancel my booking for orthopedic, something came up",Appointment
+appt_0024,general_info,Do I need to bring my old reports for the dentist appointment?,Appointment
+appt_0025,availability,What are the visiting hours for vaccination center?,Appointment
+appt_0026,camp_or_special,Is there a dental camp scheduled soon?,Appointment
+appt_0027,cancel,"Cancel my booking for skin specialist, something came up",Appointment
+appt_0028,follow_up,Can I get a follow-up slot with the vaccination center doctor?,Appointment
+appt_0029,availability,Is walk-in allowed for gynecologist or do I need an appointment?,Appointment
+appt_0030,camp_or_special,Is there a free health camp coming up for Thursday?,Appointment
+appt_0031,follow_up,I need a follow-up appointment with vaccination center after my last visit,Appointment
+appt_0032,cancel,I need to cancel my slot for Thursday,Appointment
+appt_0033,reschedule,"My gynecologist appointment clashes with something, can it be moved to Friday?",Appointment
+appt_0034,cancel,I need to cancel my slot for Monday,Appointment
+appt_0035,availability,What time does the vaccination center doctor see patients?,Appointment
+appt_0036,book,I want to book an appointment with the dentist,Appointment
+appt_0037,availability,What time does the diabetes clinic doctor see patients?,Appointment
+appt_0038,reschedule,Is it possible to postpone my visit to the gynecologist?,Appointment
+appt_0039,availability,Does the diabetes clinic doctor work on Saturdays?,Appointment
+appt_0040,availability,Are there any slots available for vaccination center this Saturday?,Appointment
+appt_0041,general_info,Can I get an appointment over phone call for orthopedic?,Appointment
+appt_0042,availability,What are the visiting hours for skin specialist?,Appointment
+appt_0043,reschedule,Please shift my vaccination center appointment to afternoon,Appointment
+appt_0044,general_info,Can someone else book an appointment on my behalf for skin specialist?,Appointment
+appt_0045,book,"I want to consult the diabetes clinic, please book a slot",Appointment
+appt_0046,book,I would like to fix an appointment with diabetes clinic,Appointment
+appt_0047,follow_up,I need a review appointment with dentist next Monday,Appointment
+appt_0048,follow_up,I need a review appointment with diabetes clinic next next week,Appointment
+appt_0049,book,How do I book a slot with the orthopedic doctor?,Appointment
+appt_0050,follow_up,I need a follow-up appointment with gynecologist after my last visit,Appointment
+appt_0051,availability,Are there any slots available for dentist this Saturday?,Appointment
+appt_0052,follow_up,Can I get a follow-up slot with the orthopedic doctor?,Appointment
+appt_0053,cancel,"I won't be able to come for my general physician visit, please cancel it",Appointment
+appt_0054,availability,What are the pediatrician doctor's available timings?,Appointment
+appt_0055,availability,When is the next available slot for ENT doctor?,Appointment
+appt_0056,book,Can I get an appointment for skin specialist this Saturday?,Appointment
+appt_0057,reschedule,"I can't come on next week, can we change the appointment time?",Appointment
+appt_0058,book,Can you schedule a visit to the skin specialist for me?,Appointment
+appt_0059,availability,What are the visiting hours for gynecologist?,Appointment
+appt_0060,general_info,Is home visit available instead of coming to the pediatrician?,Appointment
+appt_0061,follow_up,"My doctor asked me to come back for a follow-up, how do I book?",Appointment
+appt_0062,reschedule,Please shift my orthopedic appointment to evening,Appointment
+appt_0063,cancel,"I won't be able to come for my skin specialist visit, please cancel it",Appointment
+appt_0064,book,I would like to fix an appointment with general physician,Appointment
+appt_0065,book,I want to book an appointment with the pediatrician,Appointment
+appt_0066,reschedule,I need to reschedule my ENT doctor appointment,Appointment
+appt_0067,general_info,Can I get an appointment over phone call for dentist?,Appointment
+appt_0068,camp_or_special,When is the next vaccination camp in our area?,Appointment
+appt_0069,availability,When is the next available slot for eye specialist?,Appointment
+appt_0070,camp_or_special,When is the next eye checkup camp at the clinic?,Appointment
+appt_0071,book,Please book me an appointment for orthopedic on Monday,Appointment
+appt_0072,availability,When is the next available slot for diabetes clinic?,Appointment
+appt_0073,book,"I want to consult the gynecologist, please book a slot",Appointment
+appt_0074,book,How can I register for the general physician clinic on Friday?,Appointment
+appt_0075,book,"I need to see the gynecologist doctor, how do I book?",Appointment
+appt_0076,reschedule,"I can't come on Monday, can we change the appointment time?",Appointment
+appt_0077,reschedule,I want to change my appointment date for pediatrician,Appointment
+appt_0078,availability,What are the visiting hours for diabetes clinic?,Appointment
+appt_0079,book,"I need to see the dentist doctor, how do I book?",Appointment
+appt_0080,reschedule,"I can't come on Thursday, can we change the appointment time?",Appointment
+appt_0081,reschedule,I need to reschedule my eye specialist appointment,Appointment
+appt_0082,book,Please book me an appointment for pediatrician on Thursday,Appointment
+appt_0083,reschedule,I want to change my appointment date for eye specialist,Appointment
+appt_0084,availability,Are there any slots available for eye specialist this Friday?,Appointment
+appt_0085,availability,What are the vaccination center doctor's available timings?,Appointment
+appt_0086,book,Can you schedule a visit to the gynecologist for me?,Appointment
+appt_0087,follow_up,I need a follow-up appointment with general physician after my last visit,Appointment
+appt_0088,reschedule,Is it possible to postpone my visit to the dentist?,Appointment
+appt_0089,general_info,Do I need to bring my old reports for the orthopedic appointment?,Appointment
+appt_0090,availability,Is the eye specialist clinic open on Friday?,Appointment
+appt_0091,availability,Are there any slots available for general physician this Monday?,Appointment
+appt_0092,general_info,Can someone else book an appointment on my behalf for diabetes clinic?,Appointment
+appt_0093,availability,When is the next available slot for dentist?,Appointment
+appt_0094,reschedule,"My diabetes clinic appointment clashes with something, can it be moved to Monday?",Appointment
+appt_0095,book,How do I book a slot with the general physician doctor?,Appointment
+appt_0096,reschedule,Is it possible to postpone my visit to the eye specialist?,Appointment
+appt_0097,cancel,Please cancel my gynecologist appointment on Thursday,Appointment
+appt_0098,reschedule,"My eye specialist appointment clashes with something, can it be moved to Friday?",Appointment
+appt_0099,cancel,I want to cancel my appointment with eye specialist,Appointment
+appt_0100,reschedule,"I can't come on tomorrow, can we change the appointment time?",Appointment
+appt_0101,follow_up,I need a review appointment with skin specialist next Wednesday,Appointment
+appt_0102,book,Can you schedule a visit to the diabetes clinic for me?,Appointment
+appt_0103,general_info,Can I get an appointment over phone call for pediatrician?,Appointment
+appt_0104,book,How can I register for the vaccination center clinic on Monday?,Appointment
+appt_0105,camp_or_special,Is there a health camp scheduled this month?,Appointment
+appt_0106,reschedule,I need to reschedule my skin specialist appointment,Appointment
+appt_0107,general_info,Do I need to bring my old reports for the vaccination center appointment?,Appointment
+appt_0108,cancel,"Cancel my booking for dentist, something came up",Appointment
+appt_0109,book,I would like to fix an appointment with skin specialist,Appointment
+appt_0110,book,How can I register for the eye specialist clinic on tomorrow?,Appointment
+appt_0111,cancel,Please cancel my skin specialist appointment on Saturday,Appointment
+appt_0112,cancel,"I won't be able to come for my ENT doctor visit, please cancel it",Appointment
+appt_0113,reschedule,Can you move my appointment with general physician to Friday?,Appointment
+appt_0114,general_info,Can I get an appointment over phone call for ENT doctor?,Appointment
+appt_0115,reschedule,"My dentist appointment clashes with something, can it be moved to Tuesday?",Appointment
+appt_0116,availability,What are the visiting hours for eye specialist?,Appointment
+appt_0117,book,"I want to consult the general physician, please book a slot",Appointment
+appt_0118,reschedule,Can we reschedule to next Thursday instead?,Appointment
+appt_0119,reschedule,I need to reschedule my pediatrician appointment,Appointment
+appt_0120,reschedule,Can we reschedule to next Friday instead?,Appointment
+appt_0121,follow_up,I need a review appointment with ENT doctor next next week,Appointment
+appt_0122,book,I want to book an appointment with the orthopedic,Appointment
+appt_0123,general_info,Can I get an appointment over phone call for gynecologist?,Appointment
+appt_0124,reschedule,"My dentist appointment clashes with something, can it be moved to tomorrow?",Appointment
+appt_0125,reschedule,I want to change my appointment date for gynecologist,Appointment
+appt_0126,availability,When is the next available slot for vaccination center?,Appointment
+appt_0127,availability,Does the eye specialist doctor work on Fridays?,Appointment
+appt_0128,general_info,How long is the waiting time for skin specialist appointments?,Appointment
+appt_0129,reschedule,Can you move my appointment with orthopedic to next week?,Appointment
+appt_0130,general_info,Can someone else book an appointment on my behalf for pediatrician?,Appointment
+appt_0131,availability,Are there any slots available for general physician this Thursday?,Appointment
+appt_0132,camp_or_special,When does the mobile health van visit our village next?,Appointment
+appt_0133,book,Please book me an appointment for general physician on Thursday,Appointment
+appt_0134,cancel,"I won't be able to come for my gynecologist visit, please cancel it",Appointment
+appt_0135,general_info,Do I need to bring my old reports for the gynecologist appointment?,Appointment
