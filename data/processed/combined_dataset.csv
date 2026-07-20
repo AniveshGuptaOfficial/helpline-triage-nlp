@@ -1,0 +1,636 @@
+text,category
+"['blurred vision', 'chest pain']",Emergency
+"['diarrhea', 'dizziness', 'rash']",Medicine Query
+"['blurred vision', 'fever']",Medicine Query
+"['abdominal pain', 'headache', 'joint pain', 'vomiting']",Medicine Query
+"['dizziness', 'headache', 'rash', 'shortness of breath']",Emergency
+"['blurred vision', 'rash', 'shortness of breath']",Emergency
+"['headache', 'rash']",Medicine Query
+"['abdominal pain', 'diarrhea', 'shortness of breath']",Emergency
+"['blurred vision', 'chest pain']",Emergency
+"['abdominal pain', 'fever']",Medicine Query
+"['diarrhea', 'fever', 'headache', 'rash']",Medicine Query
+"['abdominal pain', 'blurred vision', 'joint pain', 'vomiting']",Emergency
+"['blurred vision', 'fever', 'headache', 'vomiting']",Emergency
+"['fever', 'joint pain', 'shortness of breath']",Medicine Query
+"['diarrhea', 'joint pain']",Medicine Query
+"['chest pain', 'headache', 'joint pain', 'rash']",Emergency
+"['abdominal pain', 'chest pain', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'headache', 'vomiting']",Emergency
+"['chest pain', 'fever']",Medicine Query
+"['headache', 'shortness of breath']",Medicine Query
+"['chest pain', 'diarrhea', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea', 'joint pain']",Emergency
+"['blurred vision', 'shortness of breath']",Emergency
+"['chest pain', 'diarrhea', 'shortness of breath']",Emergency
+"['abdominal pain', 'fever', 'rash', 'vomiting']",Medicine Query
+"['diarrhea', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'chest pain']",Medicine Query
+"['blurred vision', 'headache', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'dizziness', 'fever', 'rash']",Medicine Query
+"['abdominal pain', 'diarrhea', 'joint pain']",Medicine Query
+"['diarrhea', 'joint pain']",Medicine Query
+"['diarrhea', 'fever', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'fever', 'vomiting']",Medicine Query
+"['abdominal pain', 'blurred vision', 'dizziness', 'vomiting']",Emergency
+"['diarrhea', 'dizziness', 'fever']",Medicine Query
+"['blurred vision', 'joint pain', 'rash', 'vomiting']",Emergency
+"['fever', 'joint pain']",Medicine Query
+"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
+"['blurred vision', 'fever', 'headache', 'shortness of breath']",Emergency
+"['blurred vision', 'dizziness', 'fever']",Emergency
+"['chest pain', 'diarrhea', 'joint pain', 'shortness of breath']",Emergency
+"['dizziness', 'headache']",Medicine Query
+"['blurred vision', 'diarrhea', 'vomiting']",Emergency
+"['chest pain', 'dizziness', 'shortness of breath']",Emergency
+"['abdominal pain', 'dizziness', 'fever', 'joint pain']",Medicine Query
+"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
+"['blurred vision', 'chest pain', 'dizziness', 'vomiting']",Emergency
+"['fever', 'rash', 'vomiting']",Medicine Query
+"['blurred vision', 'shortness of breath']",Emergency
+"['joint pain', 'rash']",Medicine Query
+"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
+"['headache', 'shortness of breath']",Medicine Query
+"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
+"['headache', 'rash']",Medicine Query
+"['diarrhea', 'headache', 'rash']",Medicine Query
+"['abdominal pain', 'blurred vision', 'headache', 'rash']",Emergency
+"['dizziness', 'joint pain']",Medicine Query
+"['blurred vision', 'headache', 'joint pain']",Medicine Query
+"['blurred vision', 'shortness of breath']",Emergency
+"['joint pain', 'vomiting']",Medicine Query
+"['blurred vision', 'chest pain', 'diarrhea', 'shortness of breath']",Emergency
+"['chest pain', 'fever', 'rash']",Medicine Query
+"['abdominal pain', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'chest pain']",Emergency
+"['abdominal pain', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'chest pain', 'fever']",Emergency
+"['blurred vision', 'joint pain', 'shortness of breath']",Emergency
+"['dizziness', 'fever', 'rash', 'vomiting']",Medicine Query
+"['diarrhea', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['diarrhea', 'fever']",Medicine Query
+"['blurred vision', 'chest pain', 'fever']",Emergency
+"['blurred vision', 'vomiting']",Medicine Query
+"['chest pain', 'fever', 'shortness of breath']",Emergency
+"['abdominal pain', 'chest pain', 'rash']",Emergency
+"['diarrhea', 'dizziness', 'headache', 'rash']",Medicine Query
+"['blurred vision', 'diarrhea', 'joint pain', 'vomiting']",Emergency
+"['blurred vision', 'diarrhea', 'dizziness', 'headache']",Emergency
+"['chest pain', 'diarrhea', 'vomiting']",Emergency
+"['diarrhea', 'dizziness', 'shortness of breath']",Emergency
+"['joint pain', 'shortness of breath']",Medicine Query
+"['fever', 'rash']",Medicine Query
+"['chest pain', 'dizziness', 'fever', 'joint pain']",Emergency
+"['chest pain', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea', 'joint pain']",Emergency
+"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
+"['blurred vision', 'vomiting']",Medicine Query
+"['fever', 'headache', 'joint pain']",Medicine Query
+"['abdominal pain', 'chest pain', 'diarrhea', 'vomiting']",Emergency
+"['blurred vision', 'joint pain']",Medicine Query
+"['chest pain', 'fever', 'rash']",Medicine Query
+"['fever', 'shortness of breath']",Medicine Query
+"['dizziness', 'joint pain', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['diarrhea', 'headache', 'vomiting']",Medicine Query
+"['dizziness', 'headache']",Medicine Query
+"['blurred vision', 'dizziness', 'headache', 'shortness of breath']",Emergency
+"['diarrhea', 'shortness of breath', 'vomiting']",Emergency
+"['chest pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
+"['blurred vision', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'fever', 'vomiting']",Emergency
+"['dizziness', 'fever']",Medicine Query
+"['blurred vision', 'headache', 'joint pain']",Medicine Query
+"['blurred vision', 'fever', 'rash']",Medicine Query
+"['dizziness', 'joint pain', 'rash']",Medicine Query
+"['fever', 'rash']",Medicine Query
+"['blurred vision', 'dizziness', 'fever', 'joint pain']",Emergency
+"['dizziness', 'fever', 'joint pain']",Medicine Query
+"['fever', 'shortness of breath']",Medicine Query
+"['diarrhea', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'chest pain', 'dizziness']",Emergency
+"['abdominal pain', 'chest pain', 'fever', 'joint pain']",Emergency
+"['blurred vision', 'rash']",Medicine Query
+"['abdominal pain', 'dizziness', 'fever', 'vomiting']",Emergency
+"['headache', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'fever', 'rash', 'vomiting']",Medicine Query
+"['headache', 'joint pain', 'shortness of breath']",Medicine Query
+"['diarrhea', 'vomiting']",Medicine Query
+"['diarrhea', 'headache', 'joint pain']",Medicine Query
+"['blurred vision', 'chest pain', 'fever']",Emergency
+"['chest pain', 'diarrhea', 'fever']",Medicine Query
+"['headache', 'rash']",Medicine Query
+"['blurred vision', 'rash']",Medicine Query
+"['diarrhea', 'headache', 'shortness of breath']",Medicine Query
+"['headache', 'rash', 'vomiting']",Medicine Query
+"['joint pain', 'vomiting']",Medicine Query
+"['blurred vision', 'vomiting']",Medicine Query
+"['dizziness', 'joint pain', 'vomiting']",Medicine Query
+"['dizziness', 'vomiting']",Medicine Query
+"['diarrhea', 'headache', 'vomiting']",Medicine Query
+"['fever', 'headache', 'vomiting']",Medicine Query
+"['chest pain', 'fever', 'rash']",Medicine Query
+"['chest pain', 'fever']",Medicine Query
+"['dizziness', 'fever']",Medicine Query
+"['abdominal pain', 'blurred vision', 'diarrhea', 'vomiting']",Emergency
+"['fever', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'joint pain']",Medicine Query
+"['chest pain', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'fever', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'rash']",Medicine Query
+"['abdominal pain', 'blurred vision', 'chest pain', 'diarrhea']",Emergency
+"['chest pain', 'diarrhea', 'vomiting']",Emergency
+"['abdominal pain', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'diarrhea', 'fever', 'shortness of breath']",Emergency
+"['chest pain', 'rash', 'shortness of breath']",Emergency
+"['headache', 'joint pain', 'rash']",Medicine Query
+"['headache', 'vomiting']",Medicine Query
+"['diarrhea', 'fever', 'rash', 'vomiting']",Medicine Query
+"['diarrhea', 'dizziness', 'headache', 'joint pain']",Medicine Query
+"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'dizziness', 'headache', 'vomiting']",Emergency
+"['abdominal pain', 'diarrhea', 'headache', 'rash']",Medicine Query
+"['headache', 'rash']",Medicine Query
+"['chest pain', 'fever', 'rash', 'shortness of breath']",Emergency
+"['dizziness', 'fever', 'vomiting']",Medicine Query
+"['chest pain', 'fever', 'joint pain', 'shortness of breath']",Emergency
+"['blurred vision', 'dizziness', 'headache', 'rash']",Emergency
+"['chest pain', 'dizziness', 'headache', 'rash']",Emergency
+"['abdominal pain', 'chest pain', 'fever']",Emergency
+"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['headache', 'joint pain', 'vomiting']",Medicine Query
+"['chest pain', 'fever', 'headache', 'shortness of breath']",Emergency
+"['abdominal pain', 'chest pain', 'headache', 'rash']",Emergency
+"['blurred vision', 'chest pain', 'joint pain', 'shortness of breath']",Emergency
+"['chest pain', 'diarrhea']",Medicine Query
+"['chest pain', 'dizziness']",Medicine Query
+"['abdominal pain', 'fever', 'joint pain', 'vomiting']",Medicine Query
+"['blurred vision', 'dizziness', 'headache', 'shortness of breath']",Emergency
+"['joint pain', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'fever', 'joint pain']",Medicine Query
+"['chest pain', 'joint pain']",Medicine Query
+"['diarrhea', 'rash', 'shortness of breath']",Medicine Query
+"['headache', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'chest pain', 'dizziness', 'fever']",Emergency
+"['blurred vision', 'chest pain', 'headache']",Emergency
+"['dizziness', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'shortness of breath']",Emergency
+"['chest pain', 'diarrhea', 'dizziness', 'rash']",Emergency
+"['chest pain', 'dizziness', 'headache', 'shortness of breath']",Emergency
+"['abdominal pain', 'chest pain', 'fever', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
+"['blurred vision', 'diarrhea', 'joint pain']",Medicine Query
+"['abdominal pain', 'chest pain', 'headache', 'vomiting']",Emergency
+"['fever', 'headache', 'rash']",Medicine Query
+"['dizziness', 'headache']",Medicine Query
+"['dizziness', 'rash', 'shortness of breath']",Emergency
+"['blurred vision', 'diarrhea', 'rash', 'shortness of breath']",Emergency
+"['blurred vision', 'fever', 'joint pain', 'rash']",Emergency
+"['blurred vision', 'headache']",Medicine Query
+"['blurred vision', 'diarrhea', 'joint pain']",Medicine Query
+"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
+"['blurred vision', 'joint pain']",Medicine Query
+"['fever', 'shortness of breath', 'vomiting']",Emergency
+"['diarrhea', 'headache']",Medicine Query
+"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
+"['fever', 'joint pain', 'rash', 'vomiting']",Medicine Query
+"['abdominal pain', 'chest pain', 'shortness of breath']",Emergency
+"['diarrhea', 'dizziness', 'vomiting']",Medicine Query
+"['dizziness', 'headache']",Medicine Query
+"['abdominal pain', 'diarrhea', 'fever', 'shortness of breath']",Emergency
+"['fever', 'shortness of breath']",Medicine Query
+"['blurred vision', 'chest pain', 'diarrhea', 'shortness of breath']",Emergency
+"['blurred vision', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea', 'fever']",Emergency
+"['blurred vision', 'dizziness', 'joint pain', 'rash']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
+"['chest pain', 'diarrhea', 'dizziness', 'fever']",Emergency
+"['blurred vision', 'chest pain', 'diarrhea', 'fever']",Emergency
+"['chest pain', 'fever', 'rash', 'vomiting']",Emergency
+"['dizziness', 'fever', 'rash', 'vomiting']",Medicine Query
+"['abdominal pain', 'fever', 'headache', 'shortness of breath']",Emergency
+"['blurred vision', 'shortness of breath']",Emergency
+"['diarrhea', 'headache', 'rash']",Medicine Query
+"['chest pain', 'shortness of breath']",Emergency
+"['dizziness', 'headache']",Medicine Query
+"['chest pain', 'headache']",Medicine Query
+"['diarrhea', 'shortness of breath']",Medicine Query
+"['headache', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'headache', 'joint pain', 'rash']",Medicine Query
+"['blurred vision', 'rash', 'shortness of breath']",Emergency
+"['fever', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'fever', 'shortness of breath']",Emergency
+"['chest pain', 'headache', 'shortness of breath']",Emergency
+"['dizziness', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
+"['fever', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'headache', 'joint pain', 'shortness of breath']",Emergency
+"['abdominal pain', 'diarrhea', 'fever', 'joint pain']",Medicine Query
+"['shortness of breath', 'vomiting']",Medicine Query
+"['fever', 'joint pain']",Medicine Query
+"['joint pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'headache']",Emergency
+"['abdominal pain', 'diarrhea']",Medicine Query
+"['blurred vision', 'headache']",Medicine Query
+"['abdominal pain', 'blurred vision', 'headache']",Emergency
+"['dizziness', 'fever', 'headache']",Medicine Query
+"['dizziness', 'fever', 'headache', 'rash']",Medicine Query
+"['diarrhea', 'headache', 'joint pain', 'rash']",Medicine Query
+"['abdominal pain', 'chest pain']",Medicine Query
+"['abdominal pain', 'headache', 'rash', 'vomiting']",Medicine Query
+"['dizziness', 'rash']",Medicine Query
+"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
+"['chest pain', 'headache', 'joint pain', 'vomiting']",Emergency
+"['diarrhea', 'joint pain', 'rash']",Medicine Query
+"['chest pain', 'joint pain', 'shortness of breath']",Emergency
+"['blurred vision', 'chest pain', 'vomiting']",Emergency
+"['diarrhea', 'headache', 'joint pain']",Medicine Query
+"['diarrhea', 'headache', 'rash']",Medicine Query
+"['diarrhea', 'joint pain']",Medicine Query
+"['diarrhea', 'shortness of breath']",Medicine Query
+"['blurred vision', 'dizziness']",Medicine Query
+"['blurred vision', 'rash', 'shortness of breath']",Emergency
+"['chest pain', 'fever', 'shortness of breath']",Emergency
+"['chest pain', 'joint pain']",Medicine Query
+"['chest pain', 'dizziness', 'vomiting']",Emergency
+"['chest pain', 'joint pain', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'rash']",Emergency
+"['dizziness', 'rash']",Medicine Query
+"['dizziness', 'shortness of breath']",Medicine Query
+"['blurred vision', 'fever', 'headache', 'rash']",Emergency
+"['abdominal pain', 'fever', 'joint pain', 'vomiting']",Medicine Query
+"['chest pain', 'headache']",Medicine Query
+"['blurred vision', 'chest pain', 'shortness of breath']",Emergency
+"['chest pain', 'headache']",Medicine Query
+"['chest pain', 'fever', 'shortness of breath']",Emergency
+"['blurred vision', 'dizziness', 'vomiting']",Emergency
+"['blurred vision', 'vomiting']",Medicine Query
+"['joint pain', 'vomiting']",Medicine Query
+"['abdominal pain', 'rash']",Medicine Query
+"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
+"['fever', 'headache']",Medicine Query
+"['abdominal pain', 'vomiting']",Medicine Query
+"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
+"['dizziness', 'headache']",Medicine Query
+"['abdominal pain', 'blurred vision', 'joint pain']",Emergency
+"['shortness of breath', 'vomiting']",Medicine Query
+"['blurred vision', 'rash']",Medicine Query
+"['dizziness', 'headache', 'vomiting']",Medicine Query
+"['joint pain', 'rash', 'shortness of breath']",Medicine Query
+"['blurred vision', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'headache', 'shortness of breath']",Emergency
+"['abdominal pain', 'joint pain', 'vomiting']",Medicine Query
+"['diarrhea', 'headache', 'shortness of breath']",Medicine Query
+"['chest pain', 'dizziness']",Medicine Query
+"['chest pain', 'joint pain']",Medicine Query
+"['abdominal pain', 'diarrhea', 'rash']",Medicine Query
+"['dizziness', 'joint pain', 'vomiting']",Medicine Query
+"['diarrhea', 'headache']",Medicine Query
+"['chest pain', 'shortness of breath']",Emergency
+"['chest pain', 'diarrhea', 'dizziness', 'shortness of breath']",Emergency
+"['chest pain', 'fever', 'headache', 'vomiting']",Emergency
+"['dizziness', 'fever', 'shortness of breath']",Emergency
+"['fever', 'rash']",Medicine Query
+"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
+"['dizziness', 'joint pain']",Medicine Query
+"['fever', 'headache', 'rash']",Medicine Query
+"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['fever', 'rash']",Medicine Query
+"['chest pain', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'joint pain', 'shortness of breath']",Emergency
+"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
+"['abdominal pain', 'joint pain', 'rash', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'rash', 'vomiting']",Medicine Query
+"['fever', 'vomiting']",Medicine Query
+"['diarrhea', 'joint pain']",Medicine Query
+"['diarrhea', 'rash', 'shortness of breath']",Medicine Query
+"['fever', 'vomiting']",Medicine Query
+"['diarrhea', 'fever', 'rash', 'vomiting']",Medicine Query
+"['dizziness', 'joint pain', 'rash', 'vomiting']",Medicine Query
+"['blurred vision', 'dizziness', 'headache', 'joint pain']",Emergency
+"['blurred vision', 'dizziness', 'joint pain', 'vomiting']",Emergency
+"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
+"['diarrhea', 'dizziness', 'shortness of breath', 'vomiting']",Emergency
+"['chest pain', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
+"['diarrhea', 'fever']",Medicine Query
+"['abdominal pain', 'blurred vision', 'dizziness', 'vomiting']",Emergency
+"['blurred vision', 'diarrhea', 'fever', 'joint pain']",Emergency
+"['abdominal pain', 'blurred vision', 'fever']",Emergency
+"['abdominal pain', 'dizziness']",Medicine Query
+"['chest pain', 'headache']",Medicine Query
+"['abdominal pain', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
+"['chest pain', 'fever', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'chest pain']",Emergency
+"['dizziness', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
+"['joint pain', 'rash', 'vomiting']",Medicine Query
+"['fever', 'headache']",Medicine Query
+"['diarrhea', 'dizziness', 'headache', 'rash']",Medicine Query
+"['abdominal pain', 'fever', 'rash']",Medicine Query
+"['abdominal pain', 'joint pain']",Medicine Query
+"['fever', 'joint pain']",Medicine Query
+"['diarrhea', 'dizziness', 'fever', 'headache']",Medicine Query
+"['headache', 'rash']",Medicine Query
+"['diarrhea', 'fever', 'headache', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'rash']",Medicine Query
+"['fever', 'headache']",Medicine Query
+"['diarrhea', 'fever', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'dizziness']",Medicine Query
+"['chest pain', 'dizziness']",Medicine Query
+"['chest pain', 'headache', 'shortness of breath']",Emergency
+"['abdominal pain', 'chest pain', 'vomiting']",Emergency
+"['chest pain', 'rash', 'shortness of breath']",Emergency
+"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
+"['blurred vision', 'shortness of breath']",Emergency
+"['abdominal pain', 'vomiting']",Medicine Query
+"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
+"['dizziness', 'headache', 'rash', 'shortness of breath']",Emergency
+"['diarrhea', 'headache', 'joint pain', 'vomiting']",Medicine Query
+"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
+"['abdominal pain', 'chest pain', 'fever', 'headache']",Emergency
+"['chest pain', 'diarrhea', 'joint pain', 'rash']",Emergency
+"['abdominal pain', 'fever']",Medicine Query
+"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
+"['blurred vision', 'chest pain', 'diarrhea', 'dizziness']",Emergency
+"['dizziness', 'headache', 'vomiting']",Medicine Query
+"['chest pain', 'joint pain', 'shortness of breath']",Emergency
+"['blurred vision', 'dizziness', 'rash', 'vomiting']",Emergency
+"['chest pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['chest pain', 'fever']",Medicine Query
+"['abdominal pain', 'chest pain', 'diarrhea', 'rash']",Emergency
+"['fever', 'headache']",Medicine Query
+"['diarrhea', 'headache']",Medicine Query
+"['dizziness', 'headache', 'joint pain', 'vomiting']",Medicine Query
+"['diarrhea', 'headache', 'vomiting']",Medicine Query
+"['blurred vision', 'shortness of breath', 'vomiting']",Emergency
+"['chest pain', 'headache', 'rash']",Medicine Query
+"['abdominal pain', 'dizziness', 'headache', 'vomiting']",Emergency
+"['joint pain', 'rash', 'vomiting']",Medicine Query
+"['diarrhea', 'dizziness', 'fever', 'headache']",Medicine Query
+"['blurred vision', 'headache']",Medicine Query
+"['chest pain', 'diarrhea', 'fever', 'shortness of breath']",Emergency
+"['fever', 'joint pain', 'rash']",Medicine Query
+"['blurred vision', 'dizziness', 'headache', 'vomiting']",Emergency
+"['abdominal pain', 'dizziness', 'shortness of breath', 'vomiting']",Emergency
+"['rash', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'blurred vision', 'chest pain', 'joint pain']",Emergency
+"['abdominal pain', 'blurred vision', 'chest pain', 'rash']",Emergency
+"['fever', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'dizziness', 'headache', 'vomiting']",Emergency
+"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'headache']",Emergency
+"['blurred vision', 'chest pain', 'diarrhea']",Emergency
+"['headache', 'shortness of breath']",Medicine Query
+"['blurred vision', 'joint pain']",Medicine Query
+"['blurred vision', 'chest pain', 'dizziness', 'shortness of breath']",Emergency
+"['blurred vision', 'shortness of breath']",Emergency
+"['chest pain', 'joint pain', 'rash']",Medicine Query
+"['diarrhea', 'shortness of breath', 'vomiting']",Emergency
+"['joint pain', 'vomiting']",Medicine Query
+"['joint pain', 'rash']",Medicine Query
+"['joint pain', 'rash', 'shortness of breath']",Medicine Query
+"['chest pain', 'diarrhea', 'shortness of breath']",Emergency
+"['joint pain', 'rash']",Medicine Query
+"['diarrhea', 'dizziness', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'diarrhea', 'dizziness', 'joint pain']",Emergency
+"['dizziness', 'fever']",Medicine Query
+"['diarrhea', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'diarrhea']",Medicine Query
+"['abdominal pain', 'blurred vision', 'shortness of breath']",Emergency
+"['abdominal pain', 'fever', 'headache', 'joint pain']",Medicine Query
+"['blurred vision', 'chest pain', 'rash', 'shortness of breath']",Emergency
+"['chest pain', 'joint pain']",Medicine Query
+"['chest pain', 'headache']",Medicine Query
+"['abdominal pain', 'diarrhea', 'headache', 'joint pain']",Medicine Query
+"['blurred vision', 'diarrhea', 'dizziness', 'fever']",Emergency
+"['chest pain', 'diarrhea', 'dizziness', 'joint pain']",Emergency
+"['abdominal pain', 'diarrhea', 'headache', 'rash']",Medicine Query
+"['blurred vision', 'diarrhea', 'fever', 'vomiting']",Emergency
+"['chest pain', 'shortness of breath']",Emergency
+"['blurred vision', 'chest pain', 'diarrhea', 'fever']",Emergency
+"['dizziness', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'headache']",Medicine Query
+"['abdominal pain', 'diarrhea']",Medicine Query
+"['chest pain', 'joint pain']",Medicine Query
+"['blurred vision', 'headache']",Medicine Query
+"['chest pain', 'fever', 'shortness of breath']",Emergency
+"['diarrhea', 'fever', 'headache', 'joint pain']",Medicine Query
+"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
+"['chest pain', 'joint pain']",Medicine Query
+"['abdominal pain', 'dizziness', 'shortness of breath']",Emergency
+"['chest pain', 'diarrhea']",Medicine Query
+"['diarrhea', 'shortness of breath']",Medicine Query
+"['diarrhea', 'fever', 'joint pain', 'vomiting']",Medicine Query
+"['blurred vision', 'fever', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'diarrhea', 'vomiting']",Emergency
+"['chest pain', 'diarrhea']",Medicine Query
+"['dizziness', 'rash']",Medicine Query
+"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
+"['blurred vision', 'dizziness', 'headache', 'joint pain']",Emergency
+"['dizziness', 'headache', 'rash', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['blurred vision', 'chest pain', 'dizziness']",Emergency
+"['fever', 'joint pain', 'rash', 'vomiting']",Medicine Query
+"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
+"['abdominal pain', 'chest pain']",Medicine Query
+"['rash', 'vomiting']",Medicine Query
+"['diarrhea', 'dizziness']",Medicine Query
+"['chest pain', 'fever']",Medicine Query
+"['abdominal pain', 'headache']",Medicine Query
+"['chest pain', 'fever']",Medicine Query
+"['chest pain', 'fever', 'rash']",Medicine Query
+"['chest pain', 'dizziness', 'headache']",Emergency
+"['blurred vision', 'rash']",Medicine Query
+"['abdominal pain', 'fever', 'headache', 'joint pain']",Medicine Query
+"['headache', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'headache', 'rash']",Medicine Query
+"['blurred vision', 'headache']",Medicine Query
+"['blurred vision', 'headache', 'rash', 'vomiting']",Emergency
+"['headache', 'joint pain', 'rash', 'shortness of breath']",Emergency
+"['diarrhea', 'dizziness', 'headache', 'vomiting']",Medicine Query
+"['abdominal pain', 'headache', 'rash']",Medicine Query
+"['diarrhea', 'dizziness', 'fever', 'vomiting']",Medicine Query
+"['blurred vision', 'chest pain', 'headache', 'vomiting']",Emergency
+"['diarrhea', 'shortness of breath']",Medicine Query
+"['abdominal pain', 'blurred vision', 'vomiting']",Emergency
+"['abdominal pain', 'chest pain']",Medicine Query
+"['abdominal pain', 'shortness of breath']",Medicine Query
+"['blurred vision', 'chest pain', 'joint pain']",Emergency
+"['blurred vision', 'fever', 'headache', 'vomiting']",Emergency
+"['chest pain', 'headache', 'joint pain']",Medicine Query
+"['abdominal pain', 'dizziness', 'joint pain', 'rash']",Medicine Query
+"['blurred vision', 'fever', 'headache']",Medicine Query
+"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
+"['blurred vision', 'dizziness', 'rash', 'vomiting']",Emergency
+"['blurred vision', 'diarrhea', 'headache']",Medicine Query
+"['chest pain', 'joint pain']",Medicine Query
+"['abdominal pain', 'fever', 'joint pain', 'rash']",Medicine Query
+"['chest pain', 'vomiting']",Medicine Query
+"['chest pain', 'joint pain', 'shortness of breath']",Emergency
+"['blurred vision', 'headache', 'shortness of breath']",Emergency
+"['blurred vision', 'dizziness', 'joint pain', 'rash']",Emergency
+"['diarrhea', 'rash', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'diarrhea', 'fever', 'vomiting']",Medicine Query
+"['fever', 'rash', 'vomiting']",Medicine Query
+"['joint pain', 'vomiting']",Medicine Query
+"['abdominal pain', 'diarrhea', 'fever']",Medicine Query
+"['chest pain', 'headache', 'joint pain']",Medicine Query
+"['abdominal pain', 'chest pain']",Medicine Query
+"['abdominal pain', 'fever', 'vomiting']",Medicine Query
+"['diarrhea', 'fever', 'joint pain', 'rash']",Medicine Query
+"['blurred vision', 'chest pain', 'dizziness']",Emergency
+"['diarrhea', 'headache', 'rash']",Medicine Query
+"['diarrhea', 'joint pain', 'shortness of breath']",Medicine Query
+"['chest pain', 'rash']",Medicine Query
+"['abdominal pain', 'dizziness', 'shortness of breath']",Emergency
+"['abdominal pain', 'blurred vision', 'chest pain']",Emergency
+"['blurred vision', 'diarrhea', 'fever', 'shortness of breath']",Emergency
+"['abdominal pain', 'joint pain']",Medicine Query
+"['abdominal pain', 'headache', 'rash']",Medicine Query
+"['chest pain', 'fever', 'joint pain', 'vomiting']",Emergency
+"['abdominal pain', 'diarrhea', 'shortness of breath']",Emergency
+"['fever', 'headache', 'shortness of breath', 'vomiting']",Emergency
+"['abdominal pain', 'blurred vision', 'vomiting']",Emergency
+"['blurred vision', 'diarrhea', 'dizziness', 'headache']",Emergency
+"['blurred vision', 'diarrhea', 'headache', 'joint pain']",Emergency
+"['blurred vision', 'chest pain', 'shortness of breath']",Emergency
+"['diarrhea', 'dizziness']",Medicine Query
+"['abdominal pain', 'dizziness']",Medicine Query
+"['blurred vision', 'fever', 'joint pain', 'shortness of breath']",Emergency
+"['blurred vision', 'diarrhea', 'headache']",Medicine Query
+"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
+How do I cancel an appointment I made for vaccination center?,Appointment
+Is it possible to postpone my visit to the pediatrician?,Appointment
+What time does the ENT doctor doctor see patients?,Appointment
+Can we reschedule to next Saturday instead?,Appointment
+Is it possible to book vaccination center appointment for 3 PM?,Appointment
+How long is the waiting time for pediatrician appointments?,Appointment
+Are there any slots available for gynecologist this Wednesday?,Appointment
+I would like to fix an appointment with pediatrician,Appointment
+What time does the orthopedic doctor see patients?,Appointment
+Is it possible to postpone my visit to the vaccination center?,Appointment
+Can I get a follow-up slot with the diabetes clinic doctor?,Appointment
+Can we reschedule to next Wednesday instead?,Appointment
+Is there a free health camp coming up for Tuesday?,Appointment
+Please shift my gynecologist appointment to 3 PM,Appointment
+Is there a free health camp coming up for Friday?,Appointment
+"I won't be able to come for my dentist visit, please cancel it",Appointment
+"My ENT doctor appointment clashes with something, can it be moved to Friday?",Appointment
+I need a follow-up appointment with dentist after my last visit,Appointment
+I would like to fix an appointment with vaccination center,Appointment
+How do I cancel an appointment I made for dentist?,Appointment
+What time does the skin specialist doctor see patients?,Appointment
+Is it possible to postpone my visit to the diabetes clinic?,Appointment
+"Cancel my booking for orthopedic, something came up",Appointment
+Do I need to bring my old reports for the dentist appointment?,Appointment
+What are the visiting hours for vaccination center?,Appointment
+Is there a dental camp scheduled soon?,Appointment
+"Cancel my booking for skin specialist, something came up",Appointment
+Can I get a follow-up slot with the vaccination center doctor?,Appointment
+Is walk-in allowed for gynecologist or do I need an appointment?,Appointment
+Is there a free health camp coming up for Thursday?,Appointment
+I need a follow-up appointment with vaccination center after my last visit,Appointment
+I need to cancel my slot for Thursday,Appointment
+"My gynecologist appointment clashes with something, can it be moved to Friday?",Appointment
+I need to cancel my slot for Monday,Appointment
+What time does the vaccination center doctor see patients?,Appointment
+I want to book an appointment with the dentist,Appointment
+What time does the diabetes clinic doctor see patients?,Appointment
+Is it possible to postpone my visit to the gynecologist?,Appointment
+Does the diabetes clinic doctor work on Saturdays?,Appointment
+Are there any slots available for vaccination center this Saturday?,Appointment
+Can I get an appointment over phone call for orthopedic?,Appointment
+What are the visiting hours for skin specialist?,Appointment
+Please shift my vaccination center appointment to afternoon,Appointment
+Can someone else book an appointment on my behalf for skin specialist?,Appointment
+"I want to consult the diabetes clinic, please book a slot",Appointment
+I would like to fix an appointment with diabetes clinic,Appointment
+I need a review appointment with dentist next Monday,Appointment
+I need a review appointment with diabetes clinic next next week,Appointment
+How do I book a slot with the orthopedic doctor?,Appointment
+I need a follow-up appointment with gynecologist after my last visit,Appointment
+Are there any slots available for dentist this Saturday?,Appointment
+Can I get a follow-up slot with the orthopedic doctor?,Appointment
+"I won't be able to come for my general physician visit, please cancel it",Appointment
+What are the pediatrician doctor's available timings?,Appointment
+When is the next available slot for ENT doctor?,Appointment
+Can I get an appointment for skin specialist this Saturday?,Appointment
+"I can't come on next week, can we change the appointment time?",Appointment
+Can you schedule a visit to the skin specialist for me?,Appointment
+What are the visiting hours for gynecologist?,Appointment
+Is home visit available instead of coming to the pediatrician?,Appointment
+"My doctor asked me to come back for a follow-up, how do I book?",Appointment
+Please shift my orthopedic appointment to evening,Appointment
+"I won't be able to come for my skin specialist visit, please cancel it",Appointment
+I would like to fix an appointment with general physician,Appointment
+I want to book an appointment with the pediatrician,Appointment
+I need to reschedule my ENT doctor appointment,Appointment
+Can I get an appointment over phone call for dentist?,Appointment
+When is the next vaccination camp in our area?,Appointment
+When is the next available slot for eye specialist?,Appointment
+When is the next eye checkup camp at the clinic?,Appointment
+Please book me an appointment for orthopedic on Monday,Appointment
+When is the next available slot for diabetes clinic?,Appointment
+"I want to consult the gynecologist, please book a slot",Appointment
+How can I register for the general physician clinic on Friday?,Appointment
+"I need to see the gynecologist doctor, how do I book?",Appointment
+"I can't come on Monday, can we change the appointment time?",Appointment
+I want to change my appointment date for pediatrician,Appointment
+What are the visiting hours for diabetes clinic?,Appointment
+"I need to see the dentist doctor, how do I book?",Appointment
+"I can't come on Thursday, can we change the appointment time?",Appointment
+I need to reschedule my eye specialist appointment,Appointment
+Please book me an appointment for pediatrician on Thursday,Appointment
+I want to change my appointment date for eye specialist,Appointment
+Are there any slots available for eye specialist this Friday?,Appointment
+What are the vaccination center doctor's available timings?,Appointment
+Can you schedule a visit to the gynecologist for me?,Appointment
+I need a follow-up appointment with general physician after my last visit,Appointment
+Is it possible to postpone my visit to the dentist?,Appointment
+Do I need to bring my old reports for the orthopedic appointment?,Appointment
+Is the eye specialist clinic open on Friday?,Appointment
+Are there any slots available for general physician this Monday?,Appointment
+Can someone else book an appointment on my behalf for diabetes clinic?,Appointment
+When is the next available slot for dentist?,Appointment
+"My diabetes clinic appointment clashes with something, can it be moved to Monday?",Appointment
+How do I book a slot with the general physician doctor?,Appointment
+Is it possible to postpone my visit to the eye specialist?,Appointment
+Please cancel my gynecologist appointment on Thursday,Appointment
+"My eye specialist appointment clashes with something, can it be moved to Friday?",Appointment
+I want to cancel my appointment with eye specialist,Appointment
+"I can't come on tomorrow, can we change the appointment time?",Appointment
+I need a review appointment with skin specialist next Wednesday,Appointment
+Can you schedule a visit to the diabetes clinic for me?,Appointment
+Can I get an appointment over phone call for pediatrician?,Appointment
+How can I register for the vaccination center clinic on Monday?,Appointment
+Is there a health camp scheduled this month?,Appointment
+I need to reschedule my skin specialist appointment,Appointment
+Do I need to bring my old reports for the vaccination center appointment?,Appointment
+"Cancel my booking for dentist, something came up",Appointment
+I would like to fix an appointment with skin specialist,Appointment
+How can I register for the eye specialist clinic on tomorrow?,Appointment
+Please cancel my skin specialist appointment on Saturday,Appointment
+"I won't be able to come for my ENT doctor visit, please cancel it",Appointment
+Can you move my appointment with general physician to Friday?,Appointment
+Can I get an appointment over phone call for ENT doctor?,Appointment
+"My dentist appointment clashes with something, can it be moved to Tuesday?",Appointment
+What are the visiting hours for eye specialist?,Appointment
+"I want to consult the general physician, please book a slot",Appointment
+Can we reschedule to next Thursday instead?,Appointment
+I need to reschedule my pediatrician appointment,Appointment
+Can we reschedule to next Friday instead?,Appointment
+I need a review appointment with ENT doctor next next week,Appointment
+I want to book an appointment with the orthopedic,Appointment
+Can I get an appointment over phone call for gynecologist?,Appointment
+"My dentist appointment clashes with something, can it be moved to tomorrow?",Appointment
+I want to change my appointment date for gynecologist,Appointment
+When is the next available slot for vaccination center?,Appointment
+Does the eye specialist doctor work on Fridays?,Appointment
+How long is the waiting time for skin specialist appointments?,Appointment
+Can you move my appointment with orthopedic to next week?,Appointment
+Can someone else book an appointment on my behalf for pediatrician?,Appointment
+Are there any slots available for general physician this Thursday?,Appointment
+When does the mobile health van visit our village next?,Appointment
+Please book me an appointment for general physician on Thursday,Appointment
+"I won't be able to come for my gynecologist visit, please cancel it",Appointment
+Do I need to bring my old reports for the gynecologist appointment?,Appointment
