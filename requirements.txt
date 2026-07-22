@@ -4,3 +4,6 @@ joblib
 torch
 transformers
 accelerate
+python-dotenv
+openai
+google-genai
