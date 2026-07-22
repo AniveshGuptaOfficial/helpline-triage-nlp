@@ -32,14 +32,14 @@ MODEL_FILE = os.path.join(MODEL_DIR, "baseline_classifier.joblib")
 
 
 def load_and_merge():
-    """Combine triage (symptoms/category) and appointment (text/category)
-    into one unified text/category dataset."""
+    """Combine triage (natural-sentence text/category) and appointment
+    (text/category) into one unified text/category dataset. Both sources
+    now use natural first-person sentences, so the classifier learns from
+    consistent sentence style across all three categories."""
     triage_df = pd.read_csv(TRIAGE_FILE)
     appointment_df = pd.read_csv(APPOINTMENT_FILE)
 
-    triage_unified = triage_df[["symptoms", "category"]].rename(
-        columns={"symptoms": "text"}
-    )
+    triage_unified = triage_df[["text", "category"]]
     appointment_unified = appointment_df[["text", "category"]]
 
     combined = pd.concat([triage_unified, appointment_unified], ignore_index=True)

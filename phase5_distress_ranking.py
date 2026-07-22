@@ -51,7 +51,7 @@ def main():
     )
 
     print("Scoring distress (fear) for each Emergency query...")
-    texts = emergency_df["symptoms"].tolist()
+    texts = emergency_df["text"].tolist()
 
     batch_size = 16
     all_scores = []
@@ -70,14 +70,14 @@ def main():
 
     print("\nTop 10 highest-priority (most distressed) Emergency queries:")
     print(
-        emergency_df[["priority_rank", "distress_score", "symptoms"]]
+        emergency_df[["priority_rank", "distress_score", "text"]]
         .head(10)
         .to_string(index=False)
     )
 
     print("\nBottom 10 lowest-priority Emergency queries (still Emergency, just calmer wording):")
     print(
-        emergency_df[["priority_rank", "distress_score", "symptoms"]]
+        emergency_df[["priority_rank", "distress_score", "text"]]
         .tail(10)
         .to_string(index=False)
     )

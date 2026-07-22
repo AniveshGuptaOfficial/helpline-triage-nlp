@@ -7,3 +7,4 @@ accelerate
 python-dotenv
 openai
 google-genai
+flask

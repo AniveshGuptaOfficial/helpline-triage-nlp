@@ -1,4 +1,4 @@
-"""
+﻿"""
 Phase 1 — Load and relabel medical_triage_500.jsonl
 
 What this does:
@@ -7,10 +7,20 @@ What this does:
 3. Maps urgency_category (immediate/urgent/routine) onto our project categories
    (Emergency / Medicine Query) — Appointment is handled separately in Phase 2
 4. Saves a clean CSV that every later phase will reuse
+
+Fix (round 2): even after removing the bracket/quote formatting artifact,
+Emergency/Medicine Query text was still a bare comma-separated symptom list
+("chest pain, fever"), while every Appointment example is a full natural
+first-person sentence ("I want to book..."). A real user typing a natural
+sentence would structurally resemble Appointment's style regardless of
+medical content. Fix: wrap symptom text in natural first-person sentence
+templates so all three categories share consistent sentence structure, and
+the classifier has to learn content, not sentence shape.
 """
 
 import json
 import os
+import random
 import urllib.request
 import pandas as pd
 
@@ -23,6 +33,28 @@ DATASET_URL = (
     "https://huggingface.co/datasets/syntech-ai/medical-triage-500"
     "/resolve/main/medical_triage_500.jsonl"
 )
+
+TEMPLATES_NO_DURATION = [
+    "I have been experiencing {symptoms}.",
+    "I'm having {symptoms}.",
+    "My symptoms are {symptoms}.",
+    "I am suffering from {symptoms}.",
+]
+TEMPLATES_WITH_DURATION = [
+    "I've been having {symptoms} for {duration}.",
+    "For the past {duration}, I have had {symptoms}.",
+    "I have had {symptoms} for about {duration}.",
+]
+
+
+def naturalize_symptoms(symptoms_text, duration, rng):
+    """Wrap a comma-joined symptom list into a natural first-person sentence."""
+    has_duration = isinstance(duration, str) and duration.strip()
+    if has_duration:
+        template = rng.choice(TEMPLATES_NO_DURATION + TEMPLATES_WITH_DURATION)
+    else:
+        template = rng.choice(TEMPLATES_NO_DURATION)
+    return template.format(symptoms=symptoms_text, duration=duration if has_duration else "")
 
 
 def download_dataset():
@@ -54,11 +86,17 @@ def flatten_record(rec):
     risk = rec.get("risk_assessment", {})
     triage = rec.get("triage_classification", {})
 
+    raw_symptoms = presentation.get("symptoms")
+    if isinstance(raw_symptoms, list):
+        symptoms_text = ", ".join(raw_symptoms)
+    else:
+        symptoms_text = raw_symptoms
+
     return {
         "case_id": rec.get("case_id"),
         "age": patient.get("age"),
         "gender": patient.get("gender"),
-        "symptoms": presentation.get("symptoms"),
+        "symptoms": symptoms_text,
         "duration": presentation.get("duration"),
         "onset": presentation.get("onset"),
         "context": presentation.get("context"),
@@ -98,6 +136,18 @@ def main():
     print(f"Loaded {len(df)} records.")
 
     df["category"] = df["urgency_category"].apply(map_project_category)
+
+    rng = random.Random(42)  # fixed seed for reproducibility
+    df["text"] = df.apply(
+        lambda row: naturalize_symptoms(row["symptoms"], row["duration"], rng),
+        axis=1,
+    )
+
+    print("\nExample of naturalized text (was: bare symptom list, now: natural sentence):")
+    for i in range(3):
+        print(f"  symptoms: {df['symptoms'].iloc[i]}")
+        print(f"  text:     {df['text'].iloc[i]}")
+        print()
 
     unknown_count = (df["category"] == "Unknown").sum()
     if unknown_count > 0:

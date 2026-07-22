@@ -1,504 +1,504 @@
 text,category
-"['blurred vision', 'chest pain']",Emergency
-"['diarrhea', 'dizziness', 'rash']",Medicine Query
-"['blurred vision', 'fever']",Medicine Query
-"['abdominal pain', 'headache', 'joint pain', 'vomiting']",Medicine Query
-"['dizziness', 'headache', 'rash', 'shortness of breath']",Emergency
-"['blurred vision', 'rash', 'shortness of breath']",Emergency
-"['headache', 'rash']",Medicine Query
-"['abdominal pain', 'diarrhea', 'shortness of breath']",Emergency
-"['blurred vision', 'chest pain']",Emergency
-"['abdominal pain', 'fever']",Medicine Query
-"['diarrhea', 'fever', 'headache', 'rash']",Medicine Query
-"['abdominal pain', 'blurred vision', 'joint pain', 'vomiting']",Emergency
-"['blurred vision', 'fever', 'headache', 'vomiting']",Emergency
-"['fever', 'joint pain', 'shortness of breath']",Medicine Query
-"['diarrhea', 'joint pain']",Medicine Query
-"['chest pain', 'headache', 'joint pain', 'rash']",Emergency
-"['abdominal pain', 'chest pain', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'headache', 'vomiting']",Emergency
-"['chest pain', 'fever']",Medicine Query
-"['headache', 'shortness of breath']",Medicine Query
-"['chest pain', 'diarrhea', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea', 'joint pain']",Emergency
-"['blurred vision', 'shortness of breath']",Emergency
-"['chest pain', 'diarrhea', 'shortness of breath']",Emergency
-"['abdominal pain', 'fever', 'rash', 'vomiting']",Medicine Query
-"['diarrhea', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'chest pain']",Medicine Query
-"['blurred vision', 'headache', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'dizziness', 'fever', 'rash']",Medicine Query
-"['abdominal pain', 'diarrhea', 'joint pain']",Medicine Query
-"['diarrhea', 'joint pain']",Medicine Query
-"['diarrhea', 'fever', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'fever', 'vomiting']",Medicine Query
-"['abdominal pain', 'blurred vision', 'dizziness', 'vomiting']",Emergency
-"['diarrhea', 'dizziness', 'fever']",Medicine Query
-"['blurred vision', 'joint pain', 'rash', 'vomiting']",Emergency
-"['fever', 'joint pain']",Medicine Query
-"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
-"['blurred vision', 'fever', 'headache', 'shortness of breath']",Emergency
-"['blurred vision', 'dizziness', 'fever']",Emergency
-"['chest pain', 'diarrhea', 'joint pain', 'shortness of breath']",Emergency
-"['dizziness', 'headache']",Medicine Query
-"['blurred vision', 'diarrhea', 'vomiting']",Emergency
-"['chest pain', 'dizziness', 'shortness of breath']",Emergency
-"['abdominal pain', 'dizziness', 'fever', 'joint pain']",Medicine Query
-"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
-"['blurred vision', 'chest pain', 'dizziness', 'vomiting']",Emergency
-"['fever', 'rash', 'vomiting']",Medicine Query
-"['blurred vision', 'shortness of breath']",Emergency
-"['joint pain', 'rash']",Medicine Query
-"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
-"['headache', 'shortness of breath']",Medicine Query
-"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
-"['headache', 'rash']",Medicine Query
-"['diarrhea', 'headache', 'rash']",Medicine Query
-"['abdominal pain', 'blurred vision', 'headache', 'rash']",Emergency
-"['dizziness', 'joint pain']",Medicine Query
-"['blurred vision', 'headache', 'joint pain']",Medicine Query
-"['blurred vision', 'shortness of breath']",Emergency
-"['joint pain', 'vomiting']",Medicine Query
-"['blurred vision', 'chest pain', 'diarrhea', 'shortness of breath']",Emergency
-"['chest pain', 'fever', 'rash']",Medicine Query
-"['abdominal pain', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'chest pain']",Emergency
-"['abdominal pain', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'chest pain', 'fever']",Emergency
-"['blurred vision', 'joint pain', 'shortness of breath']",Emergency
-"['dizziness', 'fever', 'rash', 'vomiting']",Medicine Query
-"['diarrhea', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['diarrhea', 'fever']",Medicine Query
-"['blurred vision', 'chest pain', 'fever']",Emergency
-"['blurred vision', 'vomiting']",Medicine Query
-"['chest pain', 'fever', 'shortness of breath']",Emergency
-"['abdominal pain', 'chest pain', 'rash']",Emergency
-"['diarrhea', 'dizziness', 'headache', 'rash']",Medicine Query
-"['blurred vision', 'diarrhea', 'joint pain', 'vomiting']",Emergency
-"['blurred vision', 'diarrhea', 'dizziness', 'headache']",Emergency
-"['chest pain', 'diarrhea', 'vomiting']",Emergency
-"['diarrhea', 'dizziness', 'shortness of breath']",Emergency
-"['joint pain', 'shortness of breath']",Medicine Query
-"['fever', 'rash']",Medicine Query
-"['chest pain', 'dizziness', 'fever', 'joint pain']",Emergency
-"['chest pain', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea', 'joint pain']",Emergency
-"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
-"['blurred vision', 'vomiting']",Medicine Query
-"['fever', 'headache', 'joint pain']",Medicine Query
-"['abdominal pain', 'chest pain', 'diarrhea', 'vomiting']",Emergency
-"['blurred vision', 'joint pain']",Medicine Query
-"['chest pain', 'fever', 'rash']",Medicine Query
-"['fever', 'shortness of breath']",Medicine Query
-"['dizziness', 'joint pain', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['diarrhea', 'headache', 'vomiting']",Medicine Query
-"['dizziness', 'headache']",Medicine Query
-"['blurred vision', 'dizziness', 'headache', 'shortness of breath']",Emergency
-"['diarrhea', 'shortness of breath', 'vomiting']",Emergency
-"['chest pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
-"['blurred vision', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'fever', 'vomiting']",Emergency
-"['dizziness', 'fever']",Medicine Query
-"['blurred vision', 'headache', 'joint pain']",Medicine Query
-"['blurred vision', 'fever', 'rash']",Medicine Query
-"['dizziness', 'joint pain', 'rash']",Medicine Query
-"['fever', 'rash']",Medicine Query
-"['blurred vision', 'dizziness', 'fever', 'joint pain']",Emergency
-"['dizziness', 'fever', 'joint pain']",Medicine Query
-"['fever', 'shortness of breath']",Medicine Query
-"['diarrhea', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'chest pain', 'dizziness']",Emergency
-"['abdominal pain', 'chest pain', 'fever', 'joint pain']",Emergency
-"['blurred vision', 'rash']",Medicine Query
-"['abdominal pain', 'dizziness', 'fever', 'vomiting']",Emergency
-"['headache', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'fever', 'rash', 'vomiting']",Medicine Query
-"['headache', 'joint pain', 'shortness of breath']",Medicine Query
-"['diarrhea', 'vomiting']",Medicine Query
-"['diarrhea', 'headache', 'joint pain']",Medicine Query
-"['blurred vision', 'chest pain', 'fever']",Emergency
-"['chest pain', 'diarrhea', 'fever']",Medicine Query
-"['headache', 'rash']",Medicine Query
-"['blurred vision', 'rash']",Medicine Query
-"['diarrhea', 'headache', 'shortness of breath']",Medicine Query
-"['headache', 'rash', 'vomiting']",Medicine Query
-"['joint pain', 'vomiting']",Medicine Query
-"['blurred vision', 'vomiting']",Medicine Query
-"['dizziness', 'joint pain', 'vomiting']",Medicine Query
-"['dizziness', 'vomiting']",Medicine Query
-"['diarrhea', 'headache', 'vomiting']",Medicine Query
-"['fever', 'headache', 'vomiting']",Medicine Query
-"['chest pain', 'fever', 'rash']",Medicine Query
-"['chest pain', 'fever']",Medicine Query
-"['dizziness', 'fever']",Medicine Query
-"['abdominal pain', 'blurred vision', 'diarrhea', 'vomiting']",Emergency
-"['fever', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'joint pain']",Medicine Query
-"['chest pain', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'fever', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'rash']",Medicine Query
-"['abdominal pain', 'blurred vision', 'chest pain', 'diarrhea']",Emergency
-"['chest pain', 'diarrhea', 'vomiting']",Emergency
-"['abdominal pain', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'diarrhea', 'fever', 'shortness of breath']",Emergency
-"['chest pain', 'rash', 'shortness of breath']",Emergency
-"['headache', 'joint pain', 'rash']",Medicine Query
-"['headache', 'vomiting']",Medicine Query
-"['diarrhea', 'fever', 'rash', 'vomiting']",Medicine Query
-"['diarrhea', 'dizziness', 'headache', 'joint pain']",Medicine Query
-"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'dizziness', 'headache', 'vomiting']",Emergency
-"['abdominal pain', 'diarrhea', 'headache', 'rash']",Medicine Query
-"['headache', 'rash']",Medicine Query
-"['chest pain', 'fever', 'rash', 'shortness of breath']",Emergency
-"['dizziness', 'fever', 'vomiting']",Medicine Query
-"['chest pain', 'fever', 'joint pain', 'shortness of breath']",Emergency
-"['blurred vision', 'dizziness', 'headache', 'rash']",Emergency
-"['chest pain', 'dizziness', 'headache', 'rash']",Emergency
-"['abdominal pain', 'chest pain', 'fever']",Emergency
-"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['headache', 'joint pain', 'vomiting']",Medicine Query
-"['chest pain', 'fever', 'headache', 'shortness of breath']",Emergency
-"['abdominal pain', 'chest pain', 'headache', 'rash']",Emergency
-"['blurred vision', 'chest pain', 'joint pain', 'shortness of breath']",Emergency
-"['chest pain', 'diarrhea']",Medicine Query
-"['chest pain', 'dizziness']",Medicine Query
-"['abdominal pain', 'fever', 'joint pain', 'vomiting']",Medicine Query
-"['blurred vision', 'dizziness', 'headache', 'shortness of breath']",Emergency
-"['joint pain', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'fever', 'joint pain']",Medicine Query
-"['chest pain', 'joint pain']",Medicine Query
-"['diarrhea', 'rash', 'shortness of breath']",Medicine Query
-"['headache', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'chest pain', 'dizziness', 'fever']",Emergency
-"['blurred vision', 'chest pain', 'headache']",Emergency
-"['dizziness', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'shortness of breath']",Emergency
-"['chest pain', 'diarrhea', 'dizziness', 'rash']",Emergency
-"['chest pain', 'dizziness', 'headache', 'shortness of breath']",Emergency
-"['abdominal pain', 'chest pain', 'fever', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
-"['blurred vision', 'diarrhea', 'joint pain']",Medicine Query
-"['abdominal pain', 'chest pain', 'headache', 'vomiting']",Emergency
-"['fever', 'headache', 'rash']",Medicine Query
-"['dizziness', 'headache']",Medicine Query
-"['dizziness', 'rash', 'shortness of breath']",Emergency
-"['blurred vision', 'diarrhea', 'rash', 'shortness of breath']",Emergency
-"['blurred vision', 'fever', 'joint pain', 'rash']",Emergency
-"['blurred vision', 'headache']",Medicine Query
-"['blurred vision', 'diarrhea', 'joint pain']",Medicine Query
-"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
-"['blurred vision', 'joint pain']",Medicine Query
-"['fever', 'shortness of breath', 'vomiting']",Emergency
-"['diarrhea', 'headache']",Medicine Query
-"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
-"['fever', 'joint pain', 'rash', 'vomiting']",Medicine Query
-"['abdominal pain', 'chest pain', 'shortness of breath']",Emergency
-"['diarrhea', 'dizziness', 'vomiting']",Medicine Query
-"['dizziness', 'headache']",Medicine Query
-"['abdominal pain', 'diarrhea', 'fever', 'shortness of breath']",Emergency
-"['fever', 'shortness of breath']",Medicine Query
-"['blurred vision', 'chest pain', 'diarrhea', 'shortness of breath']",Emergency
-"['blurred vision', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea', 'fever']",Emergency
-"['blurred vision', 'dizziness', 'joint pain', 'rash']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea']",Emergency
-"['chest pain', 'diarrhea', 'dizziness', 'fever']",Emergency
-"['blurred vision', 'chest pain', 'diarrhea', 'fever']",Emergency
-"['chest pain', 'fever', 'rash', 'vomiting']",Emergency
-"['dizziness', 'fever', 'rash', 'vomiting']",Medicine Query
-"['abdominal pain', 'fever', 'headache', 'shortness of breath']",Emergency
-"['blurred vision', 'shortness of breath']",Emergency
-"['diarrhea', 'headache', 'rash']",Medicine Query
-"['chest pain', 'shortness of breath']",Emergency
-"['dizziness', 'headache']",Medicine Query
-"['chest pain', 'headache']",Medicine Query
-"['diarrhea', 'shortness of breath']",Medicine Query
-"['headache', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'headache', 'joint pain', 'rash']",Medicine Query
-"['blurred vision', 'rash', 'shortness of breath']",Emergency
-"['fever', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'fever', 'shortness of breath']",Emergency
-"['chest pain', 'headache', 'shortness of breath']",Emergency
-"['dizziness', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
-"['fever', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'headache', 'joint pain', 'shortness of breath']",Emergency
-"['abdominal pain', 'diarrhea', 'fever', 'joint pain']",Medicine Query
-"['shortness of breath', 'vomiting']",Medicine Query
-"['fever', 'joint pain']",Medicine Query
-"['joint pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'headache']",Emergency
-"['abdominal pain', 'diarrhea']",Medicine Query
-"['blurred vision', 'headache']",Medicine Query
-"['abdominal pain', 'blurred vision', 'headache']",Emergency
-"['dizziness', 'fever', 'headache']",Medicine Query
-"['dizziness', 'fever', 'headache', 'rash']",Medicine Query
-"['diarrhea', 'headache', 'joint pain', 'rash']",Medicine Query
-"['abdominal pain', 'chest pain']",Medicine Query
-"['abdominal pain', 'headache', 'rash', 'vomiting']",Medicine Query
-"['dizziness', 'rash']",Medicine Query
-"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
-"['chest pain', 'headache', 'joint pain', 'vomiting']",Emergency
-"['diarrhea', 'joint pain', 'rash']",Medicine Query
-"['chest pain', 'joint pain', 'shortness of breath']",Emergency
-"['blurred vision', 'chest pain', 'vomiting']",Emergency
-"['diarrhea', 'headache', 'joint pain']",Medicine Query
-"['diarrhea', 'headache', 'rash']",Medicine Query
-"['diarrhea', 'joint pain']",Medicine Query
-"['diarrhea', 'shortness of breath']",Medicine Query
-"['blurred vision', 'dizziness']",Medicine Query
-"['blurred vision', 'rash', 'shortness of breath']",Emergency
-"['chest pain', 'fever', 'shortness of breath']",Emergency
-"['chest pain', 'joint pain']",Medicine Query
-"['chest pain', 'dizziness', 'vomiting']",Emergency
-"['chest pain', 'joint pain', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'rash']",Emergency
-"['dizziness', 'rash']",Medicine Query
-"['dizziness', 'shortness of breath']",Medicine Query
-"['blurred vision', 'fever', 'headache', 'rash']",Emergency
-"['abdominal pain', 'fever', 'joint pain', 'vomiting']",Medicine Query
-"['chest pain', 'headache']",Medicine Query
-"['blurred vision', 'chest pain', 'shortness of breath']",Emergency
-"['chest pain', 'headache']",Medicine Query
-"['chest pain', 'fever', 'shortness of breath']",Emergency
-"['blurred vision', 'dizziness', 'vomiting']",Emergency
-"['blurred vision', 'vomiting']",Medicine Query
-"['joint pain', 'vomiting']",Medicine Query
-"['abdominal pain', 'rash']",Medicine Query
-"['abdominal pain', 'diarrhea', 'dizziness', 'vomiting']",Emergency
-"['fever', 'headache']",Medicine Query
-"['abdominal pain', 'vomiting']",Medicine Query
-"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
-"['dizziness', 'headache']",Medicine Query
-"['abdominal pain', 'blurred vision', 'joint pain']",Emergency
-"['shortness of breath', 'vomiting']",Medicine Query
-"['blurred vision', 'rash']",Medicine Query
-"['dizziness', 'headache', 'vomiting']",Medicine Query
-"['joint pain', 'rash', 'shortness of breath']",Medicine Query
-"['blurred vision', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'headache', 'shortness of breath']",Emergency
-"['abdominal pain', 'joint pain', 'vomiting']",Medicine Query
-"['diarrhea', 'headache', 'shortness of breath']",Medicine Query
-"['chest pain', 'dizziness']",Medicine Query
-"['chest pain', 'joint pain']",Medicine Query
-"['abdominal pain', 'diarrhea', 'rash']",Medicine Query
-"['dizziness', 'joint pain', 'vomiting']",Medicine Query
-"['diarrhea', 'headache']",Medicine Query
-"['chest pain', 'shortness of breath']",Emergency
-"['chest pain', 'diarrhea', 'dizziness', 'shortness of breath']",Emergency
-"['chest pain', 'fever', 'headache', 'vomiting']",Emergency
-"['dizziness', 'fever', 'shortness of breath']",Emergency
-"['fever', 'rash']",Medicine Query
-"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
-"['dizziness', 'joint pain']",Medicine Query
-"['fever', 'headache', 'rash']",Medicine Query
-"['chest pain', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['fever', 'rash']",Medicine Query
-"['chest pain', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'joint pain', 'shortness of breath']",Emergency
-"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
-"['abdominal pain', 'joint pain', 'rash', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'rash', 'vomiting']",Medicine Query
-"['fever', 'vomiting']",Medicine Query
-"['diarrhea', 'joint pain']",Medicine Query
-"['diarrhea', 'rash', 'shortness of breath']",Medicine Query
-"['fever', 'vomiting']",Medicine Query
-"['diarrhea', 'fever', 'rash', 'vomiting']",Medicine Query
-"['dizziness', 'joint pain', 'rash', 'vomiting']",Medicine Query
-"['blurred vision', 'dizziness', 'headache', 'joint pain']",Emergency
-"['blurred vision', 'dizziness', 'joint pain', 'vomiting']",Emergency
-"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
-"['diarrhea', 'dizziness', 'shortness of breath', 'vomiting']",Emergency
-"['chest pain', 'diarrhea', 'shortness of breath', 'vomiting']",Emergency
-"['diarrhea', 'fever']",Medicine Query
-"['abdominal pain', 'blurred vision', 'dizziness', 'vomiting']",Emergency
-"['blurred vision', 'diarrhea', 'fever', 'joint pain']",Emergency
-"['abdominal pain', 'blurred vision', 'fever']",Emergency
-"['abdominal pain', 'dizziness']",Medicine Query
-"['chest pain', 'headache']",Medicine Query
-"['abdominal pain', 'joint pain', 'shortness of breath', 'vomiting']",Emergency
-"['chest pain', 'fever', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'chest pain']",Emergency
-"['dizziness', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
-"['joint pain', 'rash', 'vomiting']",Medicine Query
-"['fever', 'headache']",Medicine Query
-"['diarrhea', 'dizziness', 'headache', 'rash']",Medicine Query
-"['abdominal pain', 'fever', 'rash']",Medicine Query
-"['abdominal pain', 'joint pain']",Medicine Query
-"['fever', 'joint pain']",Medicine Query
-"['diarrhea', 'dizziness', 'fever', 'headache']",Medicine Query
-"['headache', 'rash']",Medicine Query
-"['diarrhea', 'fever', 'headache', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'rash']",Medicine Query
-"['fever', 'headache']",Medicine Query
-"['diarrhea', 'fever', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'dizziness']",Medicine Query
-"['chest pain', 'dizziness']",Medicine Query
-"['chest pain', 'headache', 'shortness of breath']",Emergency
-"['abdominal pain', 'chest pain', 'vomiting']",Emergency
-"['chest pain', 'rash', 'shortness of breath']",Emergency
-"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
-"['blurred vision', 'shortness of breath']",Emergency
-"['abdominal pain', 'vomiting']",Medicine Query
-"['abdominal pain', 'blurred vision', 'rash', 'shortness of breath']",Emergency
-"['dizziness', 'headache', 'rash', 'shortness of breath']",Emergency
-"['diarrhea', 'headache', 'joint pain', 'vomiting']",Medicine Query
-"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
-"['abdominal pain', 'chest pain', 'fever', 'headache']",Emergency
-"['chest pain', 'diarrhea', 'joint pain', 'rash']",Emergency
-"['abdominal pain', 'fever']",Medicine Query
-"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
-"['blurred vision', 'chest pain', 'diarrhea', 'dizziness']",Emergency
-"['dizziness', 'headache', 'vomiting']",Medicine Query
-"['chest pain', 'joint pain', 'shortness of breath']",Emergency
-"['blurred vision', 'dizziness', 'rash', 'vomiting']",Emergency
-"['chest pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['chest pain', 'fever']",Medicine Query
-"['abdominal pain', 'chest pain', 'diarrhea', 'rash']",Emergency
-"['fever', 'headache']",Medicine Query
-"['diarrhea', 'headache']",Medicine Query
-"['dizziness', 'headache', 'joint pain', 'vomiting']",Medicine Query
-"['diarrhea', 'headache', 'vomiting']",Medicine Query
-"['blurred vision', 'shortness of breath', 'vomiting']",Emergency
-"['chest pain', 'headache', 'rash']",Medicine Query
-"['abdominal pain', 'dizziness', 'headache', 'vomiting']",Emergency
-"['joint pain', 'rash', 'vomiting']",Medicine Query
-"['diarrhea', 'dizziness', 'fever', 'headache']",Medicine Query
-"['blurred vision', 'headache']",Medicine Query
-"['chest pain', 'diarrhea', 'fever', 'shortness of breath']",Emergency
-"['fever', 'joint pain', 'rash']",Medicine Query
-"['blurred vision', 'dizziness', 'headache', 'vomiting']",Emergency
-"['abdominal pain', 'dizziness', 'shortness of breath', 'vomiting']",Emergency
-"['rash', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'blurred vision', 'chest pain', 'joint pain']",Emergency
-"['abdominal pain', 'blurred vision', 'chest pain', 'rash']",Emergency
-"['fever', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'dizziness', 'headache', 'vomiting']",Emergency
-"['blurred vision', 'chest pain', 'fever', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'headache']",Emergency
-"['blurred vision', 'chest pain', 'diarrhea']",Emergency
-"['headache', 'shortness of breath']",Medicine Query
-"['blurred vision', 'joint pain']",Medicine Query
-"['blurred vision', 'chest pain', 'dizziness', 'shortness of breath']",Emergency
-"['blurred vision', 'shortness of breath']",Emergency
-"['chest pain', 'joint pain', 'rash']",Medicine Query
-"['diarrhea', 'shortness of breath', 'vomiting']",Emergency
-"['joint pain', 'vomiting']",Medicine Query
-"['joint pain', 'rash']",Medicine Query
-"['joint pain', 'rash', 'shortness of breath']",Medicine Query
-"['chest pain', 'diarrhea', 'shortness of breath']",Emergency
-"['joint pain', 'rash']",Medicine Query
-"['diarrhea', 'dizziness', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'diarrhea', 'dizziness', 'joint pain']",Emergency
-"['dizziness', 'fever']",Medicine Query
-"['diarrhea', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'diarrhea']",Medicine Query
-"['abdominal pain', 'blurred vision', 'shortness of breath']",Emergency
-"['abdominal pain', 'fever', 'headache', 'joint pain']",Medicine Query
-"['blurred vision', 'chest pain', 'rash', 'shortness of breath']",Emergency
-"['chest pain', 'joint pain']",Medicine Query
-"['chest pain', 'headache']",Medicine Query
-"['abdominal pain', 'diarrhea', 'headache', 'joint pain']",Medicine Query
-"['blurred vision', 'diarrhea', 'dizziness', 'fever']",Emergency
-"['chest pain', 'diarrhea', 'dizziness', 'joint pain']",Emergency
-"['abdominal pain', 'diarrhea', 'headache', 'rash']",Medicine Query
-"['blurred vision', 'diarrhea', 'fever', 'vomiting']",Emergency
-"['chest pain', 'shortness of breath']",Emergency
-"['blurred vision', 'chest pain', 'diarrhea', 'fever']",Emergency
-"['dizziness', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'headache']",Medicine Query
-"['abdominal pain', 'diarrhea']",Medicine Query
-"['chest pain', 'joint pain']",Medicine Query
-"['blurred vision', 'headache']",Medicine Query
-"['chest pain', 'fever', 'shortness of breath']",Emergency
-"['diarrhea', 'fever', 'headache', 'joint pain']",Medicine Query
-"['abdominal pain', 'diarrhea', 'dizziness', 'fever']",Medicine Query
-"['chest pain', 'joint pain']",Medicine Query
-"['abdominal pain', 'dizziness', 'shortness of breath']",Emergency
-"['chest pain', 'diarrhea']",Medicine Query
-"['diarrhea', 'shortness of breath']",Medicine Query
-"['diarrhea', 'fever', 'joint pain', 'vomiting']",Medicine Query
-"['blurred vision', 'fever', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'diarrhea', 'vomiting']",Emergency
-"['chest pain', 'diarrhea']",Medicine Query
-"['dizziness', 'rash']",Medicine Query
-"['abdominal pain', 'blurred vision', 'diarrhea', 'headache']",Emergency
-"['blurred vision', 'dizziness', 'headache', 'joint pain']",Emergency
-"['dizziness', 'headache', 'rash', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['blurred vision', 'chest pain', 'dizziness']",Emergency
-"['fever', 'joint pain', 'rash', 'vomiting']",Medicine Query
-"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
-"['abdominal pain', 'chest pain']",Medicine Query
-"['rash', 'vomiting']",Medicine Query
-"['diarrhea', 'dizziness']",Medicine Query
-"['chest pain', 'fever']",Medicine Query
-"['abdominal pain', 'headache']",Medicine Query
-"['chest pain', 'fever']",Medicine Query
-"['chest pain', 'fever', 'rash']",Medicine Query
-"['chest pain', 'dizziness', 'headache']",Emergency
-"['blurred vision', 'rash']",Medicine Query
-"['abdominal pain', 'fever', 'headache', 'joint pain']",Medicine Query
-"['headache', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'headache', 'rash']",Medicine Query
-"['blurred vision', 'headache']",Medicine Query
-"['blurred vision', 'headache', 'rash', 'vomiting']",Emergency
-"['headache', 'joint pain', 'rash', 'shortness of breath']",Emergency
-"['diarrhea', 'dizziness', 'headache', 'vomiting']",Medicine Query
-"['abdominal pain', 'headache', 'rash']",Medicine Query
-"['diarrhea', 'dizziness', 'fever', 'vomiting']",Medicine Query
-"['blurred vision', 'chest pain', 'headache', 'vomiting']",Emergency
-"['diarrhea', 'shortness of breath']",Medicine Query
-"['abdominal pain', 'blurred vision', 'vomiting']",Emergency
-"['abdominal pain', 'chest pain']",Medicine Query
-"['abdominal pain', 'shortness of breath']",Medicine Query
-"['blurred vision', 'chest pain', 'joint pain']",Emergency
-"['blurred vision', 'fever', 'headache', 'vomiting']",Emergency
-"['chest pain', 'headache', 'joint pain']",Medicine Query
-"['abdominal pain', 'dizziness', 'joint pain', 'rash']",Medicine Query
-"['blurred vision', 'fever', 'headache']",Medicine Query
-"['diarrhea', 'dizziness', 'joint pain']",Medicine Query
-"['blurred vision', 'dizziness', 'rash', 'vomiting']",Emergency
-"['blurred vision', 'diarrhea', 'headache']",Medicine Query
-"['chest pain', 'joint pain']",Medicine Query
-"['abdominal pain', 'fever', 'joint pain', 'rash']",Medicine Query
-"['chest pain', 'vomiting']",Medicine Query
-"['chest pain', 'joint pain', 'shortness of breath']",Emergency
-"['blurred vision', 'headache', 'shortness of breath']",Emergency
-"['blurred vision', 'dizziness', 'joint pain', 'rash']",Emergency
-"['diarrhea', 'rash', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'diarrhea', 'fever', 'vomiting']",Medicine Query
-"['fever', 'rash', 'vomiting']",Medicine Query
-"['joint pain', 'vomiting']",Medicine Query
-"['abdominal pain', 'diarrhea', 'fever']",Medicine Query
-"['chest pain', 'headache', 'joint pain']",Medicine Query
-"['abdominal pain', 'chest pain']",Medicine Query
-"['abdominal pain', 'fever', 'vomiting']",Medicine Query
-"['diarrhea', 'fever', 'joint pain', 'rash']",Medicine Query
-"['blurred vision', 'chest pain', 'dizziness']",Emergency
-"['diarrhea', 'headache', 'rash']",Medicine Query
-"['diarrhea', 'joint pain', 'shortness of breath']",Medicine Query
-"['chest pain', 'rash']",Medicine Query
-"['abdominal pain', 'dizziness', 'shortness of breath']",Emergency
-"['abdominal pain', 'blurred vision', 'chest pain']",Emergency
-"['blurred vision', 'diarrhea', 'fever', 'shortness of breath']",Emergency
-"['abdominal pain', 'joint pain']",Medicine Query
-"['abdominal pain', 'headache', 'rash']",Medicine Query
-"['chest pain', 'fever', 'joint pain', 'vomiting']",Emergency
-"['abdominal pain', 'diarrhea', 'shortness of breath']",Emergency
-"['fever', 'headache', 'shortness of breath', 'vomiting']",Emergency
-"['abdominal pain', 'blurred vision', 'vomiting']",Emergency
-"['blurred vision', 'diarrhea', 'dizziness', 'headache']",Emergency
-"['blurred vision', 'diarrhea', 'headache', 'joint pain']",Emergency
-"['blurred vision', 'chest pain', 'shortness of breath']",Emergency
-"['diarrhea', 'dizziness']",Medicine Query
-"['abdominal pain', 'dizziness']",Medicine Query
-"['blurred vision', 'fever', 'joint pain', 'shortness of breath']",Emergency
-"['blurred vision', 'diarrhea', 'headache']",Medicine Query
-"['abdominal pain', 'blurred vision', 'dizziness', 'rash']",Emergency
+"For the past 1 week, I have had blurred vision, chest pain.",Emergency
+"I have been experiencing diarrhea, dizziness, rash.",Medicine Query
+"I have been experiencing blurred vision, fever.",Medicine Query
+"For the past 1 week, I have had abdominal pain, headache, joint pain, vomiting.",Medicine Query
+"My symptoms are dizziness, headache, rash, shortness of breath.",Emergency
+"I'm having blurred vision, rash, shortness of breath.",Emergency
+"I'm having headache, rash.",Medicine Query
+"I'm having abdominal pain, diarrhea, shortness of breath.",Emergency
+"For the past 1 day, I have had blurred vision, chest pain.",Emergency
+"I have been experiencing abdominal pain, fever.",Medicine Query
+"For the past 2 hours, I have had diarrhea, fever, headache, rash.",Medicine Query
+"For the past 3 days, I have had abdominal pain, blurred vision, joint pain, vomiting.",Emergency
+"I've been having blurred vision, fever, headache, vomiting for 3 days.",Emergency
+"I have been experiencing fever, joint pain, shortness of breath.",Medicine Query
+"I've been having diarrhea, joint pain for 3 days.",Medicine Query
+"I am suffering from chest pain, headache, joint pain, rash.",Emergency
+"I have been experiencing abdominal pain, chest pain, shortness of breath, vomiting.",Emergency
+"I have been experiencing blurred vision, headache, vomiting.",Emergency
+"I have been experiencing chest pain, fever.",Medicine Query
+"I'm having headache, shortness of breath.",Medicine Query
+"I'm having chest pain, diarrhea, vomiting.",Emergency
+"I've been having abdominal pain, blurred vision, diarrhea, joint pain for 1 day.",Emergency
+"I've been having blurred vision, shortness of breath for 1 day.",Emergency
+"I have been experiencing chest pain, diarrhea, shortness of breath.",Emergency
+"I've been having abdominal pain, fever, rash, vomiting for 6 hours.",Medicine Query
+"I'm having diarrhea, headache, shortness of breath, vomiting.",Emergency
+"For the past 1 week, I have had abdominal pain, chest pain.",Medicine Query
+"For the past 1 week, I have had blurred vision, headache, rash, shortness of breath.",Emergency
+"For the past 3 days, I have had abdominal pain, dizziness, fever, rash.",Medicine Query
+"I've been having abdominal pain, diarrhea, joint pain for 2 hours.",Medicine Query
+"I am suffering from diarrhea, joint pain.",Medicine Query
+"I'm having diarrhea, fever, shortness of breath, vomiting.",Emergency
+"I am suffering from abdominal pain, fever, vomiting.",Medicine Query
+"I've been having abdominal pain, blurred vision, dizziness, vomiting for 6 hours.",Emergency
+"My symptoms are diarrhea, dizziness, fever.",Medicine Query
+"I have had blurred vision, joint pain, rash, vomiting for about 1 week.",Emergency
+"I have had fever, joint pain for about 2 hours.",Medicine Query
+"I have been experiencing abdominal pain, blurred vision, diarrhea.",Emergency
+"I have had blurred vision, fever, headache, shortness of breath for about 3 days.",Emergency
+"I have had blurred vision, dizziness, fever for about 6 hours.",Emergency
+"I'm having chest pain, diarrhea, joint pain, shortness of breath.",Emergency
+"For the past 2 hours, I have had dizziness, headache.",Medicine Query
+"I am suffering from blurred vision, diarrhea, vomiting.",Emergency
+"My symptoms are chest pain, dizziness, shortness of breath.",Emergency
+"My symptoms are abdominal pain, dizziness, fever, joint pain.",Medicine Query
+"I'm having abdominal pain, blurred vision, rash, shortness of breath.",Emergency
+"I'm having blurred vision, chest pain, dizziness, vomiting.",Emergency
+"I have had fever, rash, vomiting for about 6 hours.",Medicine Query
+"My symptoms are blurred vision, shortness of breath.",Emergency
+"I have been experiencing joint pain, rash.",Medicine Query
+"I have been experiencing abdominal pain, blurred vision, diarrhea.",Emergency
+"I am suffering from headache, shortness of breath.",Medicine Query
+"I have been experiencing blurred vision, chest pain, fever, shortness of breath.",Emergency
+"My symptoms are headache, rash.",Medicine Query
+"I have had diarrhea, headache, rash for about 2 hours.",Medicine Query
+"My symptoms are abdominal pain, blurred vision, headache, rash.",Emergency
+"I've been having dizziness, joint pain for 3 days.",Medicine Query
+"My symptoms are blurred vision, headache, joint pain.",Medicine Query
+"I have had blurred vision, shortness of breath for about 1 day.",Emergency
+"I have been experiencing joint pain, vomiting.",Medicine Query
+"For the past 2 hours, I have had blurred vision, chest pain, diarrhea, shortness of breath.",Emergency
+"I am suffering from chest pain, fever, rash.",Medicine Query
+"I've been having abdominal pain, shortness of breath, vomiting for 2 hours.",Emergency
+"I have been experiencing blurred vision, chest pain.",Emergency
+"I am suffering from abdominal pain, shortness of breath, vomiting.",Emergency
+"I have been experiencing abdominal pain, chest pain, fever.",Emergency
+"I've been having blurred vision, joint pain, shortness of breath for 6 hours.",Emergency
+"My symptoms are dizziness, fever, rash, vomiting.",Medicine Query
+"I have had diarrhea, joint pain, rash, shortness of breath for about 2 hours.",Emergency
+"For the past 2 hours, I have had diarrhea, fever.",Medicine Query
+"I've been having blurred vision, chest pain, fever for 1 day.",Emergency
+"I have had blurred vision, vomiting for about 6 hours.",Medicine Query
+"My symptoms are chest pain, fever, shortness of breath.",Emergency
+"I've been having abdominal pain, chest pain, rash for 6 hours.",Emergency
+"I'm having diarrhea, dizziness, headache, rash.",Medicine Query
+"For the past 2 hours, I have had blurred vision, diarrhea, joint pain, vomiting.",Emergency
+"I have been experiencing blurred vision, diarrhea, dizziness, headache.",Emergency
+"I have been experiencing chest pain, diarrhea, vomiting.",Emergency
+"For the past 1 week, I have had diarrhea, dizziness, shortness of breath.",Emergency
+"I'm having joint pain, shortness of breath.",Medicine Query
+"I have had fever, rash for about 2 hours.",Medicine Query
+"My symptoms are chest pain, dizziness, fever, joint pain.",Emergency
+"I have been experiencing chest pain, joint pain, rash, shortness of breath.",Emergency
+"I have had abdominal pain, blurred vision, diarrhea, joint pain for about 1 day.",Emergency
+"I'm having abdominal pain, diarrhea, dizziness, vomiting.",Emergency
+"I have had blurred vision, vomiting for about 2 hours.",Medicine Query
+"I have been experiencing fever, headache, joint pain.",Medicine Query
+"I am suffering from abdominal pain, chest pain, diarrhea, vomiting.",Emergency
+"My symptoms are blurred vision, joint pain.",Medicine Query
+"I am suffering from chest pain, fever, rash.",Medicine Query
+"For the past 1 day, I have had fever, shortness of breath.",Medicine Query
+"I have had dizziness, joint pain, vomiting for about 1 day.",Medicine Query
+"My symptoms are abdominal pain, headache, shortness of breath, vomiting.",Emergency
+"I'm having diarrhea, headache, vomiting.",Medicine Query
+"My symptoms are dizziness, headache.",Medicine Query
+"My symptoms are blurred vision, dizziness, headache, shortness of breath.",Emergency
+"I'm having diarrhea, shortness of breath, vomiting.",Emergency
+"For the past 6 hours, I have had chest pain, diarrhea, dizziness, vomiting.",Emergency
+"My symptoms are blurred vision, shortness of breath.",Emergency
+"For the past 1 week, I have had abdominal pain, blurred vision, fever, vomiting.",Emergency
+"For the past 6 hours, I have had dizziness, fever.",Medicine Query
+"For the past 1 week, I have had blurred vision, headache, joint pain.",Medicine Query
+"I have been experiencing blurred vision, fever, rash.",Medicine Query
+"I've been having dizziness, joint pain, rash for 6 hours.",Medicine Query
+"For the past 6 hours, I have had fever, rash.",Medicine Query
+"I'm having blurred vision, dizziness, fever, joint pain.",Emergency
+"I've been having dizziness, fever, joint pain for 3 days.",Medicine Query
+"For the past 6 hours, I have had fever, shortness of breath.",Medicine Query
+"I'm having diarrhea, fever, vomiting.",Medicine Query
+"I'm having blurred vision, chest pain, dizziness.",Emergency
+"I am suffering from abdominal pain, chest pain, fever, joint pain.",Emergency
+"I am suffering from blurred vision, rash.",Medicine Query
+"My symptoms are abdominal pain, dizziness, fever, vomiting.",Emergency
+"For the past 3 days, I have had headache, shortness of breath.",Medicine Query
+"For the past 6 hours, I have had abdominal pain, fever, rash, vomiting.",Medicine Query
+"I've been having headache, joint pain, shortness of breath for 3 days.",Medicine Query
+"I'm having diarrhea, vomiting.",Medicine Query
+"For the past 3 days, I have had diarrhea, headache, joint pain.",Medicine Query
+"My symptoms are blurred vision, chest pain, fever.",Emergency
+"I have had chest pain, diarrhea, fever for about 3 days.",Medicine Query
+"I have had headache, rash for about 1 week.",Medicine Query
+"I have had blurred vision, rash for about 1 day.",Medicine Query
+"I have been experiencing diarrhea, headache, shortness of breath.",Medicine Query
+"I'm having headache, rash, vomiting.",Medicine Query
+"I have had joint pain, vomiting for about 6 hours.",Medicine Query
+"I have been experiencing blurred vision, vomiting.",Medicine Query
+"I have had dizziness, joint pain, vomiting for about 1 day.",Medicine Query
+"My symptoms are dizziness, vomiting.",Medicine Query
+"I am suffering from diarrhea, headache, vomiting.",Medicine Query
+"My symptoms are fever, headache, vomiting.",Medicine Query
+"I have been experiencing chest pain, fever, rash.",Medicine Query
+"I'm having chest pain, fever.",Medicine Query
+"I've been having dizziness, fever for 2 hours.",Medicine Query
+"For the past 2 hours, I have had abdominal pain, blurred vision, diarrhea, vomiting.",Emergency
+"My symptoms are fever, shortness of breath, vomiting.",Emergency
+"I'm having abdominal pain, joint pain.",Medicine Query
+"For the past 6 hours, I have had chest pain, joint pain, rash, shortness of breath.",Emergency
+"I am suffering from abdominal pain, fever, vomiting.",Medicine Query
+"I am suffering from abdominal pain, headache, rash.",Medicine Query
+"For the past 6 hours, I have had abdominal pain, blurred vision, chest pain, diarrhea.",Emergency
+"I am suffering from chest pain, diarrhea, vomiting.",Emergency
+"I'm having abdominal pain, fever, vomiting.",Medicine Query
+"My symptoms are blurred vision, diarrhea, fever, shortness of breath.",Emergency
+"I'm having chest pain, rash, shortness of breath.",Emergency
+"I'm having headache, joint pain, rash.",Medicine Query
+"For the past 1 day, I have had headache, vomiting.",Medicine Query
+"I've been having diarrhea, fever, rash, vomiting for 1 day.",Medicine Query
+"I've been having diarrhea, dizziness, headache, joint pain for 2 hours.",Medicine Query
+"My symptoms are chest pain, rash, shortness of breath, vomiting.",Emergency
+"For the past 1 day, I have had blurred vision, dizziness, headache, vomiting.",Emergency
+"I've been having abdominal pain, diarrhea, headache, rash for 6 hours.",Medicine Query
+"I am suffering from headache, rash.",Medicine Query
+"I've been having chest pain, fever, rash, shortness of breath for 3 days.",Emergency
+"I am suffering from dizziness, fever, vomiting.",Medicine Query
+"My symptoms are chest pain, fever, joint pain, shortness of breath.",Emergency
+"I'm having blurred vision, dizziness, headache, rash.",Emergency
+"I'm having chest pain, dizziness, headache, rash.",Emergency
+"I've been having abdominal pain, chest pain, fever for 3 days.",Emergency
+"I am suffering from chest pain, rash, shortness of breath, vomiting.",Emergency
+"I have been experiencing headache, joint pain, vomiting.",Medicine Query
+"I have had chest pain, fever, headache, shortness of breath for about 6 hours.",Emergency
+"I have been experiencing abdominal pain, chest pain, headache, rash.",Emergency
+"I have had blurred vision, chest pain, joint pain, shortness of breath for about 1 week.",Emergency
+"I have been experiencing chest pain, diarrhea.",Medicine Query
+"I'm having chest pain, dizziness.",Medicine Query
+"For the past 1 week, I have had abdominal pain, fever, joint pain, vomiting.",Medicine Query
+"I'm having blurred vision, dizziness, headache, shortness of breath.",Emergency
+"I have had joint pain, shortness of breath, vomiting for about 1 day.",Emergency
+"For the past 1 day, I have had blurred vision, fever, joint pain.",Medicine Query
+"I am suffering from chest pain, joint pain.",Medicine Query
+"I've been having diarrhea, rash, shortness of breath for 1 week.",Medicine Query
+"I have been experiencing headache, shortness of breath.",Medicine Query
+"I am suffering from abdominal pain, chest pain, dizziness, fever.",Emergency
+"I am suffering from blurred vision, chest pain, headache.",Emergency
+"I've been having dizziness, fever, vomiting for 6 hours.",Medicine Query
+"I am suffering from blurred vision, shortness of breath.",Emergency
+"I've been having chest pain, diarrhea, dizziness, rash for 1 day.",Emergency
+"My symptoms are chest pain, dizziness, headache, shortness of breath.",Emergency
+"I've been having abdominal pain, chest pain, fever, vomiting for 1 day.",Emergency
+"I have had abdominal pain, blurred vision, diarrhea, headache for about 1 day.",Emergency
+"I have been experiencing blurred vision, diarrhea, joint pain.",Medicine Query
+"For the past 1 day, I have had abdominal pain, chest pain, headache, vomiting.",Emergency
+"For the past 2 hours, I have had fever, headache, rash.",Medicine Query
+"I have been experiencing dizziness, headache.",Medicine Query
+"For the past 3 days, I have had dizziness, rash, shortness of breath.",Emergency
+"I've been having blurred vision, diarrhea, rash, shortness of breath for 3 days.",Emergency
+"I have had blurred vision, fever, joint pain, rash for about 2 hours.",Emergency
+"My symptoms are blurred vision, headache.",Medicine Query
+"I have had blurred vision, diarrhea, joint pain for about 6 hours.",Medicine Query
+"For the past 3 days, I have had abdominal pain, blurred vision, rash, shortness of breath.",Emergency
+"My symptoms are blurred vision, joint pain.",Medicine Query
+"I have been experiencing fever, shortness of breath, vomiting.",Emergency
+"My symptoms are diarrhea, headache.",Medicine Query
+"I am suffering from abdominal pain, blurred vision, diarrhea, headache.",Emergency
+"I'm having fever, joint pain, rash, vomiting.",Medicine Query
+"I am suffering from abdominal pain, chest pain, shortness of breath.",Emergency
+"I have been experiencing diarrhea, dizziness, vomiting.",Medicine Query
+"For the past 1 day, I have had dizziness, headache.",Medicine Query
+"For the past 6 hours, I have had abdominal pain, diarrhea, fever, shortness of breath.",Emergency
+"My symptoms are fever, shortness of breath.",Medicine Query
+"I've been having blurred vision, chest pain, diarrhea, shortness of breath for 6 hours.",Emergency
+"I have had blurred vision, joint pain, rash, shortness of breath for about 3 days.",Emergency
+"I'm having abdominal pain, blurred vision, diarrhea, fever.",Emergency
+"I've been having blurred vision, dizziness, joint pain, rash for 1 week.",Emergency
+"I have been experiencing abdominal pain, blurred vision, diarrhea.",Emergency
+"I have had chest pain, diarrhea, dizziness, fever for about 6 hours.",Emergency
+"For the past 2 hours, I have had blurred vision, chest pain, diarrhea, fever.",Emergency
+"My symptoms are chest pain, fever, rash, vomiting.",Emergency
+"I have had dizziness, fever, rash, vomiting for about 1 day.",Medicine Query
+"For the past 3 days, I have had abdominal pain, fever, headache, shortness of breath.",Emergency
+"I've been having blurred vision, shortness of breath for 2 hours.",Emergency
+"I've been having diarrhea, headache, rash for 6 hours.",Medicine Query
+"I'm having chest pain, shortness of breath.",Emergency
+"I'm having dizziness, headache.",Medicine Query
+"My symptoms are chest pain, headache.",Medicine Query
+"I have had diarrhea, shortness of breath for about 1 week.",Medicine Query
+"I'm having headache, shortness of breath.",Medicine Query
+"I've been having abdominal pain, headache, joint pain, rash for 1 week.",Medicine Query
+"I have had blurred vision, rash, shortness of breath for about 6 hours.",Emergency
+"I've been having fever, shortness of breath, vomiting for 1 day.",Emergency
+"I have been experiencing blurred vision, diarrhea, shortness of breath, vomiting.",Emergency
+"I've been having abdominal pain, blurred vision, fever, shortness of breath for 1 week.",Emergency
+"My symptoms are chest pain, headache, shortness of breath.",Emergency
+"I am suffering from dizziness, joint pain, shortness of breath, vomiting.",Emergency
+"I have been experiencing fever, joint pain, shortness of breath, vomiting.",Emergency
+"I have been experiencing abdominal pain, headache, joint pain, shortness of breath.",Emergency
+"My symptoms are abdominal pain, diarrhea, fever, joint pain.",Medicine Query
+"I have had shortness of breath, vomiting for about 6 hours.",Medicine Query
+"I have had fever, joint pain for about 6 hours.",Medicine Query
+"My symptoms are joint pain, rash, shortness of breath, vomiting.",Emergency
+"I'm having abdominal pain, blurred vision, headache.",Emergency
+"I have been experiencing abdominal pain, diarrhea.",Medicine Query
+"I'm having blurred vision, headache.",Medicine Query
+"I've been having abdominal pain, blurred vision, headache for 6 hours.",Emergency
+"I have been experiencing dizziness, fever, headache.",Medicine Query
+"I have been experiencing dizziness, fever, headache, rash.",Medicine Query
+"For the past 6 hours, I have had diarrhea, headache, joint pain, rash.",Medicine Query
+"I am suffering from abdominal pain, chest pain.",Medicine Query
+"I have had abdominal pain, headache, rash, vomiting for about 2 hours.",Medicine Query
+"I have been experiencing dizziness, rash.",Medicine Query
+"I have had abdominal pain, diarrhea, dizziness, vomiting for about 3 days.",Emergency
+"I've been having chest pain, headache, joint pain, vomiting for 1 day.",Emergency
+"I have had diarrhea, joint pain, rash for about 3 days.",Medicine Query
+"I'm having chest pain, joint pain, shortness of breath.",Emergency
+"I'm having blurred vision, chest pain, vomiting.",Emergency
+"For the past 2 hours, I have had diarrhea, headache, joint pain.",Medicine Query
+"I am suffering from diarrhea, headache, rash.",Medicine Query
+"I've been having diarrhea, joint pain for 6 hours.",Medicine Query
+"I'm having diarrhea, shortness of breath.",Medicine Query
+"My symptoms are blurred vision, dizziness.",Medicine Query
+"I've been having blurred vision, rash, shortness of breath for 6 hours.",Emergency
+"I have had chest pain, fever, shortness of breath for about 1 day.",Emergency
+"I've been having chest pain, joint pain for 1 week.",Medicine Query
+"I am suffering from chest pain, dizziness, vomiting.",Emergency
+"I'm having chest pain, joint pain, shortness of breath.",Emergency
+"I've been having abdominal pain, blurred vision, rash for 2 hours.",Emergency
+"I have had dizziness, rash for about 1 day.",Medicine Query
+"For the past 1 day, I have had dizziness, shortness of breath.",Medicine Query
+"For the past 1 day, I have had blurred vision, fever, headache, rash.",Emergency
+"I'm having abdominal pain, fever, joint pain, vomiting.",Medicine Query
+"For the past 1 week, I have had chest pain, headache.",Medicine Query
+"My symptoms are blurred vision, chest pain, shortness of breath.",Emergency
+"I am suffering from chest pain, headache.",Medicine Query
+"For the past 1 week, I have had chest pain, fever, shortness of breath.",Emergency
+"For the past 1 week, I have had blurred vision, dizziness, vomiting.",Emergency
+"My symptoms are blurred vision, vomiting.",Medicine Query
+"I am suffering from joint pain, vomiting.",Medicine Query
+"I've been having abdominal pain, rash for 1 week.",Medicine Query
+"I am suffering from abdominal pain, diarrhea, dizziness, vomiting.",Emergency
+"I have been experiencing fever, headache.",Medicine Query
+"I'm having abdominal pain, vomiting.",Medicine Query
+"I'm having blurred vision, chest pain, fever, shortness of breath.",Emergency
+"I have been experiencing dizziness, headache.",Medicine Query
+"My symptoms are abdominal pain, blurred vision, joint pain.",Emergency
+"I have been experiencing shortness of breath, vomiting.",Medicine Query
+"I've been having blurred vision, rash for 3 days.",Medicine Query
+"I've been having dizziness, headache, vomiting for 3 days.",Medicine Query
+"I'm having joint pain, rash, shortness of breath.",Medicine Query
+"I've been having blurred vision, shortness of breath, vomiting for 6 hours.",Emergency
+"I'm having blurred vision, headache, shortness of breath.",Emergency
+"I have been experiencing abdominal pain, joint pain, vomiting.",Medicine Query
+"I have been experiencing diarrhea, headache, shortness of breath.",Medicine Query
+"For the past 1 day, I have had chest pain, dizziness.",Medicine Query
+"For the past 3 days, I have had chest pain, joint pain.",Medicine Query
+"I have been experiencing abdominal pain, diarrhea, rash.",Medicine Query
+"I'm having dizziness, joint pain, vomiting.",Medicine Query
+"I have been experiencing diarrhea, headache.",Medicine Query
+"I have been experiencing chest pain, shortness of breath.",Emergency
+"I have had chest pain, diarrhea, dizziness, shortness of breath for about 2 hours.",Emergency
+"My symptoms are chest pain, fever, headache, vomiting.",Emergency
+"I have been experiencing dizziness, fever, shortness of breath.",Emergency
+"I've been having fever, rash for 1 day.",Medicine Query
+"I'm having diarrhea, dizziness, joint pain.",Medicine Query
+"My symptoms are dizziness, joint pain.",Medicine Query
+"For the past 3 days, I have had fever, headache, rash.",Medicine Query
+"I am suffering from chest pain, rash, shortness of breath, vomiting.",Emergency
+"I'm having fever, rash.",Medicine Query
+"I've been having chest pain, diarrhea, shortness of breath, vomiting for 2 hours.",Emergency
+"I'm having abdominal pain, blurred vision, joint pain, shortness of breath.",Emergency
+"For the past 1 day, I have had diarrhea, dizziness, joint pain.",Medicine Query
+"I've been having abdominal pain, joint pain, rash, vomiting for 1 week.",Medicine Query
+"I've been having abdominal pain, headache, rash, vomiting for 1 week.",Medicine Query
+"I am suffering from fever, vomiting.",Medicine Query
+"I'm having diarrhea, joint pain.",Medicine Query
+"I have had diarrhea, rash, shortness of breath for about 6 hours.",Medicine Query
+"I am suffering from fever, vomiting.",Medicine Query
+"I have had diarrhea, fever, rash, vomiting for about 1 week.",Medicine Query
+"I am suffering from dizziness, joint pain, rash, vomiting.",Medicine Query
+"I'm having blurred vision, dizziness, headache, joint pain.",Emergency
+"I have been experiencing blurred vision, dizziness, joint pain, vomiting.",Emergency
+"I have been experiencing abdominal pain, diarrhea, dizziness, fever.",Medicine Query
+"For the past 3 days, I have had diarrhea, dizziness, shortness of breath, vomiting.",Emergency
+"I am suffering from chest pain, diarrhea, shortness of breath, vomiting.",Emergency
+"My symptoms are diarrhea, fever.",Medicine Query
+"I am suffering from abdominal pain, blurred vision, dizziness, vomiting.",Emergency
+"I am suffering from blurred vision, diarrhea, fever, joint pain.",Emergency
+"I am suffering from abdominal pain, blurred vision, fever.",Emergency
+"I have had abdominal pain, dizziness for about 1 week.",Medicine Query
+"For the past 6 hours, I have had chest pain, headache.",Medicine Query
+"I have been experiencing abdominal pain, joint pain, shortness of breath, vomiting.",Emergency
+"For the past 6 hours, I have had chest pain, fever, shortness of breath.",Emergency
+"For the past 1 day, I have had abdominal pain, blurred vision, chest pain.",Emergency
+"For the past 1 day, I have had dizziness, joint pain, rash, shortness of breath.",Emergency
+"I have been experiencing abdominal pain, diarrhea, dizziness, fever.",Medicine Query
+"I have been experiencing joint pain, rash, vomiting.",Medicine Query
+"I am suffering from fever, headache.",Medicine Query
+"For the past 1 day, I have had diarrhea, dizziness, headache, rash.",Medicine Query
+"My symptoms are abdominal pain, fever, rash.",Medicine Query
+"I have had abdominal pain, joint pain for about 6 hours.",Medicine Query
+"I have had fever, joint pain for about 2 hours.",Medicine Query
+"I have been experiencing diarrhea, dizziness, fever, headache.",Medicine Query
+"I'm having headache, rash.",Medicine Query
+"I'm having diarrhea, fever, headache, vomiting.",Medicine Query
+"I'm having abdominal pain, headache, rash.",Medicine Query
+"I've been having fever, headache for 1 day.",Medicine Query
+"I am suffering from diarrhea, fever, rash, shortness of breath.",Emergency
+"I'm having abdominal pain, dizziness.",Medicine Query
+"I am suffering from chest pain, dizziness.",Medicine Query
+"I'm having chest pain, headache, shortness of breath.",Emergency
+"My symptoms are abdominal pain, chest pain, vomiting.",Emergency
+"I am suffering from chest pain, rash, shortness of breath.",Emergency
+"I'm having abdominal pain, diarrhea, dizziness, fever.",Medicine Query
+"I have had blurred vision, shortness of breath for about 1 day.",Emergency
+"I have been experiencing abdominal pain, vomiting.",Medicine Query
+"I am suffering from abdominal pain, blurred vision, rash, shortness of breath.",Emergency
+"I have had dizziness, headache, rash, shortness of breath for about 6 hours.",Emergency
+"I have had diarrhea, headache, joint pain, vomiting for about 2 hours.",Medicine Query
+"I have had abdominal pain, blurred vision, dizziness, rash for about 6 hours.",Emergency
+"I've been having abdominal pain, chest pain, fever, headache for 2 hours.",Emergency
+"I have been experiencing chest pain, diarrhea, joint pain, rash.",Emergency
+"I have been experiencing abdominal pain, fever.",Medicine Query
+"For the past 2 hours, I have had abdominal pain, blurred vision, dizziness, rash.",Emergency
+"I've been having blurred vision, chest pain, diarrhea, dizziness for 1 day.",Emergency
+"I have had dizziness, headache, vomiting for about 6 hours.",Medicine Query
+"I have been experiencing chest pain, joint pain, shortness of breath.",Emergency
+"I have been experiencing blurred vision, dizziness, rash, vomiting.",Emergency
+"I have had chest pain, headache, shortness of breath, vomiting for about 2 hours.",Emergency
+"I have had chest pain, fever for about 3 days.",Medicine Query
+"I'm having abdominal pain, chest pain, diarrhea, rash.",Emergency
+"I'm having fever, headache.",Medicine Query
+"I am suffering from diarrhea, headache.",Medicine Query
+"I am suffering from dizziness, headache, joint pain, vomiting.",Medicine Query
+"I am suffering from diarrhea, headache, vomiting.",Medicine Query
+"I'm having blurred vision, shortness of breath, vomiting.",Emergency
+"I have had chest pain, headache, rash for about 1 day.",Medicine Query
+"I am suffering from abdominal pain, dizziness, headache, vomiting.",Emergency
+"I have been experiencing joint pain, rash, vomiting.",Medicine Query
+"I'm having diarrhea, dizziness, fever, headache.",Medicine Query
+"I am suffering from blurred vision, headache.",Medicine Query
+"I have been experiencing chest pain, diarrhea, fever, shortness of breath.",Emergency
+"I am suffering from fever, joint pain, rash.",Medicine Query
+"My symptoms are blurred vision, dizziness, headache, vomiting.",Emergency
+"I have had abdominal pain, dizziness, shortness of breath, vomiting for about 1 week.",Emergency
+"I have had rash, shortness of breath for about 1 week.",Medicine Query
+"I am suffering from abdominal pain, blurred vision, chest pain, joint pain.",Emergency
+"My symptoms are abdominal pain, blurred vision, chest pain, rash.",Emergency
+"I am suffering from fever, rash, shortness of breath, vomiting.",Emergency
+"For the past 2 hours, I have had abdominal pain, dizziness, headache, vomiting.",Emergency
+"For the past 1 week, I have had blurred vision, chest pain, fever, shortness of breath.",Emergency
+"I have had abdominal pain, blurred vision, headache for about 3 days.",Emergency
+"I've been having blurred vision, chest pain, diarrhea for 1 week.",Emergency
+"For the past 3 days, I have had headache, shortness of breath.",Medicine Query
+"For the past 2 hours, I have had blurred vision, joint pain.",Medicine Query
+"I am suffering from blurred vision, chest pain, dizziness, shortness of breath.",Emergency
+"I'm having blurred vision, shortness of breath.",Emergency
+"I'm having chest pain, joint pain, rash.",Medicine Query
+"My symptoms are diarrhea, shortness of breath, vomiting.",Emergency
+"I'm having joint pain, vomiting.",Medicine Query
+"I have been experiencing joint pain, rash.",Medicine Query
+"I've been having joint pain, rash, shortness of breath for 3 days.",Medicine Query
+"For the past 3 days, I have had chest pain, diarrhea, shortness of breath.",Emergency
+"I've been having joint pain, rash for 6 hours.",Medicine Query
+"I have been experiencing diarrhea, dizziness, fever, vomiting.",Medicine Query
+"For the past 3 days, I have had blurred vision, diarrhea, dizziness, joint pain.",Emergency
+"My symptoms are dizziness, fever.",Medicine Query
+"I have been experiencing diarrhea, fever, vomiting.",Medicine Query
+"I have been experiencing blurred vision, diarrhea.",Medicine Query
+"I've been having abdominal pain, blurred vision, shortness of breath for 2 hours.",Emergency
+"I am suffering from abdominal pain, fever, headache, joint pain.",Medicine Query
+"I've been having blurred vision, chest pain, rash, shortness of breath for 1 week.",Emergency
+"I have had chest pain, joint pain for about 1 day.",Medicine Query
+"I've been having chest pain, headache for 1 day.",Medicine Query
+"I'm having abdominal pain, diarrhea, headache, joint pain.",Medicine Query
+"I have been experiencing blurred vision, diarrhea, dizziness, fever.",Emergency
+"I've been having chest pain, diarrhea, dizziness, joint pain for 1 day.",Emergency
+"I have been experiencing abdominal pain, diarrhea, headache, rash.",Medicine Query
+"I have had blurred vision, diarrhea, fever, vomiting for about 1 day.",Emergency
+"I'm having chest pain, shortness of breath.",Emergency
+"I have been experiencing blurred vision, chest pain, diarrhea, fever.",Emergency
+"I've been having dizziness, headache, shortness of breath, vomiting for 3 days.",Emergency
+"I have been experiencing blurred vision, headache.",Medicine Query
+"For the past 2 hours, I have had abdominal pain, diarrhea.",Medicine Query
+"I have had chest pain, joint pain for about 3 days.",Medicine Query
+"I'm having blurred vision, headache.",Medicine Query
+"I am suffering from chest pain, fever, shortness of breath.",Emergency
+"I have been experiencing diarrhea, fever, headache, joint pain.",Medicine Query
+"I've been having abdominal pain, diarrhea, dizziness, fever for 2 hours.",Medicine Query
+"I'm having chest pain, joint pain.",Medicine Query
+"I've been having abdominal pain, dizziness, shortness of breath for 6 hours.",Emergency
+"I've been having chest pain, diarrhea for 1 day.",Medicine Query
+"I have been experiencing diarrhea, shortness of breath.",Medicine Query
+"I've been having diarrhea, fever, joint pain, vomiting for 1 day.",Medicine Query
+"I have been experiencing blurred vision, fever, vomiting.",Emergency
+"I am suffering from abdominal pain, blurred vision, diarrhea, vomiting.",Emergency
+"For the past 3 days, I have had chest pain, diarrhea.",Medicine Query
+"I've been having dizziness, rash for 3 days.",Medicine Query
+"I've been having abdominal pain, blurred vision, diarrhea, headache for 6 hours.",Emergency
+"I've been having blurred vision, dizziness, headache, joint pain for 2 hours.",Emergency
+"My symptoms are dizziness, headache, rash, vomiting.",Medicine Query
+"My symptoms are abdominal pain, headache, shortness of breath, vomiting.",Emergency
+"I'm having blurred vision, chest pain, dizziness.",Emergency
+"For the past 1 day, I have had fever, joint pain, rash, vomiting.",Medicine Query
+"For the past 3 days, I have had diarrhea, dizziness, joint pain.",Medicine Query
+"My symptoms are abdominal pain, chest pain.",Medicine Query
+"I'm having rash, vomiting.",Medicine Query
+"My symptoms are diarrhea, dizziness.",Medicine Query
+"I am suffering from chest pain, fever.",Medicine Query
+"I'm having abdominal pain, headache.",Medicine Query
+"For the past 1 day, I have had chest pain, fever.",Medicine Query
+"For the past 1 day, I have had chest pain, fever, rash.",Medicine Query
+"My symptoms are chest pain, dizziness, headache.",Emergency
+"I am suffering from blurred vision, rash.",Medicine Query
+"My symptoms are abdominal pain, fever, headache, joint pain.",Medicine Query
+"I have had headache, shortness of breath for about 3 days.",Medicine Query
+"I have been experiencing abdominal pain, headache, rash.",Medicine Query
+"I have been experiencing blurred vision, headache.",Medicine Query
+"I am suffering from blurred vision, headache, rash, vomiting.",Emergency
+"I've been having headache, joint pain, rash, shortness of breath for 1 week.",Emergency
+"I've been having diarrhea, dizziness, headache, vomiting for 6 hours.",Medicine Query
+"I have been experiencing abdominal pain, headache, rash.",Medicine Query
+"I have been experiencing diarrhea, dizziness, fever, vomiting.",Medicine Query
+"I've been having blurred vision, chest pain, headache, vomiting for 3 days.",Emergency
+"I'm having diarrhea, shortness of breath.",Medicine Query
+"I've been having abdominal pain, blurred vision, vomiting for 3 days.",Emergency
+"My symptoms are abdominal pain, chest pain.",Medicine Query
+"I'm having abdominal pain, shortness of breath.",Medicine Query
+"My symptoms are blurred vision, chest pain, joint pain.",Emergency
+"I have been experiencing blurred vision, fever, headache, vomiting.",Emergency
+"I'm having chest pain, headache, joint pain.",Medicine Query
+"My symptoms are abdominal pain, dizziness, joint pain, rash.",Medicine Query
+"My symptoms are blurred vision, fever, headache.",Medicine Query
+"I'm having diarrhea, dizziness, joint pain.",Medicine Query
+"I am suffering from blurred vision, dizziness, rash, vomiting.",Emergency
+"I have had blurred vision, diarrhea, headache for about 2 hours.",Medicine Query
+"I've been having chest pain, joint pain for 1 day.",Medicine Query
+"For the past 1 week, I have had abdominal pain, fever, joint pain, rash.",Medicine Query
+"My symptoms are chest pain, vomiting.",Medicine Query
+"I've been having chest pain, joint pain, shortness of breath for 1 week.",Emergency
+"I have had blurred vision, headache, shortness of breath for about 2 hours.",Emergency
+"For the past 1 week, I have had blurred vision, dizziness, joint pain, rash.",Emergency
+"I've been having diarrhea, rash, shortness of breath, vomiting for 1 week.",Emergency
+"I have been experiencing abdominal pain, diarrhea, fever, vomiting.",Medicine Query
+"For the past 1 day, I have had fever, rash, vomiting.",Medicine Query
+"I have had joint pain, vomiting for about 1 day.",Medicine Query
+"I've been having abdominal pain, diarrhea, fever for 3 days.",Medicine Query
+"My symptoms are chest pain, headache, joint pain.",Medicine Query
+"For the past 1 day, I have had abdominal pain, chest pain.",Medicine Query
+"I have been experiencing abdominal pain, fever, vomiting.",Medicine Query
+"I'm having diarrhea, fever, joint pain, rash.",Medicine Query
+"My symptoms are blurred vision, chest pain, dizziness.",Emergency
+"I have been experiencing diarrhea, headache, rash.",Medicine Query
+"I have been experiencing diarrhea, joint pain, shortness of breath.",Medicine Query
+"For the past 2 hours, I have had chest pain, rash.",Medicine Query
+"I've been having abdominal pain, dizziness, shortness of breath for 1 week.",Emergency
+"I'm having abdominal pain, blurred vision, chest pain.",Emergency
+"My symptoms are blurred vision, diarrhea, fever, shortness of breath.",Emergency
+"My symptoms are abdominal pain, joint pain.",Medicine Query
+"I've been having abdominal pain, headache, rash for 2 hours.",Medicine Query
+"I'm having chest pain, fever, joint pain, vomiting.",Emergency
+"For the past 6 hours, I have had abdominal pain, diarrhea, shortness of breath.",Emergency
+"My symptoms are fever, headache, shortness of breath, vomiting.",Emergency
+"I'm having abdominal pain, blurred vision, vomiting.",Emergency
+"For the past 6 hours, I have had blurred vision, diarrhea, dizziness, headache.",Emergency
+"For the past 3 days, I have had blurred vision, diarrhea, headache, joint pain.",Emergency
+"I have had blurred vision, chest pain, shortness of breath for about 1 day.",Emergency
+"My symptoms are diarrhea, dizziness.",Medicine Query
+"I've been having abdominal pain, dizziness for 1 day.",Medicine Query
+"I am suffering from blurred vision, fever, joint pain, shortness of breath.",Emergency
+"My symptoms are blurred vision, diarrhea, headache.",Medicine Query
+"I have had abdominal pain, blurred vision, dizziness, rash for about 1 day.",Emergency
 How do I cancel an appointment I made for vaccination center?,Appointment
 Is it possible to postpone my visit to the pediatrician?,Appointment
 What time does the ENT doctor doctor see patients?,Appointment
