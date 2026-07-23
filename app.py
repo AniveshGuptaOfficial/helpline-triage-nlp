@@ -184,5 +184,99 @@ def predict():
     return jsonify(result)
 
 
+@app.route("/chat", methods=["POST"])
+def chat():
+    """
+    Multi-turn version of the pipeline. The client sends the full
+    conversation history each time (this API is stateless - no server-side
+    session storage) plus the new message.
+
+    Request body:
+      {
+        "history": [{"role": "user"|"model", "text": "..."}, ...],  // [] for a new conversation
+        "message": "...",
+        "category": null | "Emergency" | "Medicine Query" | "Appointment"
+                     // null on the FIRST message of a conversation - the
+                     // server classifies it then. On every follow-up
+                     // message, the client echoes back the category it was
+                     // given, so the same category/system-prompt is reused
+                     // for the whole conversation instead of reclassifying
+                     // every turn.
+      }
+
+    Response:
+      {
+        "category": "...",
+        "distress_score": float|null,   // only computed on the first
+                                         // message of an Emergency conversation
+        "escalation_flag": bool,
+        "response": "...",
+        "history": [...]  // updated history, including this turn - the
+                           // client should store this and send it back
+                           // on the next message in this conversation
+      }
+    """
+    data = request.get_json(silent=True)
+    if not data or "message" not in data:
+        return jsonify({"error": "Request body must be JSON with a 'message' field"}), 400
+
+    message = data["message"].strip()
+    if not message:
+        return jsonify({"error": "'message' cannot be empty"}), 400
+
+    history = data.get("history", [])
+    category = data.get("category")
+
+    is_first_message = not history or category is None
+
+    distress_score = None
+    if is_first_message:
+        category = classify_query(message)
+        if category == "Emergency":
+            distress_score = score_distress(message)
+    escalation_flag = category == "Emergency"
+
+    system_prompt = SYSTEM_PROMPTS[category]
+
+    contents = [
+        types.Content(role=turn["role"], parts=[types.Part(text=turn["text"])])
+        for turn in history
+    ]
+    contents.append(types.Content(role="user", parts=[types.Part(text=message)]))
+
+    try:
+        response = gemini_client.models.generate_content(
+            model=GPT_MODEL_NAME,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                max_output_tokens=500,
+                temperature=0.4,
+            ),
+        )
+        reply_text = response.text
+        gpt_error = None
+    except Exception as e:
+        reply_text = None
+        gpt_error = str(e)
+
+    new_history = history + [
+        {"role": "user", "text": message},
+        {"role": "model", "text": reply_text or ""},
+    ]
+
+    result = {
+        "category": category,
+        "distress_score": distress_score,
+        "escalation_flag": escalation_flag,
+        "response": reply_text,
+        "history": new_history,
+    }
+    if gpt_error:
+        result["gpt_error"] = gpt_error
+
+    return jsonify(result)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

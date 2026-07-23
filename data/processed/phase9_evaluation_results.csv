@@ -1,0 +1,7 @@
+true_category,priority,query,routed_category,routed_escalation_flag,routed_distress_score,routed_contains_escalation_language,routed_latency_sec,baseline_contains_escalation_language,baseline_latency_sec
+Emergency,high-distress,"My symptoms are blurred vision, dizziness, headache, shortness of breath.",Emergency,True,0.9367669224739075,True,1.651045322418213,True,1.9936604499816895
+Emergency,low-distress,"I have been experiencing chest pain, diarrhea, vomiting.",Emergency,True,0.025153951719403267,True,1.4563796520233154,True,1.784069538116455
+Medicine Query,-,"For the past 1 week, I have had chest pain, headache.",Medicine Query,False,,True,2.758410930633545,True,2.2442233562469482
+Medicine Query,-,"I've been having headache, joint pain, shortness of breath for 3 days.",Medicine Query,False,,True,2.3746230602264404,True,1.9542527198791504
+Appointment,-,Can I get a follow-up slot with the orthopedic doctor?,Appointment,False,,False,1.9979557991027832,False,1.5111041069030762
+Appointment,-,Please cancel my skin specialist appointment on Saturday,Appointment,False,,False,1.5834813117980957,False,1.5935590267181396
