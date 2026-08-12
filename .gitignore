@@ -4,3 +4,4 @@ __pycache__/
 .env
 .vscode/
 .idea/
+Add-Content .gitignore "models/transformer_classifier/model.safetensors"
