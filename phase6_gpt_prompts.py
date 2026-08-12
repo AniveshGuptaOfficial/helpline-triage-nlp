@@ -147,7 +147,7 @@ def main():
         print(f"\n--- Query (priority {row['priority_rank']}, distress "
               f"{row['distress_score']:.3f}): {row['symptoms']} ---")
         reply = get_gpt_response(
-            "Emergency", row["symptoms"], row["priority_rank"], row["distress_score"]
+            "Emergency", row["text"], row["priority_rank"], row["distress_score"]
         )
         print(reply)
 

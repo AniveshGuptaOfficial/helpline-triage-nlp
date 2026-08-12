@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "593849179216",
+    "project_id": "helpline-triage",
+    "storage_bucket": "helpline-triage.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593849179216:android:d330baddefd4ce112e4555",
+        "android_client_info": {
+          "package_name": "com.example.helpline_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWNjqytMENXwoDFS9ivuHAdjAO7RGPlyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,26 +1,16 @@
 ﻿"""
 Phase 7 - Flask API: the full pipeline behind one endpoint
 
-What this does:
-Wraps everything built in Phases 1-6 behind a single HTTP endpoint:
+Pipeline per request:
+  1. Translate to English (classifier/distress model are English-only)
+  2. Classify into Emergency / Medicine Query / Appointment
+  3. If Emergency: score distress (fear)
+  4. If Medicine Query: retrieve relevant real medicines from the
+     darkknight25/medical_medicine_dataset (grounds the answer instead of
+     relying purely on the LLM's own general knowledge)
+  5. Generate a category-specific response via Gemini
 
-  POST /predict   { "query": "..." }
-       -> classifies into Emergency / Medicine Query / Appointment
-       -> if Emergency: scores distress (fear) via the emotion model
-       -> generates a category-specific response via Gemini
-       -> returns one JSON object with everything the Flutter app needs
-
-All models are loaded ONCE at startup (not per-request) - loading a
-transformer on every request would make each call take several seconds
-instead of a fraction of a second.
-
-Note on priority ranking: Phase 5's ranking was a batch operation (rank
-these 230 known Emergency queries against each other). A live API only
-sees one query at a time, so there's nothing to rank it against yet - we
-return the raw distress_score here. A real deployment would feed this
-score into a live queue that ranks currently-waiting Emergency queries
-against each other; that queueing layer is a natural future extension,
-not built in this phase.
+All models/data are loaded ONCE at startup, not per-request.
 """
 
 import os
@@ -28,6 +18,7 @@ import json
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import torch
+import pandas as pd
 from transformers import (
     DistilBertTokenizerFast,
     DistilBertForSequenceClassification,
@@ -47,6 +38,7 @@ app = Flask(__name__)
 CLASSIFIER_DIR = "models/transformer_classifier"
 EMOTION_MODEL_NAME = "j-hartmann/emotion-english-distilroberta-base"
 GPT_MODEL_NAME = "gemini-flash-lite-latest"
+MEDICINE_DATASET_FILE = "data/processed/medicine_dataset.csv"
 
 print("Loading intent classifier...")
 classifier_tokenizer = DistilBertTokenizerFast.from_pretrained(CLASSIFIER_DIR)
@@ -58,6 +50,19 @@ with open(os.path.join(CLASSIFIER_DIR, "label_mapping.json")) as f:
 
 print("Loading emotion/distress model...")
 emotion_classifier = pipeline("text-classification", model=EMOTION_MODEL_NAME, top_k=None)
+
+print("Loading medicine recommendation dataset...")
+_medicine_df = pd.read_csv(MEDICINE_DATASET_FILE)
+MEDICINE_RECORDS = []
+for _, row in _medicine_df.iterrows():
+    MEDICINE_RECORDS.append({
+        "medicine_name": row["medicine_name"],
+        "description": row["description"],
+        "uses": json.loads(row["uses"]),
+        "side_effects": json.loads(row["side_effects"]),
+        "disclaimer": row["disclaimer"],
+    })
+print(f"Loaded {len(MEDICINE_RECORDS)} medicine records.")
 
 print("Setting up Gemini client...")
 gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -77,9 +82,13 @@ SYSTEM_PROMPTS = {
         "You are a helpful assistant for a rural healthcare helpline, answering "
         "a general medicine/symptom question. Give a clear, informative, "
         "general-purpose answer in plain language suitable for a non-medical "
-        "audience. Do NOT provide a definitive diagnosis or specific drug "
-        "dosages. Always end your response with a clear disclaimer recommending "
-        "they consult a doctor for a proper diagnosis and treatment plan."
+        "audience. If reference medicine information is provided below and is "
+        "genuinely relevant to the query, you may mention those medicine names "
+        "as commonly used options - but do NOT provide specific dosages, do "
+        "NOT present it as a definitive diagnosis, and do NOT treat the "
+        "reference list as exhaustive. Always end your response with a clear "
+        "disclaimer recommending they consult a doctor or pharmacist before "
+        "taking any medicine."
     ),
     "Appointment": (
         "You are a scheduling assistant for a rural healthcare helpline. The "
@@ -99,28 +108,87 @@ print("All models loaded. Ready to serve requests.")
 # Pipeline logic
 # ---------------------------------------------------------------------
 
+def translate_to_english(text):
+    try:
+        response = gemini_client.models.generate_content(
+            model=GPT_MODEL_NAME,
+            contents=text,
+            config=types.GenerateContentConfig(
+                system_instruction=(
+                    "You are a translation engine. Translate the user's message "
+                    "to English. Respond with ONLY the English translation and "
+                    "nothing else - no notes, no quotation marks, no explanation. "
+                    "If the message is already in English, return it exactly "
+                    "unchanged."
+                ),
+                max_output_tokens=200,
+                temperature=0,
+            ),
+        )
+        translated = response.text.strip()
+        return translated if translated else text
+    except Exception:
+        return text
+
+
 def classify_query(text):
     inputs = classifier_tokenizer(
         text, truncation=True, padding=True, max_length=128, return_tensors="pt"
     )
     with torch.no_grad():
         logits = classifier_model(**inputs).logits
+        probs = torch.softmax(logits, dim=1)
     predicted_id = int(torch.argmax(logits, dim=1).item())
-    return LABEL_MAPPING[predicted_id]
+    confidence = float(probs[0][predicted_id].item())
+    return LABEL_MAPPING[predicted_id], confidence
 
 
 def score_distress(text):
-    scores = emotion_classifier(text)[0]  # single input -> list of {label, score}
+    scores = emotion_classifier(text)[0]
     for item in scores:
         if item["label"] == "fear":
             return float(item["score"])
     return None
 
 
-def generate_response(category, text, distress_score=None):
+def find_relevant_medicines(query_text_english, top_k=3):
+    query_lower = query_text_english.lower()
+    scored = []
+    for rec in MEDICINE_RECORDS:
+        score = 0
+        for use in rec.get("uses", []):
+            if use.lower() in query_lower:
+                score += 1
+        if rec.get("medicine_name", "").lower() in query_lower:
+            score += 2
+        if score > 0:
+            scored.append((score, rec))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [rec for _, rec in scored[:top_k]]
+
+
+def build_medicine_context(matches):
+    if not matches:
+        return None
+    lines = [
+        "Reference medicine information (use only if genuinely relevant to "
+        "the query; do not treat this as an exhaustive or prescriptive list):"
+    ]
+    for m in matches:
+        lines.append(
+            f"- {m['medicine_name']}: {m['description']} "
+            f"Commonly used for: {', '.join(m['uses'])}."
+        )
+    return "\n".join(lines)
+
+
+def generate_response(category, text, distress_score=None, medicine_context=None):
     system_prompt = SYSTEM_PROMPTS[category]
+
     if category == "Emergency" and distress_score is not None:
         user_message = f"Query: {text}\nDistress score: {distress_score:.3f}"
+    elif category == "Medicine Query" and medicine_context:
+        user_message = f"Query: {text}\n\n{medicine_context}"
     else:
         user_message = f"Query: {text}"
 
@@ -155,16 +223,21 @@ def predict():
     if not query_text:
         return jsonify({"error": "'query' cannot be empty"}), 400
 
-    category = classify_query(query_text)
+    english_text = translate_to_english(query_text)
+    category, confidence = classify_query(english_text)
 
     distress_score = None
     escalation_flag = False
+    medicine_context = None
     if category == "Emergency":
-        distress_score = score_distress(query_text)
+        distress_score = score_distress(english_text)
         escalation_flag = True
+    elif category == "Medicine Query":
+        matches = find_relevant_medicines(english_text)
+        medicine_context = build_medicine_context(matches)
 
     try:
-        gpt_response = generate_response(category, query_text, distress_score)
+        gpt_response = generate_response(category, query_text, distress_score, medicine_context)
     except Exception as e:
         gpt_response = None
         gpt_error = str(e)
@@ -174,6 +247,7 @@ def predict():
     result = {
         "query": query_text,
         "category": category,
+        "confidence": confidence,
         "escalation_flag": escalation_flag,
         "distress_score": distress_score,
         "response": gpt_response,
@@ -186,36 +260,6 @@ def predict():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    """
-    Multi-turn version of the pipeline. The client sends the full
-    conversation history each time (this API is stateless - no server-side
-    session storage) plus the new message.
-
-    Request body:
-      {
-        "history": [{"role": "user"|"model", "text": "..."}, ...],  // [] for a new conversation
-        "message": "...",
-        "category": null | "Emergency" | "Medicine Query" | "Appointment"
-                     // null on the FIRST message of a conversation - the
-                     // server classifies it then. On every follow-up
-                     // message, the client echoes back the category it was
-                     // given, so the same category/system-prompt is reused
-                     // for the whole conversation instead of reclassifying
-                     // every turn.
-      }
-
-    Response:
-      {
-        "category": "...",
-        "distress_score": float|null,   // only computed on the first
-                                         // message of an Emergency conversation
-        "escalation_flag": bool,
-        "response": "...",
-        "history": [...]  // updated history, including this turn - the
-                           // client should store this and send it back
-                           // on the next message in this conversation
-      }
-    """
     data = request.get_json(silent=True)
     if not data or "message" not in data:
         return jsonify({"error": "Request body must be JSON with a 'message' field"}), 400
@@ -230,10 +274,16 @@ def chat():
     is_first_message = not history or category is None
 
     distress_score = None
+    confidence = None
+    medicine_context = None
     if is_first_message:
-        category = classify_query(message)
+        english_message = translate_to_english(message)
+        category, confidence = classify_query(english_message)
         if category == "Emergency":
-            distress_score = score_distress(message)
+            distress_score = score_distress(english_message)
+        elif category == "Medicine Query":
+            matches = find_relevant_medicines(english_message)
+            medicine_context = build_medicine_context(matches)
     escalation_flag = category == "Emergency"
 
     system_prompt = SYSTEM_PROMPTS[category]
@@ -242,7 +292,10 @@ def chat():
         types.Content(role=turn["role"], parts=[types.Part(text=turn["text"])])
         for turn in history
     ]
-    contents.append(types.Content(role="user", parts=[types.Part(text=message)]))
+    message_for_model = message
+    if medicine_context:
+        message_for_model = f"{message}\n\n{medicine_context}"
+    contents.append(types.Content(role="user", parts=[types.Part(text=message_for_model)]))
 
     try:
         response = gemini_client.models.generate_content(
@@ -267,6 +320,7 @@ def chat():
 
     result = {
         "category": category,
+        "confidence": confidence,
         "distress_score": distress_score,
         "escalation_flag": escalation_flag,
         "response": reply_text,
