@@ -15,6 +15,8 @@ All models/data are loaded ONCE at startup, not per-request.
 
 import os
 import json
+import math
+import requests as http_requests
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import torch
@@ -39,6 +41,25 @@ CLASSIFIER_DIR = "models/transformer_classifier"
 EMOTION_MODEL_NAME = "j-hartmann/emotion-english-distilroberta-base"
 GPT_MODEL_NAME = "gemini-flash-lite-latest"
 MEDICINE_DATASET_FILE = "data/processed/medicine_dataset.csv"
+
+# Phase 10 - Hospital lookup (Emergency / Appointment only)
+# Uses OpenStreetMap's Overpass API: free, no API key required. Ratings are
+# not reliably available from OSM, so `rating` may be None for many results -
+# this is called out explicitly rather than faked. Swap in the Google Places
+# Nearby Search API here later if a billed key becomes available; it returns
+# real ratings and the rest of this pipeline (sort/display/booking) does not
+# need to change.
+OVERPASS_URLS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+]
+# Overpass instances reject requests with generic/default User-Agent headers
+# (returns 406 Not Acceptable) - a descriptive UA is required.
+OVERPASS_HEADERS = {
+    "User-Agent": "VaidyumHelplineTriage/1.0 (BCSE409L course project)"
+}
+HOSPITAL_SEARCH_RADIUS_MILES = 8  # ~13 km, per spec
+CATEGORIES_WITH_HOSPITAL_LOOKUP = {"Emergency", "Appointment"}
 
 print("Loading intent classifier...")
 classifier_tokenizer = DistilBertTokenizerFast.from_pretrained(CLASSIFIER_DIR)
@@ -182,6 +203,175 @@ def build_medicine_context(matches):
     return "\n".join(lines)
 
 
+def haversine_miles(lat1, lon1, lat2, lon2):
+    """Great-circle distance between two lat/lon points, in miles."""
+    radius_miles = 3958.8
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = (
+        math.sin(dphi / 2) ** 2
+        + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
+    )
+    return 2 * radius_miles * math.asin(math.sqrt(a))
+
+
+def find_nearby_hospitals(lat, lon, radius_miles=HOSPITAL_SEARCH_RADIUS_MILES, limit=15):
+    """Query OpenStreetMap (Overpass API) for hospitals within radius_miles
+    of (lat, lon), sorted by shortest distance first, then highest rating
+    (hospitals with no rating data sort after rated ones at the same
+    distance tier)."""
+    radius_m = int(radius_miles * 1609.34)
+    query = f"""
+    [out:json][timeout:15];
+    (
+      node["amenity"="hospital"](around:{radius_m},{lat},{lon});
+      way["amenity"="hospital"](around:{radius_m},{lat},{lon});
+    );
+    out center tags;
+    """
+    try:
+        resp = None
+        last_error = None
+        for url in OVERPASS_URLS:
+            try:
+                resp = http_requests.post(
+                    url, data={"data": query}, headers=OVERPASS_HEADERS, timeout=15
+                )
+                resp.raise_for_status()
+                break
+            except Exception as e:
+                last_error = e
+                resp = None
+                continue
+        if resp is None:
+            print(f"[hospital search] all Overpass mirrors failed: {last_error}")
+            return []
+        elements = resp.json().get("elements", [])
+    except Exception as e:
+        print(f"[hospital search] unexpected error: {e}")
+        return []
+
+    hospitals = []
+    for el in elements:
+        tags = el.get("tags", {})
+        name = tags.get("name")
+        if not name:
+            continue
+
+        if el.get("type") == "node":
+            h_lat, h_lon = el.get("lat"), el.get("lon")
+        else:
+            center = el.get("center") or {}
+            h_lat, h_lon = center.get("lat"), center.get("lon")
+        if h_lat is None or h_lon is None:
+            continue
+
+        distance_miles = haversine_miles(lat, lon, h_lat, h_lon)
+        if distance_miles > radius_miles:
+            continue
+
+        address_parts = [
+            tags.get("addr:housenumber", ""),
+            tags.get("addr:street", ""),
+            tags.get("addr:city", ""),
+            tags.get("addr:state", ""),
+            tags.get("addr:postcode", ""),
+        ]
+        address = ", ".join(p for p in address_parts if p) or "Address not available"
+
+        rating = None
+        raw_rating = tags.get("rating") or tags.get("stars")
+        if raw_rating:
+            try:
+                rating = float(raw_rating)
+            except ValueError:
+                rating = None
+
+        hospitals.append({
+            "name": name,
+            "lat": float(h_lat),
+            "lon": float(h_lon),
+            "distance_miles": round(distance_miles, 2),
+            "rating": rating,
+            "address": address,
+        })
+
+    # Primary sort: shortest distance. Secondary sort: highest rating
+    # (unrated hospitals treated as lowest so they sort after rated ones
+    # at a comparable distance).
+    hospitals.sort(key=lambda h: (h["distance_miles"], -(h["rating"] or 0)))
+    return hospitals[:limit]
+
+
+NOMINATIM_REVERSE_URL = "https://nominatim.openstreetmap.org/reverse"
+
+
+def reverse_geocode_address(lat, lon):
+    """Fallback address lookup via Nominatim, used only when a selected
+    hospital's OSM tags didn't include a usable address. Nominatim's usage
+    policy caps free reverse-geocoding at roughly 1 request/sec, so this is
+    only called once, at booking-confirmation time - never for the whole
+    hospital list."""
+    try:
+        resp = http_requests.get(
+            NOMINATIM_REVERSE_URL,
+            params={"lat": lat, "lon": lon, "format": "json"},
+            headers=OVERPASS_HEADERS,  # same descriptive UA the OSM ecosystem expects
+            timeout=10,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("display_name")
+    except Exception as e:
+        print(f"[reverse geocode] failed: {e}")
+        return None
+
+
+def build_booking_payload(hospital_name, hospital_address, hospital_lat, hospital_lon,
+                           category, appointment_time=None):
+    """Builds the confirmation text + map/navigation links for a selected
+    hospital. Does not call the LLM - hospital identity, address, and
+    coordinates must come straight from the search result, never be
+    generated/paraphrased, to avoid ever inventing a wrong address for an
+    emergency."""
+    if category == "Emergency":
+        confirmation_text = f"Emergency slot secured at {hospital_name}."
+    else:
+        when = appointment_time or "your requested time"
+        confirmation_text = f"Appointment confirmation at {hospital_name} for {when}."
+
+    resolved_address = hospital_address
+    if not resolved_address or resolved_address == "Address not available":
+        resolved_address = reverse_geocode_address(hospital_lat, hospital_lon)
+    if not resolved_address:
+        resolved_address = "Address not available"
+
+    # `intent:` / geo navigation URL for Android to jump straight into
+    # turn-by-turn navigation in the Google Maps app if installed.
+    maps_intent_url = f"google.navigation:q={hospital_lat},{hospital_lon}&mode=d"
+    # Plain web fallback (works in any browser, or if Maps isn't installed).
+    maps_web_url = (
+        f"https://www.google.com/maps/dir/?api=1&destination={hospital_lat},{hospital_lon}"
+    )
+    static_map_url = (
+        "https://staticmap.openstreetmap.de/staticmap.php"
+        f"?center={hospital_lat},{hospital_lon}&zoom=14&size=600x300"
+        f"&maptype=mapnik&markers={hospital_lat},{hospital_lon},red-pushpin"
+    )
+
+    return {
+        "confirmation_text": confirmation_text,
+        "hospital_name": hospital_name,
+        "hospital_address": resolved_address,
+        "hospital_lat": hospital_lat,
+        "hospital_lon": hospital_lon,
+        "maps_intent_url": maps_intent_url,
+        "maps_web_url": maps_web_url,
+        "static_map_url": static_map_url,
+    }
+
+
 def generate_response(category, text, distress_score=None, medicine_context=None):
     system_prompt = SYSTEM_PROMPTS[category]
 
@@ -251,6 +441,7 @@ def predict():
         "escalation_flag": escalation_flag,
         "distress_score": distress_score,
         "response": gpt_response,
+        "hospital_lookup_required": category in CATEGORIES_WITH_HOSPITAL_LOOKUP,
     }
     if gpt_error:
         result["gpt_error"] = gpt_error
@@ -325,11 +516,73 @@ def chat():
         "escalation_flag": escalation_flag,
         "response": reply_text,
         "history": new_history,
+        "hospital_lookup_required": category in CATEGORIES_WITH_HOSPITAL_LOOKUP,
     }
     if gpt_error:
         result["gpt_error"] = gpt_error
 
     return jsonify(result)
+
+
+@app.route("/hospitals", methods=["POST"])
+def hospitals():
+    """Phase 10 - nearby hospital search.
+    Expects JSON: {"latitude": <float>, "longitude": <float>, "radius_miles": <float, optional>}
+    Returns hospitals within radius_miles, sorted by shortest distance then
+    highest rating.
+    """
+    data = request.get_json(silent=True)
+    if not data or "latitude" not in data or "longitude" not in data:
+        return jsonify({"error": "Request body must include 'latitude' and 'longitude'"}), 400
+
+    try:
+        lat = float(data["latitude"])
+        lon = float(data["longitude"])
+    except (TypeError, ValueError):
+        return jsonify({"error": "'latitude' and 'longitude' must be numbers"}), 400
+
+    try:
+        radius_miles = float(data.get("radius_miles", HOSPITAL_SEARCH_RADIUS_MILES))
+    except (TypeError, ValueError):
+        radius_miles = HOSPITAL_SEARCH_RADIUS_MILES
+
+    results = find_nearby_hospitals(lat, lon, radius_miles=radius_miles)
+    return jsonify({
+        "hospitals": results,
+        "count": len(results),
+        "radius_miles": radius_miles,
+    })
+
+
+@app.route("/book_hospital", methods=["POST"])
+def book_hospital():
+    """Phase 10 - confirms a hospital selection for an Emergency or
+    Appointment request. This is deterministic (no LLM call): hospital
+    name/address/coordinates are echoed straight back from what the client
+    already fetched via /hospitals, so nothing about the hospital's identity
+    is ever generated or guessed.
+    """
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({"error": "Request body must be JSON"}), 400
+
+    hospital_name = data.get("hospital_name")
+    hospital_lat = data.get("hospital_lat")
+    hospital_lon = data.get("hospital_lon")
+    if not hospital_name or hospital_lat is None or hospital_lon is None:
+        return jsonify({
+            "error": "'hospital_name', 'hospital_lat', and 'hospital_lon' are required"
+        }), 400
+
+    payload = build_booking_payload(
+        hospital_name=hospital_name,
+        hospital_address=data.get("hospital_address"),
+        hospital_lat=hospital_lat,
+        hospital_lon=hospital_lon,
+        category=data.get("category", "Emergency"),
+        appointment_time=data.get("appointment_time"),
+    )
+    return jsonify(payload)
 
 
 if __name__ == "__main__":
