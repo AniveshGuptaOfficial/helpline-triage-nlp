@@ -26,6 +26,7 @@ from transformers import (
     DistilBertForSequenceClassification,
     pipeline,
 )
+from huggingface_hub import hf_hub_download
 from google import genai
 from google.genai import types
 
@@ -37,7 +38,15 @@ app = Flask(__name__)
 # Load everything ONCE at startup
 # ---------------------------------------------------------------------
 
-CLASSIFIER_DIR = "models/transformer_classifier"
+# The fine-tuned classifier is hosted on Hugging Face Hub rather than
+# committed to this repo. It's a 255MB file that GitHub only accepts via
+# Git LFS, and Cloud Build's checkout does not resolve LFS pointers into
+# real file content - the container ended up with a small LFS pointer
+# text file instead of the actual weights, which made `safetensors`
+# fail with "header too large" trying to parse it. Hosting on the Hub
+# (same place the emotion model already loads from) avoids this
+# entirely.
+CLASSIFIER_REPO = "AniveshGupta/vaidyum-emergency-classifier"
 EMOTION_MODEL_NAME = "j-hartmann/emotion-english-distilroberta-base"
 GPT_MODEL_NAME = "gemini-flash-lite-latest"
 MEDICINE_DATASET_FILE = "data/processed/medicine_dataset.csv"
@@ -62,11 +71,12 @@ HOSPITAL_SEARCH_RADIUS_MILES = 8  # ~13 km, per spec
 CATEGORIES_WITH_HOSPITAL_LOOKUP = {"Emergency", "Appointment"}
 
 print("Loading intent classifier...")
-classifier_tokenizer = DistilBertTokenizerFast.from_pretrained(CLASSIFIER_DIR)
-classifier_model = DistilBertForSequenceClassification.from_pretrained(CLASSIFIER_DIR)
+classifier_tokenizer = DistilBertTokenizerFast.from_pretrained(CLASSIFIER_REPO)
+classifier_model = DistilBertForSequenceClassification.from_pretrained(CLASSIFIER_REPO)
 classifier_model.eval()
 
-with open(os.path.join(CLASSIFIER_DIR, "label_mapping.json")) as f:
+label_mapping_path = hf_hub_download(repo_id=CLASSIFIER_REPO, filename="label_mapping.json")
+with open(label_mapping_path) as f:
     LABEL_MAPPING = {int(k): v for k, v in json.load(f).items()}
 
 print("Loading emotion/distress model...")
