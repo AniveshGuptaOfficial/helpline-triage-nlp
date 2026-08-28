@@ -40,9 +40,18 @@ class _ChatPageState extends State<ChatPage> {
   bool _ttsEnabled = false;
   int? _speakingMessageIndex; // index of the message currently being read aloud, if any
 
-  // TODO: replace with your actual Space URL once deployed, e.g.
-  // 'https://yourusername-vaidyum-backend.hf.space'
-  static const String _backendBase = 'https://YOUR_USERNAME-vaidyum-backend.hf.space';
+  // Backend URL is set at BUILD TIME via --dart-define, not hardcoded.
+  // Default (no flag needed): local backend via the emulator's special
+  // 10.0.2.2 alias for your PC's localhost - just `flutter run` as usual.
+  // To point at a real deployed backend instead (for testing on your
+  // real phone, or against Cloud Run/Render), pass the flag:
+  //   flutter run --dart-define=BACKEND_URL=https://your-real-url.run.app
+  //   flutter build apk --release --dart-define=BACKEND_URL=https://your-real-url.run.app
+  // Same source code either way - only the launch/build command changes.
+  static const String _backendBase = String.fromEnvironment(
+    'BACKEND_URL',
+    defaultValue: 'http://10.0.2.2:5000',
+  );
   static const String _apiUrl = '$_backendBase/chat';
   static const String _hospitalsUrl = '$_backendBase/hospitals';
   static const String _bookHospitalUrl = '$_backendBase/book_hospital';
