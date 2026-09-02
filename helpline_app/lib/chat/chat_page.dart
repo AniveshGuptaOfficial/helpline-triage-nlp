@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
@@ -8,8 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import '../theme.dart';
 import '../services/conversation_store.dart';
+import '../widgets/app_bottom_nav.dart';
 import 'history_page.dart';
-import 'stats_page.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -28,6 +28,8 @@ class _ChatPageState extends State<ChatPage> {
   double? _confidence;
   bool _escalationFlag = false;
   bool _isLoading = false;
+  String? _department; // Appointment-only: routed clinical department
+  String? _departmentSecondary; // Appointment-only: runner-up department, if any
 
   String _conversationId = _newId();
   String? _conversationTitle;
@@ -220,7 +222,7 @@ class _ChatPageState extends State<ChatPage> {
               'radius_miles': 8,
             }),
           )
-          .timeout(const Duration(seconds: 20));
+          .timeout(const Duration(seconds: 35));
 
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
@@ -375,6 +377,8 @@ class _ChatPageState extends State<ChatPage> {
           if (data['confidence'] != null) {
             _confidence = (data['confidence'] as num).toDouble();
           }
+          _department = data['department'];
+          _departmentSecondary = data['department_secondary'];
           _messages.add(ChatMessage(role: 'model', text: replyText));
         });
         if (_ttsEnabled) {
@@ -430,12 +434,15 @@ class _ChatPageState extends State<ChatPage> {
       _bookingResult = null;
       _hospitalFlowTriggeredForThisTurn = false;
       _speakingMessageIndex = null;
+      _department = null;
+      _departmentSecondary = null;
     });
   }
 
   Future<void> _openHistory() async {
     await _persistCurrentConversation();
     await _flutterTts.stop();
+    if (!mounted) return;
     final selected = await Navigator.push<Conversation>(
       context,
       MaterialPageRoute(builder: (_) => const HistoryPage()),
@@ -455,17 +462,24 @@ class _ChatPageState extends State<ChatPage> {
         // don't re-trigger an automatic hospital search on top of it.
         _hospitalFlowTriggeredForThisTurn = true;
         _speakingMessageIndex = null;
+        _department = null;
+        _departmentSecondary = null;
       });
       _scrollToBottom();
     }
   }
 
-  void _openStats() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const StatsPage()));
+
+  /// Dials the national emergency ambulance number directly from the
+  /// Emergency answer card's "Call Ambulance (108)" button.
+  Future<void> _callAmbulance() async {
+    final uri = Uri(scheme: 'tel', path: '108');
+    await launchUrl(uri);
   }
 
   Future<void> _signOut() async {
     await _persistCurrentConversation();
+    if (!mounted) return;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -552,84 +566,86 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildHospitalListPanel() {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 320),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade300)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
-            child: Row(
-              children: [
-                const Icon(Icons.local_hospital_rounded,
-                    color: kPrimary, size: 18),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    _category == 'Emergency'
-                        ? 'Please select a hospital to secure your Emergency Triage spot'
-                        : 'Please select your preferred hospital for the appointment',
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: kPrimary),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close_rounded, size: 18),
-                  tooltip: 'Dismiss',
-                  onPressed: _clearHospitalFlow,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Within 8 miles (13 km) - nearest first',
-              style: TextStyle(fontSize: 11, color: kNeutral),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Flexible(
-            child: ListView.separated(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              itemCount: _hospitals.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final h = _hospitals[index];
-                final rating = h['rating'];
-                return ListTile(
-                  dense: true,
-                  leading: const CircleAvatar(
-                    backgroundColor: kPrimaryLight,
-                    child: Icon(Icons.local_hospital_rounded,
-                        color: kPrimary, size: 18),
-                  ),
-                  title: Text(h['name']?.toString() ?? 'Hospital',
+    return Material(
+      color: Colors.white,
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 320),
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Colors.grey.shade300)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
+              child: Row(
+                children: [
+                  const Icon(Icons.local_hospital_rounded,
+                      color: kPrimary, size: 18),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      _category == 'Emergency'
+                          ? 'Please select a hospital to secure your Emergency Triage spot'
+                          : 'Please select your preferred hospital for the appointment',
                       style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w600)),
-                  subtitle: Text(
-                    '${h['distance_miles']} mi away'
-                    '${rating != null ? ' • ${rating.toStringAsFixed(1)}★' : ' • Not rated'}',
-                    style: const TextStyle(fontSize: 12, color: kNeutral),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: kPrimary),
+                    ),
                   ),
-                  trailing: const Icon(Icons.chevron_right_rounded,
-                      color: kNeutral),
-                  onTap: _isLoadingHospitals ? null : () => _selectHospital(h),
-                );
-              },
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, size: 18),
+                    tooltip: 'Dismiss',
+                    onPressed: _clearHospitalFlow,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Within 8 miles (13 km) - nearest first',
+                style: TextStyle(fontSize: 11, color: kNeutral),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Flexible(
+              child: ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                itemCount: _hospitals.length,
+                separatorBuilder: (_, _) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  final h = _hospitals[index];
+                  final rating = h['rating'];
+                  return ListTile(
+                    dense: true,
+                    leading: const CircleAvatar(
+                      backgroundColor: kPrimaryLight,
+                      child: Icon(Icons.local_hospital_rounded,
+                          color: kPrimary, size: 18),
+                    ),
+                    title: Text(h['name']?.toString() ?? 'Hospital',
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600)),
+                    subtitle: Text(
+                      '${h['distance_miles']} mi away'
+                      '${rating != null ? ' • ${rating.toStringAsFixed(1)}★' : ' • Not rated'}',
+                      style: const TextStyle(fontSize: 12, color: kNeutral),
+                    ),
+                    trailing: const Icon(Icons.chevron_right_rounded,
+                        color: kNeutral),
+                    onTap: _isLoadingHospitals ? null : () => _selectHospital(h),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -764,6 +780,214 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  /// Turns a free-form Gemini reply into separate lines for the card
+  /// layout below - a display-only heuristic (message.text itself, and
+  /// what gets saved to Firestore history, is untouched either way).
+  List<String> _splitIntoPoints(String text) {
+    final lines = text
+        .split('\n')
+        .map((l) => l.trim())
+        .where((l) => l.isNotEmpty)
+        .toList();
+    return lines.isEmpty ? [text.trim()] : lines;
+  }
+
+  Widget _miniPill(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(text,
+          style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, color: color)),
+    );
+  }
+
+  /// Structured "answer card" used for Medicine Query, Emergency, and
+  /// Appointment model replies (badge + numbered points + disclaimer /
+  /// Call Ambulance / department pill), matching the mockups. User
+  /// messages keep using the plain chat bubble in _buildMessageBubble
+  /// below - this widget is only ever reached from there, never instead
+  /// of it.
+  Widget _buildAnswerCard(ChatMessage message, int index) {
+    final isEmergency = _category == 'Emergency';
+    final isMedicine = _category == 'Medicine Query';
+    final isAppointment = _category == 'Appointment';
+    final color = categoryColor(_category);
+    final bgColor = isEmergency ? kEmergencyBg : kPrimaryLight;
+    final borderColor = isEmergency ? kEmergencyBorder : color.withValues(alpha: 0.25);
+    final points = _splitIntoPoints(message.text);
+    final isSpeaking = _speakingMessageIndex == index;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: borderColor, width: isEmergency ? 1.4 : 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  isEmergency ? 'EMERGENCY ALERT' : (_category ?? '').toUpperCase(),
+                  style: const TextStyle(
+                      fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+              ),
+              const Spacer(),
+              if (isMedicine && _confidence != null)
+                _miniPill('${(_confidence! * 100).toStringAsFixed(0)}% Match', color),
+              if (isEmergency && _distressScore != null)
+                _miniPill('Distress: ${(_distressScore! * 100).toStringAsFixed(0)}%', kEmergency),
+              if (isAppointment && _department != null)
+                _miniPill(_department!, color),
+            ],
+          ),
+          if (isAppointment && _departmentSecondary != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              'Secondary possibility: $_departmentSecondary',
+              style: TextStyle(fontSize: 11, color: kNeutral, fontStyle: FontStyle.italic),
+            ),
+          ],
+          const SizedBox(height: 10),
+          ...points.asMap().entries.map((entry) {
+            final i = entry.key;
+            final line = entry.value;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: points.length > 1
+                  ? RichText(
+                      text: TextSpan(
+                        style: const TextStyle(
+                            fontSize: 14, height: 1.4, color: Colors.black87),
+                        children: [
+                          TextSpan(
+                            text: '${i + 1}. ',
+                            style: TextStyle(fontWeight: FontWeight.bold, color: color),
+                          ),
+                          TextSpan(text: line),
+                        ],
+                      ),
+                    )
+                  : Text(line,
+                      style: const TextStyle(fontSize: 14, height: 1.4, color: Colors.black87)),
+            );
+          }),
+          if (isMedicine) ...[
+            const SizedBox(height: 4),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kWarningBg,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.warning_amber_rounded, size: 15, color: kWarningText),
+                  SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'AI response is for guidance. Please consult a qualified '
+                      'doctor before giving medicine.',
+                      style: TextStyle(fontSize: 11.5, color: kWarningText),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          if (isEmergency) ...[
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _callAmbulance,
+                icon: const Icon(Icons.call_rounded, size: 18),
+                label: const Text('Call Ambulance (108)'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kEmergency,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            if (_hospitals.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.local_hospital_rounded, color: kEmergency, size: 18),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(_hospitals.first['name']?.toString() ?? 'Nearest hospital',
+                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                          Text(
+                            '${_hospitals.first['distance_miles']} mi away'
+                            '${_hospitals.first['emergency'] == true ? ' • Emergency Ward Open' : ''}',
+                            style: const TextStyle(fontSize: 11.5, color: kNeutral),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right_rounded, color: kNeutral),
+                  ],
+                ),
+              ),
+            ],
+          ],
+          const SizedBox(height: 4),
+          InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () => _speakMessage(index, message.text),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    isSpeaking ? Icons.stop_circle_rounded : Icons.volume_up_rounded,
+                    size: 16,
+                    color: isSpeaking ? kEmergency : color,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    isSpeaking ? 'Stop' : 'Listen',
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w600,
+                      color: isSpeaking ? kEmergency : color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildMessageBubble(ChatMessage message, int index) {
     if (message.role == 'system') {
       return Container(
@@ -791,6 +1015,17 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     final isUser = message.role == 'user';
+
+    // Medicine Query / Emergency / Appointment replies get the structured
+    // card layout from the mockups; user messages keep the original
+    // chat-bubble rendering below unchanged.
+    if (!isUser &&
+        (_category == 'Emergency' ||
+            _category == 'Medicine Query' ||
+            _category == 'Appointment')) {
+      return _buildAnswerCard(message, index);
+    }
+
     final isSpeaking = _speakingMessageIndex == index;
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -868,25 +1103,66 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: _escalationFlag ? kEmergency : kPrimary,
+        titleSpacing: 8,
         title: Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(Icons.health_and_safety_rounded),
-            SizedBox(width: 8),
-            Text('Vaidyum', style: TextStyle(fontWeight: FontWeight.bold)),
+          children: [
+            Icon(
+              _escalationFlag
+                  ? Icons.local_shipping_rounded
+                  : Icons.health_and_safety_rounded,
+              size: 20,
+            ),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                _escalationFlag ? 'Vaidyum Emergency' : 'Vaidyum',
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 17),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         actions: [
+          // "Triage Active" / "HIGH DISTRESS" status pill
+          Center(
+            child: Container(
+              margin: const EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: _escalationFlag
+                    ? Colors.white.withValues(alpha: 0.22)
+                    : Colors.white.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 6,
+                    height: 6,
+                    decoration: const BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    _escalationFlag ? 'HIGH DISTRESS' : 'Triage Active',
+                    style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
           IconButton(
             icon: Icon(
                 _ttsEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded),
             tooltip: _ttsEnabled ? 'Voice replies on' : 'Voice replies off',
             onPressed: _toggleTts,
-          ),
-          IconButton(
-            icon: const Icon(Icons.bar_chart_rounded),
-            tooltip: 'Stats',
-            onPressed: _openStats,
           ),
           IconButton(
             icon: const Icon(Icons.history_rounded),
@@ -959,7 +1235,54 @@ class _ChatPageState extends State<ChatPage> {
           if (_bookingResult != null)
             _buildBookingConfirmationPanel()
           else if (_hospitals.isNotEmpty)
-            _buildHospitalListPanel(),
+            _buildHospitalListPanel()
+          else if (!_isLoadingHospitals && _hospitalFlowTriggeredForThisTurn && _bookingResult == null)
+            Material(
+              color: Colors.white,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: Colors.grey.shade300)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.location_searching_rounded,
+                        color: kNeutral, size: 18),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        'No hospitals found nearby. Try enabling GPS or setting your location in the emulator.',
+                        style: TextStyle(fontSize: 12, color: kNeutral),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _fetchNearbyHospitals,
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // Emergency reassurance strip, matching the mockup's "Voice &
+          // text locked" note. Worded accurately instead of copied
+          // verbatim: this build keeps voice/text available for follow-up
+          // details rather than actually locking them, since disabling
+          // input would block someone from adding "it's getting worse" or
+          // similar during a real emergency.
+          if (_escalationFlag)
+            Container(
+              width: double.infinity,
+              color: kEmergencyBg,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: const Text(
+                'Emergency: For fastest help, call 108 directly. '
+                'Voice & text stay open here for follow-up details.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 11, color: kEmergency, fontStyle: FontStyle.italic),
+              ),
+            ),
           SafeArea(
             child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -1010,6 +1333,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
     );
   }
 }
