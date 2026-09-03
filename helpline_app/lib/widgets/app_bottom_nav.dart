@@ -57,7 +57,7 @@ class AppBottomNav extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Container(
-        height: 62,
+        height: 72,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -76,17 +76,18 @@ class AppBottomNav extends StatelessWidget {
             final color = active ? kPrimary : kNeutral;
             return InkWell(
               onTap: () => _onTap(context, i),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Container(
+                constraints: const BoxConstraints(minWidth: kMinTapTarget),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(tab.icon, color: color, size: 24),
+                    Icon(tab.icon, color: color, size: 28),
                     const SizedBox(height: 3),
                     Text(
                       tab.label,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 13,
                         color: color,
                         fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                       ),

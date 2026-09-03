@@ -27,7 +27,8 @@ const Color kRatingStar = Color(0xFFC98A2C);
 const Color kCardBorder = Color(0xFFE7E7E2);
 const Color kDonutTrack = Color(0xFFEFEFEA);
 
-/// The five in-app helpline response languages shown on the Profile screen.
+/// The five in-app helpline response languages shown on the Profile screen
+/// and the quick language switcher on the chat screen.
 const List<({String english, String native, String code})> kSupportedLanguages = [
   (english: 'Hindi', native: 'हिंदी', code: 'hi'),
   (english: 'English', native: 'English', code: 'en'),
@@ -35,6 +36,22 @@ const List<({String english, String native, String code})> kSupportedLanguages =
   (english: 'Telugu', native: 'తెలుగు', code: 'te'),
   (english: 'Marathi', native: 'मराठी', code: 'mr'),
 ];
+
+// --- Shared SharedPreferences keys. Centralized here (rather than defined
+// separately per screen) so both the Profile screen and the chat screen's
+// quick language switcher read/write the exact same stored value. ---
+const String kLanguagePrefKey = 'vaidyum_helpline_language_code';
+const String kEmergencyContactsPrefKey = 'vaidyum_emergency_contacts';
+
+// --- Low-literacy / visual-first sizing constants. Used across chat
+// bubbles, answer cards, the bottom nav, and emergency actions so text and
+// tap targets are consistently larger than typical default Material
+// sizing - purely additive, existing call sites are updated to use these
+// instead of their old inline literals. ---
+const double kFontBody = 17.0; // chat bubble / answer card body text
+const double kFontLabel = 13.5; // badges, pills, secondary labels
+const double kFontLarge = 19.0; // emergency headlines, large buttons
+const double kMinTapTarget = 48.0; // minimum comfortable tap target height
 
 Color categoryColor(String? category) {
   switch (category) {

@@ -5,10 +5,16 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:convert';
 import '../theme.dart';
 import '../services/conversation_store.dart';
 import '../widgets/app_bottom_nav.dart';
+import '../widgets/symptom_chip_bar.dart';
+import '../widgets/follow_up_chip_bar.dart';
+import '../widgets/language_switcher_bar.dart';
+import '../localization/vaidyum_strings.dart';
 import 'history_page.dart';
 
 class ChatPage extends StatefulWidget {
@@ -28,8 +34,6 @@ class _ChatPageState extends State<ChatPage> {
   double? _confidence;
   bool _escalationFlag = false;
   bool _isLoading = false;
-  String? _department; // Appointment-only: routed clinical department
-  String? _departmentSecondary; // Appointment-only: runner-up department, if any
 
   String _conversationId = _newId();
   String? _conversationTitle;
@@ -41,6 +45,16 @@ class _ChatPageState extends State<ChatPage> {
   final FlutterTts _flutterTts = FlutterTts();
   bool _ttsEnabled = false;
   int? _speakingMessageIndex; // index of the message currently being read aloud, if any
+
+  // Voice-first mode: when on, mic input auto-stops after a short silence
+  // and auto-sends, instead of requiring a separate tap to send.
+  bool _voiceModeEnabled = false;
+
+  // Quick language switcher (chat screen) - shares the same persisted
+  // preference the Profile screen's language list reads/writes.
+  String _languageCode = 'en';
+
+  bool _sharingLocation = false;
 
   // Backend URL is set at BUILD TIME via --dart-define, not hardcoded.
   // Default (no flag needed): local backend via the emulator's special
@@ -70,6 +84,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _initSpeech();
+    _loadLanguagePreference();
     _flutterTts.setLanguage('en-US');
     _flutterTts.setSpeechRate(0.45);
     _flutterTts.setCompletionHandler(() {
@@ -81,6 +96,26 @@ class _ChatPageState extends State<ChatPage> {
     _flutterTts.setErrorHandler((_) {
       if (mounted) setState(() => _speakingMessageIndex = null);
     });
+  }
+
+  Future<void> _loadLanguagePreference() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString(kLanguagePrefKey);
+      if (saved != null && mounted) setState(() => _languageCode = saved);
+    } catch (_) {
+      // Non-fatal: falls back to English for this session.
+    }
+  }
+
+  Future<void> _setLanguage(String code) async {
+    setState(() => _languageCode = code);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(kLanguagePrefKey, code);
+    } catch (_) {
+      // Non-fatal: selection still applies for this session.
+    }
   }
 
   Future<void> _initSpeech() async {
@@ -100,6 +135,12 @@ class _ChatPageState extends State<ChatPage> {
     } else {
       setState(() => _isListening = true);
       await _speech.listen(
+        // Voice Mode: stop automatically after a short silence and send
+        // right away, instead of requiring a second tap. Regular mic tap
+        // (Voice Mode off) keeps the original behavior - dictate, then
+        // review/edit the text before sending manually.
+        pauseFor: _voiceModeEnabled ? const Duration(seconds: 3) : null,
+        listenFor: _voiceModeEnabled ? const Duration(seconds: 30) : null,
         onResult: (result) {
           setState(() {
             _controller.text = result.recognizedWords;
@@ -107,9 +148,19 @@ class _ChatPageState extends State<ChatPage> {
               TextPosition(offset: _controller.text.length),
             );
           });
+          if (_voiceModeEnabled && result.finalResult) {
+            setState(() => _isListening = false);
+            if (_controller.text.trim().isNotEmpty) {
+              _sendMessage();
+            }
+          }
         },
       );
     }
+  }
+
+  void _toggleVoiceMode() {
+    setState(() => _voiceModeEnabled = !_voiceModeEnabled);
   }
 
   void _toggleTts() {
@@ -326,6 +377,51 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  /// Sends a pre-written phrase (from a symptom chip or follow-up chip)
+  /// exactly as if the user had typed and sent it themselves - reuses
+  /// _sendMessage() so history, persistence, and the hospital-lookup flow
+  /// all behave identically to a typed message.
+  void _sendQuickMessage(String phrase) {
+    if (_isLoading) return;
+    _controller.text = phrase;
+    _sendMessage();
+  }
+
+  /// Emergency location sharing: reuses the same location fetch already
+  /// used for hospital search, builds a Google Maps link, and opens the
+  /// device's native share sheet so the user can send it via WhatsApp,
+  /// SMS, or any other installed app. Handles the off/denied states with
+  /// a plain snackbar instead of failing silently.
+  Future<void> _shareMyLocation() async {
+    setState(() => _sharingLocation = true);
+    try {
+      final position = await _getCurrentLocation();
+      if (!mounted) return;
+      if (position == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Couldn't get your location. Please allow location access and try again.",
+            ),
+          ),
+        );
+        return;
+      }
+      final mapsLink =
+          'https://www.google.com/maps?q=${position.latitude},${position.longitude}';
+      await Share.share(
+        'Emergency - I need help. My current location: $mapsLink',
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't share location right now.")),
+      );
+    } finally {
+      if (mounted) setState(() => _sharingLocation = false);
+    }
+  }
+
   Future<void> _sendMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty || _isLoading) return;
@@ -377,8 +473,6 @@ class _ChatPageState extends State<ChatPage> {
           if (data['confidence'] != null) {
             _confidence = (data['confidence'] as num).toDouble();
           }
-          _department = data['department'];
-          _departmentSecondary = data['department_secondary'];
           _messages.add(ChatMessage(role: 'model', text: replyText));
         });
         if (_ttsEnabled) {
@@ -434,8 +528,6 @@ class _ChatPageState extends State<ChatPage> {
       _bookingResult = null;
       _hospitalFlowTriggeredForThisTurn = false;
       _speakingMessageIndex = null;
-      _department = null;
-      _departmentSecondary = null;
     });
   }
 
@@ -462,8 +554,6 @@ class _ChatPageState extends State<ChatPage> {
         // don't re-trigger an automatic hospital search on top of it.
         _hospitalFlowTriggeredForThisTurn = true;
         _speakingMessageIndex = null;
-        _department = null;
-        _departmentSecondary = null;
       });
       _scrollToBottom();
     }
@@ -804,16 +894,15 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  /// Structured "answer card" used for Medicine Query, Emergency, and
-  /// Appointment model replies (badge + numbered points + disclaimer /
-  /// Call Ambulance / department pill), matching the mockups. User
-  /// messages keep using the plain chat bubble in _buildMessageBubble
-  /// below - this widget is only ever reached from there, never instead
-  /// of it.
+  /// Structured "answer card" used for Medicine Query and Emergency model
+  /// replies (badge + numbered points + disclaimer / Call Ambulance),
+  /// matching the mockups. Appointment replies and everything before the
+  /// category is known keep using the plain chat bubble in
+  /// _buildMessageBubble below - this widget is only ever reached from
+  /// there, never instead of it.
   Widget _buildAnswerCard(ChatMessage message, int index) {
     final isEmergency = _category == 'Emergency';
     final isMedicine = _category == 'Medicine Query';
-    final isAppointment = _category == 'Appointment';
     final color = categoryColor(_category);
     final bgColor = isEmergency ? kEmergencyBg : kPrimaryLight;
     final borderColor = isEmergency ? kEmergencyBorder : color.withValues(alpha: 0.25);
@@ -850,17 +939,8 @@ class _ChatPageState extends State<ChatPage> {
                 _miniPill('${(_confidence! * 100).toStringAsFixed(0)}% Match', color),
               if (isEmergency && _distressScore != null)
                 _miniPill('Distress: ${(_distressScore! * 100).toStringAsFixed(0)}%', kEmergency),
-              if (isAppointment && _department != null)
-                _miniPill(_department!, color),
             ],
           ),
-          if (isAppointment && _departmentSecondary != null) ...[
-            const SizedBox(height: 6),
-            Text(
-              'Secondary possibility: $_departmentSecondary',
-              style: TextStyle(fontSize: 11, color: kNeutral, fontStyle: FontStyle.italic),
-            ),
-          ],
           const SizedBox(height: 10),
           ...points.asMap().entries.map((entry) {
             final i = entry.key;
@@ -871,7 +951,7 @@ class _ChatPageState extends State<ChatPage> {
                   ? RichText(
                       text: TextSpan(
                         style: const TextStyle(
-                            fontSize: 14, height: 1.4, color: Colors.black87),
+                            fontSize: kFontBody, height: 1.4, color: Colors.black87),
                         children: [
                           TextSpan(
                             text: '${i + 1}. ',
@@ -882,7 +962,8 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                     )
                   : Text(line,
-                      style: const TextStyle(fontSize: 14, height: 1.4, color: Colors.black87)),
+                      style: const TextStyle(
+                          fontSize: kFontBody, height: 1.4, color: Colors.black87)),
             );
           }),
           if (isMedicine) ...[
@@ -915,12 +996,35 @@ class _ChatPageState extends State<ChatPage> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _callAmbulance,
-                icon: const Icon(Icons.call_rounded, size: 18),
+                icon: const Icon(Icons.call_rounded, size: 22),
                 label: const Text('Call Ambulance (108)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kEmergency,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  minimumSize: const Size.fromHeight(kMinTapTarget),
+                  textStyle: const TextStyle(
+                      fontSize: kFontLarge, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _sharingLocation ? null : _shareMyLocation,
+                icon: _sharingLocation
+                    ? const SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: kEmergency),
+                      )
+                    : const Icon(Icons.share_location_rounded, size: 20),
+                label: Text(uiLabel('shareLocation', _languageCode)),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: kEmergency,
+                  side: const BorderSide(color: kEmergency, width: 1.6),
+                  minimumSize: const Size.fromHeight(kMinTapTarget),
+                  textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -1016,13 +1120,10 @@ class _ChatPageState extends State<ChatPage> {
 
     final isUser = message.role == 'user';
 
-    // Medicine Query / Emergency / Appointment replies get the structured
-    // card layout from the mockups; user messages keep the original
-    // chat-bubble rendering below unchanged.
-    if (!isUser &&
-        (_category == 'Emergency' ||
-            _category == 'Medicine Query' ||
-            _category == 'Appointment')) {
+    // Medicine Query / Emergency replies get the structured card layout
+    // from the mockups; Appointment replies and user messages keep the
+    // original chat-bubble rendering below unchanged.
+    if (!isUser && (_category == 'Emergency' || _category == 'Medicine Query')) {
       return _buildAnswerCard(message, index);
     }
 
@@ -1058,7 +1159,7 @@ class _ChatPageState extends State<ChatPage> {
               message.text,
               style: TextStyle(
                   color: isUser ? Colors.white : Colors.black87,
-                  fontSize: 15,
+                  fontSize: kFontBody,
                   height: 1.35),
             ),
             if (!isUser) ...[
@@ -1183,11 +1284,18 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: LanguageSwitcherBar(
+              selectedCode: _languageCode,
+              onLanguageSelected: _setLanguage,
+            ),
+          ),
           _buildCategoryBanner(),
           Expanded(
             child: _messages.isEmpty
                 ? Center(
-                    child: Padding(
+                    child: SingleChildScrollView(
                       padding: const EdgeInsets.all(32.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -1208,6 +1316,11 @@ class _ChatPageState extends State<ChatPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(color: kNeutral),
                           ),
+                          const SizedBox(height: 24),
+                          SymptomChipBar(
+                            languageCode: _languageCode,
+                            onSymptomSelected: _sendQuickMessage,
+                          ),
                         ],
                       ),
                     ),
@@ -1220,6 +1333,12 @@ class _ChatPageState extends State<ChatPage> {
                         _buildMessageBubble(_messages[index], index),
                   ),
           ),
+          if (_messages.isNotEmpty && _messages.last.role == 'model' && !_isLoading)
+            FollowUpChipBar(
+              languageCode: _languageCode,
+              category: _category,
+              onFollowUpSelected: _sendQuickMessage,
+            ),
           if (_isLoading)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 6),
@@ -1284,56 +1403,139 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           SafeArea(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 6,
-                      offset: const Offset(0, -2))
-                ],
-              ),
-              child: Row(
-                children: [
-                  if (_speechAvailable)
-                    IconButton(
-                      icon: Icon(
-                          _isListening ? Icons.mic_rounded : Icons.mic_none_rounded),
-                      color: _isListening ? kEmergency : kNeutral,
-                      tooltip: _isListening ? 'Stop listening' : 'Speak your message',
-                      onPressed: _toggleListening,
-                    ),
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      minLines: 1,
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        border:
-                            OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
-                        hintText: _isListening ? 'Listening...' : 'Type your message...',
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Column(
+              children: [
+                // Voice Mode / Auto-read toggles - kept visible right above
+                // the input since they're used every message, unlike the
+                // language switcher which changes rarely.
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _toggleChip(
+                          icon: Icons.record_voice_over_rounded,
+                          label: uiLabel('voiceMode', _languageCode),
+                          active: _voiceModeEnabled,
+                          onTap: _toggleVoiceMode,
+                        ),
                       ),
-                      onSubmitted: (_) => _sendMessage(),
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _toggleChip(
+                          icon: Icons.hearing_rounded,
+                          label: uiLabel('autoReadReplies', _languageCode),
+                          active: _ttsEnabled,
+                          onTap: _toggleTts,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  IconButton.filled(
-                    onPressed: _isLoading ? null : _sendMessage,
-                    icon: const Icon(Icons.send_rounded),
-                    style: IconButton.styleFrom(
-                        backgroundColor: kPrimary, foregroundColor: Colors.white),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 6,
+                          offset: const Offset(0, -2))
+                    ],
                   ),
-                ],
-              ),
+                  child: Row(
+                    children: [
+                      if (_speechAvailable)
+                        IconButton(
+                          iconSize: 32,
+                          padding: const EdgeInsets.all(10),
+                          constraints: const BoxConstraints(
+                              minWidth: kMinTapTarget, minHeight: kMinTapTarget),
+                          icon: Icon(
+                              _isListening ? Icons.mic_rounded : Icons.mic_none_rounded),
+                          color: _isListening ? kEmergency : kPrimary,
+                          tooltip: _isListening ? 'Stop listening' : 'Speak your message',
+                          onPressed: _toggleListening,
+                        ),
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          minLines: 1,
+                          maxLines: 4,
+                          style: const TextStyle(fontSize: kFontBody),
+                          decoration: InputDecoration(
+                            border:
+                                OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
+                            hintText: _isListening
+                                ? uiLabel('listening', _languageCode)
+                                : 'Type your message...',
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          ),
+                          onSubmitted: (_) => _sendMessage(),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton.filled(
+                        iconSize: 26,
+                        padding: const EdgeInsets.all(12),
+                        constraints: const BoxConstraints(
+                            minWidth: kMinTapTarget, minHeight: kMinTapTarget),
+                        onPressed: _isLoading ? null : _sendMessage,
+                        icon: const Icon(Icons.send_rounded),
+                        style: IconButton.styleFrom(
+                            backgroundColor: kPrimary, foregroundColor: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 0),
+    );
+  }
+
+  /// Small labeled on/off chip used for the Voice Mode and Auto-read
+  /// toggles - icon + short label + a filled/outline state so it reads
+  /// clearly even without careful reading of text.
+  Widget _toggleChip({
+    required IconData icon,
+    required String label,
+    required bool active,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: kMinTapTarget),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? kPrimary : kPrimaryLight,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 18, color: active ? Colors.white : kPrimary),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                  color: active ? Colors.white : kPrimary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

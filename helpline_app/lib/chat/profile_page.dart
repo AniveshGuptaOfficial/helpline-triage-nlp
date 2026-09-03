@@ -1,12 +1,22 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme.dart';
 import '../widgets/app_bottom_nav.dart';
 
-/// SharedPreferences key for the chosen helpline response language, so
-/// other screens (e.g. a future translation step) can read it later.
-const String kLanguagePrefKey = 'vaidyum_helpline_language_code';
+/// One saved emergency contact (name + phone number).
+class EmergencyContact {
+  String name;
+  String phone;
+  EmergencyContact({required this.name, required this.phone});
+
+  Map<String, String> toJson() => {'name': name, 'phone': phone};
+  static EmergencyContact fromJson(Map<String, dynamic> j) =>
+      EmergencyContact(name: j['name'] ?? '', phone: j['phone'] ?? '');
+}
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,11 +29,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String _selectedLanguageCode = 'hi'; // Hindi default, matches the mockup
   bool _isLoadingPrefs = true;
   bool _isSigningOut = false;
+  List<EmergencyContact> _emergencyContacts = [];
 
   @override
   void initState() {
     super.initState();
     _loadLanguagePreference();
+    _loadEmergencyContacts();
   }
 
   Future<void> _loadLanguagePreference() async {
@@ -50,6 +62,135 @@ class _ProfilePageState extends State<ProfilePage> {
       // Non-fatal: the selection still applies for this session even if
       // persistence fails (e.g. platform channel not ready yet).
     }
+  }
+
+  // --- Emergency Contacts: stored locally as a JSON list, capped at 3
+  // per the spec. No backend involved - this is purely on-device, same
+  // storage mechanism the language preference already uses. ---
+
+  Future<void> _loadEmergencyContacts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(kEmergencyContactsPrefKey);
+      if (raw != null) {
+        final decoded = jsonDecode(raw) as List;
+        final loaded = decoded
+            .map((e) => EmergencyContact.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
+        if (mounted) setState(() => _emergencyContacts = loaded);
+      }
+    } catch (_) {
+      if (mounted) setState(() => _emergencyContacts = []);
+    }
+  }
+
+  Future<void> _saveEmergencyContacts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        kEmergencyContactsPrefKey,
+        jsonEncode(_emergencyContacts.map((c) => c.toJson()).toList()),
+      );
+    } catch (_) {
+      // Non-fatal: contacts still apply for this session even if
+      // persistence fails.
+    }
+  }
+
+  Future<void> _addOrEditContact({EmergencyContact? existing, int? index}) async {
+    final nameController = TextEditingController(text: existing?.name ?? '');
+    final phoneController = TextEditingController(text: existing?.phone ?? '');
+
+    final result = await showDialog<EmergencyContact>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(existing == null ? 'Add Emergency Contact' : 'Edit Contact'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Name'),
+              textCapitalization: TextCapitalization.words,
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: phoneController,
+              decoration: const InputDecoration(labelText: 'Phone Number'),
+              keyboardType: TextInputType.phone,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              final name = nameController.text.trim();
+              final phone = phoneController.text.trim();
+              if (name.isEmpty || phone.isEmpty) return;
+              Navigator.pop(ctx, EmergencyContact(name: name, phone: phone));
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == null) return;
+    setState(() {
+      if (index != null) {
+        _emergencyContacts[index] = result;
+      } else if (_emergencyContacts.length < 3) {
+        _emergencyContacts.add(result);
+      }
+    });
+    await _saveEmergencyContacts();
+  }
+
+  Future<void> _deleteContact(int index) async {
+    setState(() => _emergencyContacts.removeAt(index));
+    await _saveEmergencyContacts();
+  }
+
+  /// Opens the SMS composer prefilled to a specific saved contact with a
+  /// short emergency message. Uses a `sms:` URI via url_launcher rather
+  /// than requiring the SEND_SMS permission, so it works with no extra
+  /// permission prompts - the user reviews and sends it themselves.
+  Future<void> _notifyContact(EmergencyContact contact) async {
+    final uri = Uri(
+      scheme: 'sms',
+      path: contact.phone,
+      queryParameters: {
+        'body': 'This is an emergency message from Vaidyum helpline. '
+            'Please check on me or call me back as soon as you can.',
+      },
+    );
+    try {
+      await launchUrl(uri);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't open the messaging app.")),
+      );
+    }
+  }
+
+  /// General "Share Emergency" action - opens the native share sheet
+  /// (WhatsApp, SMS, email, etc.) with an emergency message listing the
+  /// saved contacts as context, for when the user wants to broadcast
+  /// rather than message one contact directly.
+  Future<void> _shareEmergency() async {
+    final contactsList = _emergencyContacts.isEmpty
+        ? 'No emergency contacts saved yet.'
+        : _emergencyContacts.map((c) => '${c.name}: ${c.phone}').join('\n');
+    await Share.share(
+      'This is an emergency message from Vaidyum helpline. '
+      'Please check on me or call me back as soon as you can.\n\n'
+      'My saved emergency contacts:\n$contactsList',
+    );
   }
 
   Future<void> _signOut() async {
@@ -192,7 +333,109 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   );
                 }),
-                const SizedBox(height: 12),
+                const SizedBox(height: 22),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Text('Emergency Contacts',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    ),
+                    Text('${_emergencyContacts.length}/3',
+                        style: const TextStyle(fontSize: 12, color: kNeutral)),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Saved contacts can be notified quickly during an emergency.',
+                  style: TextStyle(fontSize: 12, color: kNeutral),
+                ),
+                const SizedBox(height: 10),
+                ..._emergencyContacts.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final contact = entry.value;
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: kCardBorder),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: const BoxDecoration(
+                            color: kEmergencyBg,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.person_rounded, color: kEmergency, size: 20),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(contact.name,
+                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                              Text(contact.phone,
+                                  style: const TextStyle(fontSize: 12.5, color: kNeutral)),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.sms_rounded, color: kPrimary),
+                          tooltip: 'Notify via SMS',
+                          onPressed: () => _notifyContact(contact),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.edit_rounded, color: kNeutral, size: 20),
+                          tooltip: 'Edit',
+                          onPressed: () => _addOrEditContact(existing: contact, index: index),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline_rounded, color: kNeutral, size: 20),
+                          tooltip: 'Remove',
+                          onPressed: () => _deleteContact(index),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                if (_emergencyContacts.length < 3)
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => _addOrEditContact(),
+                      icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
+                      label: const Text('Add Emergency Contact'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: kPrimary,
+                        side: const BorderSide(color: kPrimary),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _shareEmergency,
+                    icon: const Icon(Icons.campaign_rounded, size: 18),
+                    label: const Text('Share Emergency'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kEmergency,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
