@@ -9,6 +9,7 @@ import 'chat/chat_page.dart';
 import 'chat/stats_page.dart';
 import 'chat/profile_page.dart';
 import 'hospitals/hospital_finder_page.dart';
+import 'firstaid/first_aid_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,7 @@ class VaidyumApp extends StatelessWidget {
       routes: {
         '/hospitals': (_) => const HospitalFinderPage(),
         '/stats': (_) => const StatsPage(),
+        '/first-aid': (_) => const FirstAidPage(),
         '/profile': (_) => const ProfilePage(),
       },
     );

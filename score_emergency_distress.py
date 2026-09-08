@@ -1,5 +1,5 @@
 ﻿"""
-Phase 5 - Sentiment/distress scoring and priority ranking (Emergency-only)
+Sentiment/distress scoring and priority ranking, Emergency-only (build step 5/5)
 
 What this does:
 1. Loads the labeled triage data from Phase 1, filters to Emergency-category

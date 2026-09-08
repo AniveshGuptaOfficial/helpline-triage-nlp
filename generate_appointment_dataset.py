@@ -1,5 +1,5 @@
 ﻿"""
-Phase 2 - Generate the Appointment category dataset
+Generate the Appointment category dataset (build step 2/5: dataset prep)
 
 Why this exists:
 Neither medical-triage-500 nor ai-medical-chatbot cover Appointment/scheduling

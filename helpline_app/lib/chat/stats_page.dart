@@ -1,7 +1,10 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 import '../services/conversation_store.dart';
 import '../widgets/app_bottom_nav.dart';
+import '../widgets/emergency_call_fab.dart';
+import '../localization/vaidyum_strings.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -19,11 +22,23 @@ class _StatsPageState extends State<StatsPage> {
     'Appointment': 0,
   };
   List<Conversation> _recent = [];
+  String _languageCode = 'en';
 
   @override
   void initState() {
     super.initState();
+    _loadLanguagePreference();
     _load();
+  }
+
+  Future<void> _loadLanguagePreference() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString(kLanguagePrefKey);
+      if (saved != null && mounted) setState(() => _languageCode = saved);
+    } catch (_) {
+      // Non-fatal: falls back to English for this session.
+    }
   }
 
   Future<void> _load() async {
@@ -47,9 +62,9 @@ class _StatsPageState extends State<StatsPage> {
 
   // Order matches the mockup legend: Medicine, Appointment, Emergency.
   List<({String label, int count, Color color})> get _segments => [
-        (label: 'Medicine', count: _counts['Medicine Query'] ?? 0, color: kMedicine),
-        (label: 'Appointment', count: _counts['Appointment'] ?? 0, color: kAppointment),
-        (label: 'Emergency', count: _counts['Emergency'] ?? 0, color: kEmergency),
+        (label: uiLabel('medicineLabel', _languageCode), count: _counts['Medicine Query'] ?? 0, color: kMedicine),
+        (label: uiLabel('appointmentLabel', _languageCode), count: _counts['Appointment'] ?? 0, color: kAppointment),
+        (label: uiLabel('emergencyLabel', _languageCode), count: _counts['Emergency'] ?? 0, color: kEmergency),
       ];
 
   Widget _donut() {
@@ -71,8 +86,8 @@ class _StatsPageState extends State<StatsPage> {
             children: [
               Text('$_total',
                   style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-              const Text('HELPLINES',
-                  style: TextStyle(fontSize: 10, color: kNeutral, letterSpacing: 0.6)),
+              Text(uiLabel('helplinesLabel', _languageCode),
+                  style: const TextStyle(fontSize: 10, color: kNeutral, letterSpacing: 0.6)),
             ],
           ),
         ],
@@ -177,21 +192,23 @@ class _StatsPageState extends State<StatsPage> {
           icon: const Icon(Icons.chevron_left_rounded),
           onPressed: () => Navigator.maybePop(context),
         ),
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Triage Dashboard',
-                style: TextStyle(
+            Text(uiLabel('statsTitle', _languageCode),
+                style: const TextStyle(
                     color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold)),
-            Text('Overview of your cases',
-                style: TextStyle(fontSize: 12, color: kNeutral)),
+            Text(uiLabel('statsSubtitle', _languageCode),
+                style: const TextStyle(fontSize: 12, color: kNeutral)),
           ],
         ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              // Extra bottom padding so Recent Cases isn't hidden under
+              // the floating Call 108 button.
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 110),
               children: [
                 Container(
                   padding: const EdgeInsets.all(18),
@@ -206,8 +223,8 @@ class _StatsPageState extends State<StatsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Total Consultations',
-                                style: TextStyle(fontSize: 13, color: kNeutral)),
+                            Text(uiLabel('totalConsultations', _languageCode),
+                                style: const TextStyle(fontSize: 13, color: kNeutral)),
                             const SizedBox(height: 4),
                             Text('$_total',
                                 style: const TextStyle(
@@ -249,20 +266,22 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('Recent Cases',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                Text(uiLabel('recentCases', _languageCode),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 if (_recent.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                     child: Center(
-                      child: Text('No conversations yet.', style: TextStyle(color: kNeutral)),
+                      child: Text(uiLabel('noConversationsYet', _languageCode),
+                          style: const TextStyle(color: kNeutral)),
                     ),
                   )
                 else
                   ..._recent.map(_recentCaseTile),
               ],
             ),
+      floatingActionButton: const EmergencyCallFab(),
       bottomNavigationBar: const AppBottomNav(currentIndex: 2),
     );
   }

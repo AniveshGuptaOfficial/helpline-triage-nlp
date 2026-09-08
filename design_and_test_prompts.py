@@ -1,5 +1,5 @@
 ﻿"""
-Phase 6 - Category-specific GPT prompting (Gemini 2.5 Flash, free tier)
+Category-specific GPT prompting (Gemini 2.5 Flash, free tier) - prompt design/inspection tool
 
 What this does:
 Defines three distinct prompting strategies for the GPT-QA module, one per
@@ -105,7 +105,7 @@ def get_gpt_response(category, query_text, priority_rank=None, distress_score=No
                     time.sleep(60)
                     continue
                 else:
-                    return f"[CALL FAILED after retries: rate limit]"
+                    return "[CALL FAILED after retries: rate limit]"
             else:
                 return f"[CALL FAILED: {e}]"
 

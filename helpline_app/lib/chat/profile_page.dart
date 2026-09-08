@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
 import '../theme.dart';
 import '../widgets/app_bottom_nav.dart';
+import '../widgets/emergency_call_fab.dart';
+import '../localization/vaidyum_strings.dart';
 
 /// One saved emergency contact (name + phone number).
 class EmergencyContact {
@@ -29,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String _selectedLanguageCode = 'hi'; // Hindi default, matches the mockup
   bool _isLoadingPrefs = true;
   bool _isSigningOut = false;
+  bool _isSharingEmergency = false;
   List<EmergencyContact> _emergencyContacts = [];
 
   @override
@@ -104,19 +108,19 @@ class _ProfilePageState extends State<ProfilePage> {
     final result = await showDialog<EmergencyContact>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(existing == null ? 'Add Emergency Contact' : 'Edit Contact'),
+        title: Text(existing == null ? uiLabel('addEmergencyContact', _selectedLanguageCode) : 'Edit Contact'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: uiLabel('nameLabel', _selectedLanguageCode)),
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 10),
             TextField(
               controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
+              decoration: InputDecoration(labelText: uiLabel('phoneLabel', _selectedLanguageCode)),
               keyboardType: TextInputType.phone,
             ),
           ],
@@ -124,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(uiLabel('cancel', _selectedLanguageCode)),
           ),
           TextButton(
             onPressed: () {
@@ -133,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
               if (name.isEmpty || phone.isEmpty) return;
               Navigator.pop(ctx, EmergencyContact(name: name, phone: phone));
             },
-            child: const Text('Save'),
+            child: Text(uiLabel('save', _selectedLanguageCode)),
           ),
         ],
       ),
@@ -178,19 +182,48 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  /// General "Share Emergency" action - opens the native share sheet
-  /// (WhatsApp, SMS, email, etc.) with an emergency message listing the
-  /// saved contacts as context, for when the user wants to broadcast
-  /// rather than message one contact directly.
+  /// "Share Emergency" - the actual feature requested: one button that
+  /// shares "I need help" plus the user's LIVE current location with the
+  /// saved contacts, via the native share sheet (WhatsApp, SMS, email,
+  /// etc.). Location fetch is best-effort: if GPS is off or permission is
+  /// denied, the message still sends without a location link rather than
+  /// blocking the whole action - getting a help message out matters more
+  /// than having every field filled in.
   Future<void> _shareEmergency() async {
+    setState(() => _isSharingEmergency = true);
+    String locationLine = '';
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (serviceEnabled) {
+        LocationPermission permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+        }
+        if (permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse) {
+          final position = await Geolocator.getCurrentPosition(
+            locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+          );
+          final mapsLink =
+              'https://www.google.com/maps?q=${position.latitude},${position.longitude}';
+          locationLine = 'My current location: $mapsLink\n\n';
+        }
+      }
+    } catch (_) {
+      // Best-effort only - fall through and share without a location link.
+    }
+
+    if (!mounted) return;
     final contactsList = _emergencyContacts.isEmpty
         ? 'No emergency contacts saved yet.'
         : _emergencyContacts.map((c) => '${c.name}: ${c.phone}').join('\n');
     await Share.share(
-      'This is an emergency message from Vaidyum helpline. '
+      'I need help. This is an emergency message from Vaidyum helpline. '
       'Please check on me or call me back as soon as you can.\n\n'
+      '$locationLine'
       'My saved emergency contacts:\n$contactsList',
     );
+    if (mounted) setState(() => _isSharingEmergency = false);
   }
 
   Future<void> _signOut() async {
@@ -232,13 +265,15 @@ class _ProfilePageState extends State<ProfilePage> {
           icon: const Icon(Icons.chevron_left_rounded),
           onPressed: () => Navigator.maybePop(context),
         ),
-        title: const Text('Your Profile',
-            style: TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold)),
+        title: Text(uiLabel('profileTitle', _selectedLanguageCode),
+            style: const TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.bold)),
       ),
       body: _isLoadingPrefs
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              // Extra bottom padding so Logout/Share Emergency aren't
+              // hidden under the floating Call 108 button.
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 110),
               children: [
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -265,16 +300,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           Text(phoneNumber,
                               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 2),
-                          const Text('Registered Helpline User',
-                              style: TextStyle(fontSize: 12, color: kNeutral)),
+                          Text(uiLabel('registeredUser', _selectedLanguageCode),
+                              style: const TextStyle(fontSize: 12, color: kNeutral)),
                         ],
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 22),
-                const Text('Helpline Response Language',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(uiLabel('responseLanguage', _selectedLanguageCode),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 ...kSupportedLanguages.map((lang) {
                   final selected = lang.code == _selectedLanguageCode;
@@ -336,18 +371,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 22),
                 Row(
                   children: [
-                    const Expanded(
-                      child: Text('Emergency Contacts',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    Expanded(
+                      child: Text(uiLabel('emergencyContactsTitle', _selectedLanguageCode),
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                     ),
                     Text('${_emergencyContacts.length}/3',
                         style: const TextStyle(fontSize: 12, color: kNeutral)),
                   ],
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Saved contacts can be notified quickly during an emergency.',
-                  style: TextStyle(fontSize: 12, color: kNeutral),
+                Text(
+                  uiLabel('emergencyContactsSubtitle', _selectedLanguageCode),
+                  style: const TextStyle(fontSize: 12, color: kNeutral),
                 ),
                 const SizedBox(height: 10),
                 ..._emergencyContacts.asMap().entries.map((entry) {
@@ -409,7 +444,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: OutlinedButton.icon(
                       onPressed: () => _addOrEditContact(),
                       icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
-                      label: const Text('Add Emergency Contact'),
+                      label: Text(uiLabel('addEmergencyContact', _selectedLanguageCode)),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: kPrimary,
                         side: const BorderSide(color: kPrimary),
@@ -423,9 +458,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: _shareEmergency,
-                    icon: const Icon(Icons.campaign_rounded, size: 18),
-                    label: const Text('Share Emergency'),
+                    onPressed: _isSharingEmergency ? null : _shareEmergency,
+                    icon: _isSharingEmergency
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          )
+                        : const Icon(Icons.campaign_rounded, size: 18),
+                    label: Text(uiLabel('shareEmergencyBtn', _selectedLanguageCode)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kEmergency,
                       foregroundColor: Colors.white,
@@ -446,7 +487,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 16,
                             width: 16,
                             child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Text('Logout from Helpline'),
+                        : Text(uiLabel('logoutBtn', _selectedLanguageCode)),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: kEmergency,
                       side: const BorderSide(color: kEmergency),
@@ -470,7 +511,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 3),
+      floatingActionButton: const EmergencyCallFab(),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 4),
     );
   }
 }

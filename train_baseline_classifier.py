@@ -1,5 +1,5 @@
 ﻿"""
-Phase 3 - Merge all three categories and train the baseline classifier
+Merge all three categories and train the baseline classifier (build step 3/5)
 
 What this does:
 1. Loads Phase 1's output (labeled_triage.csv) and Phase 2's output

@@ -17,8 +17,9 @@ class AppBottomNav extends StatelessWidget {
 
   static const _tabs = [
     (icon: Icons.home_rounded, label: 'Home'),
-    (icon: Icons.local_shipping_rounded, label: 'Hospitals'),
+    (icon: Icons.local_hospital_rounded, label: 'Hospitals'),
     (icon: Icons.pie_chart_rounded, label: 'Stats'),
+    (icon: Icons.health_and_safety_rounded, label: 'First Aid'),
     (icon: Icons.person_rounded, label: 'Profile'),
   ];
 
@@ -47,6 +48,9 @@ class AppBottomNav extends StatelessWidget {
         Navigator.of(context).pushNamed('/stats');
         break;
       case 3:
+        Navigator.of(context).pushNamed('/first-aid');
+        break;
+      case 4:
         Navigator.of(context).pushNamed('/profile');
         break;
     }

@@ -14,6 +14,7 @@ import '../widgets/app_bottom_nav.dart';
 import '../widgets/symptom_chip_bar.dart';
 import '../widgets/follow_up_chip_bar.dart';
 import '../widgets/language_switcher_bar.dart';
+import '../widgets/emergency_call_fab.dart';
 import '../localization/vaidyum_strings.dart';
 import 'history_page.dart';
 
@@ -43,7 +44,11 @@ class _ChatPageState extends State<ChatPage> {
   bool _isListening = false;
 
   final FlutterTts _flutterTts = FlutterTts();
-  bool _ttsEnabled = false;
+  // Auto-read replies is ON by default, per the "keep it simple, no
+  // complicated voice settings" requirement - the toggle stays available
+  // for anyone who wants it off, but a rural/low-literacy user shouldn't
+  // have to discover and enable it first.
+  bool _ttsEnabled = true;
   int? _speakingMessageIndex; // index of the message currently being read aloud, if any
 
   // Voice-first mode: when on, mic input auto-stops after a short silence
@@ -455,6 +460,7 @@ class _ChatPageState extends State<ChatPage> {
               'history': historyBefore,
               'message': text,
               'category': _category,
+              'language': _languageCode,
             }),
           )
           .timeout(const Duration(seconds: 30));
@@ -464,7 +470,21 @@ class _ChatPageState extends State<ChatPage> {
         final replyText = data['response'] ?? '[No response]';
         final hospitalLookupRequired =
             data['hospital_lookup_required'] == true;
+        // Backend re-triage safety net: a conversation that started as
+        // Medicine Query or Appointment can be promoted to Emergency
+        // mid-thread if a later message (e.g. "it's getting worse") reads
+        // as an emergency in context. Surface this explicitly instead of
+        // letting the app bar/badge silently flip colors with no
+        // explanation.
+        final justEscalated = data['re_triaged_to_emergency'] == true;
         setState(() {
+          if (justEscalated) {
+            _messages.add(ChatMessage(
+              role: 'system',
+              text: '⚠️ Based on your latest message, this conversation has '
+                  'been escalated to Emergency.',
+            ));
+          }
           _category = data['category'];
           _escalationFlag = data['escalation_flag'] ?? false;
           if (data['distress_score'] != null) {
@@ -712,6 +732,8 @@ class _ChatPageState extends State<ChatPage> {
                 itemBuilder: (context, index) {
                   final h = _hospitals[index];
                   final rating = h['rating'];
+                  final phone = h['phone']?.toString();
+                  final hasPhone = phone != null && phone.isNotEmpty;
                   return ListTile(
                     dense: true,
                     leading: const CircleAvatar(
@@ -727,8 +749,18 @@ class _ChatPageState extends State<ChatPage> {
                       '${rating != null ? ' • ${rating.toStringAsFixed(1)}★' : ' • Not rated'}',
                       style: const TextStyle(fontSize: 12, color: kNeutral),
                     ),
-                    trailing: const Icon(Icons.chevron_right_rounded,
-                        color: kNeutral),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (hasPhone)
+                          IconButton(
+                            icon: const Icon(Icons.call_rounded, color: kPrimary, size: 20),
+                            tooltip: 'Call Hospital',
+                            onPressed: () => launchUrl(Uri(scheme: 'tel', path: phone)),
+                          ),
+                        const Icon(Icons.chevron_right_rounded, color: kNeutral),
+                      ],
+                    ),
                     onTap: _isLoadingHospitals ? null : () => _selectHospital(h),
                   );
                 },
@@ -966,30 +998,27 @@ class _ChatPageState extends State<ChatPage> {
                           fontSize: kFontBody, height: 1.4, color: Colors.black87)),
             );
           }),
-          if (isMedicine) ...[
-            const SizedBox(height: 4),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: kWarningBg,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.warning_amber_rounded, size: 15, color: kWarningText),
-                  SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      'AI response is for guidance. Please consult a qualified '
-                      'doctor before giving medicine.',
-                      style: TextStyle(fontSize: 11.5, color: kWarningText),
-                    ),
-                  ),
-                ],
-              ),
+          const SizedBox(height: 4),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: kWarningBg,
+              borderRadius: BorderRadius.circular(10),
             ),
-          ],
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_amber_rounded, size: 15, color: kWarningText),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    uiLabel('guidanceWarning', _languageCode),
+                    style: const TextStyle(fontSize: 11.5, color: kWarningText, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
           if (isEmergency) ...[
             const SizedBox(height: 10),
             SizedBox(
@@ -997,7 +1026,7 @@ class _ChatPageState extends State<ChatPage> {
               child: ElevatedButton.icon(
                 onPressed: _callAmbulance,
                 icon: const Icon(Icons.call_rounded, size: 22),
-                label: const Text('Call Ambulance (108)'),
+                label: Text(uiLabel('callAmbulanceBtn', _languageCode)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kEmergency,
                   foregroundColor: Colors.white,
@@ -1218,7 +1247,7 @@ class _ChatPageState extends State<ChatPage> {
             const SizedBox(width: 6),
             Flexible(
               child: Text(
-                _escalationFlag ? 'Vaidyum Emergency' : 'Vaidyum',
+                _escalationFlag ? uiLabel('vaidyumEmergency', _languageCode) : 'Vaidyum',
                 style: const TextStyle(
                     fontWeight: FontWeight.bold, fontSize: 17),
                 overflow: TextOverflow.ellipsis,
@@ -1249,7 +1278,9 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    _escalationFlag ? 'HIGH DISTRESS' : 'Triage Active',
+                    _escalationFlag
+                        ? uiLabel('highDistress', _languageCode)
+                        : uiLabel('triageActive', _languageCode),
                     style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -1303,18 +1334,18 @@ class _ChatPageState extends State<ChatPage> {
                           Icon(Icons.health_and_safety_rounded,
                               size: 56, color: kPrimary.withValues(alpha: 0.3)),
                           const SizedBox(height: 16),
-                          const Text(
-                            'Welcome to Vaidyum',
-                            style: TextStyle(
+                          Text(
+                            uiLabel('welcomeTitle', _languageCode),
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: kPrimary),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
-                            'Describe a symptom, ask a medicine question, or request an appointment to get started.',
+                          Text(
+                            uiLabel('welcomeSubtitle', _languageCode),
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: kNeutral),
+                            style: const TextStyle(color: kNeutral),
                           ),
                           const SizedBox(height: 24),
                           SymptomChipBar(
@@ -1394,11 +1425,10 @@ class _ChatPageState extends State<ChatPage> {
               width: double.infinity,
               color: kEmergencyBg,
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: const Text(
-                'Emergency: For fastest help, call 108 directly. '
-                'Voice & text stay open here for follow-up details.',
+              child: Text(
+                uiLabel('emergencyStrip', _languageCode),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 11, color: kEmergency, fontStyle: FontStyle.italic),
               ),
             ),
@@ -1468,7 +1498,7 @@ class _ChatPageState extends State<ChatPage> {
                                 OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
                             hintText: _isListening
                                 ? uiLabel('listening', _languageCode)
-                                : 'Type your message...',
+                                : uiLabel('typeMessage', _languageCode),
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           ),
@@ -1493,6 +1523,15 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
         ],
+      ),
+      // Lifted above the Voice Mode/Auto-read toggle row + input bar, which
+      // (unlike the other 4 screens) live inside this screen's body as
+      // fixed content, not inside bottomNavigationBar - Scaffold's default
+      // FAB position only avoids bottomNavigationBar, so without this
+      // offset the button sits directly on top of the send button.
+      floatingActionButton: const Padding(
+        padding: EdgeInsets.only(bottom: 192),
+        child: EmergencyCallFab(),
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 0),
     );

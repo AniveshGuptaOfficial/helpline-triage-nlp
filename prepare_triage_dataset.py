@@ -1,5 +1,5 @@
 ﻿"""
-Phase 1 — Load and relabel medical_triage_500.jsonl
+Load and relabel medical_triage_500.jsonl (build step 1/5: dataset prep)
 
 What this does:
 1. Downloads the correct JSONL file (NOT the csv, which is missing urgency/risk fields)

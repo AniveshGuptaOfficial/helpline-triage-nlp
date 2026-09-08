@@ -1,5 +1,5 @@
 ﻿"""
-Phase 4 - Fine-tune a transformer classifier (DistilBERT)
+Fine-tune a transformer classifier, DistilBERT (build step 4/5)
 
 What this does:
 1. Loads the combined dataset from Phase 3 (data/processed/combined_dataset.csv)

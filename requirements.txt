@@ -10,3 +10,4 @@ google-genai
 flask
 gunicorn
 huggingface_hub
+requests

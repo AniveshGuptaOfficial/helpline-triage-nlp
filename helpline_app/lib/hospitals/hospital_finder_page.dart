@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 import '../widgets/app_bottom_nav.dart';
+import '../widgets/emergency_call_fab.dart';
+import '../localization/vaidyum_strings.dart';
 
 /// Standalone "Hospitals" tab - browse everything within 8 miles (13 km)
 /// any time, not just right after an Emergency/Appointment reply. Uses the
@@ -30,11 +33,23 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
   bool _errorIsLocation = false; // true = location/permission issue; false = network/server
   List<Map<String, dynamic>> _hospitals = [];
   Position? _position;
+  String _languageCode = 'en';
 
   @override
   void initState() {
     super.initState();
+    _loadLanguagePreference();
     _load();
+  }
+
+  Future<void> _loadLanguagePreference() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString(kLanguagePrefKey);
+      if (saved != null && mounted) setState(() => _languageCode = saved);
+    } catch (_) {
+      // Non-fatal: falls back to English for this session.
+    }
   }
 
   Future<void> _load() async {
@@ -136,6 +151,15 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
     await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
+  /// Dials the hospital's phone number directly, when the backend has one
+  /// (OpenStreetMap doesn't tag every hospital with a phone number, so
+  /// this button only shows up when there's actually a number to call).
+  Future<void> _callHospital(Map<String, dynamic> hospital) async {
+    final phone = hospital['phone']?.toString();
+    if (phone == null || phone.isEmpty) return;
+    await launchUrl(Uri(scheme: 'tel', path: phone));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,15 +175,15 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Helpline Hospitals',
-                style: TextStyle(
+            Text(uiLabel('hospitalsTitle', _languageCode),
+                style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 16,
                     fontWeight: FontWeight.bold)),
             Text(
               _loading
-                  ? 'Searching nearby...'
-                  : '${_hospitals.length} hospitals found nearby',
+                  ? uiLabel('searchingNearby', _languageCode)
+                  : '${_hospitals.length} ${uiLabel('hospitalsFoundNearby', _languageCode)}',
               style: const TextStyle(fontSize: 12, color: kNeutral),
             ),
           ],
@@ -200,7 +224,7 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: kPrimary,
                               foregroundColor: Colors.white),
-                          child: const Text('Try Again'),
+                          child: Text(uiLabel('tryAgain', _languageCode)),
                         ),
                       ],
                     ),
@@ -209,7 +233,9 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
               : RefreshIndicator(
                   onRefresh: _load,
                   child: ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                    // Extra bottom padding so the last card isn't hidden
+                    // under the floating Call 108 button.
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 110),
                     children: [
                       if (_overviewMapUrl != null)
                         ClipRRect(
@@ -236,8 +262,8 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
                               height: 170,
                               color: kPrimaryLight,
                               alignment: Alignment.center,
-                              child: const Text('Map preview unavailable',
-                                  style: TextStyle(color: kNeutral, fontSize: 12)),
+                              child: Text(uiLabel('mapUnavailable', _languageCode),
+                                  style: const TextStyle(color: kNeutral, fontSize: 12)),
                             ),
                           ),
                         ),
@@ -247,7 +273,7 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
                           padding: const EdgeInsets.symmetric(vertical: 40),
                           child: Center(
                             child: Text(
-                              'No hospitals found within 8 miles.',
+                              uiLabel('noHospitalsFound', _languageCode),
                               style: const TextStyle(color: kNeutral),
                             ),
                           ),
@@ -257,12 +283,15 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
                     ],
                   ),
                 ),
+      floatingActionButton: const EmergencyCallFab(),
       bottomNavigationBar: const AppBottomNav(currentIndex: 1),
     );
   }
 
   Widget _hospitalCard(Map<String, dynamic> h) {
     final rating = h['rating'];
+    final phone = h['phone']?.toString();
+    final hasPhone = phone != null && phone.isNotEmpty;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -271,55 +300,74 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: kCardBorder),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(h['name']?.toString() ?? 'Hospital',
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 3),
-                Text(h['address']?.toString() ?? 'Address unavailable',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12.5, color: kNeutral)),
-                const SizedBox(height: 8),
-                Row(
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.star_rounded, size: 15, color: kRatingStar),
-                    const SizedBox(width: 2),
-                    Text(
-                      rating != null
-                          ? '${(rating as num).toStringAsFixed(1)} (120 reviews)'
-                          : 'Not rated',
-                      style: const TextStyle(fontSize: 12, color: kNeutral),
+                    Text(h['name']?.toString() ?? 'Hospital',
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 3),
+                    Text(h['address']?.toString() ?? uiLabel('addressUnavailable', _languageCode),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12.5, color: kNeutral)),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.star_rounded, size: 15, color: kRatingStar),
+                        const SizedBox(width: 2),
+                        Text(
+                          rating != null
+                              ? (rating as num).toStringAsFixed(1)
+                              : uiLabel('notRated', _languageCode),
+                          style: const TextStyle(fontSize: 12, color: kNeutral),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
+              ),
+              const SizedBox(width: 10),
               Text(
                 '${h['distance_miles']} mi',
                 style: const TextStyle(
                     fontSize: 14, fontWeight: FontWeight.bold, color: kPrimary),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton.icon(
-                onPressed: () => _navigate(h),
-                icon: const Icon(Icons.arrow_forward_rounded, size: 15),
-                label: const Text('Navigate', style: TextStyle(fontSize: 12.5)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              if (hasPhone) ...[
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => _callHospital(h),
+                    icon: const Icon(Icons.call_rounded, size: 16),
+                    label: Text(uiLabel('callHospital', _languageCode), style: const TextStyle(fontSize: 12.5)),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: kPrimary,
+                      side: const BorderSide(color: kPrimary),
+                      minimumSize: const Size.fromHeight(40),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () => _navigate(h),
+                  icon: const Icon(Icons.arrow_forward_rounded, size: 15),
+                  label: Text(uiLabel('navigate', _languageCode), style: const TextStyle(fontSize: 12.5)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimary,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(40),
+                  ),
                 ),
               ),
             ],

@@ -1,5 +1,5 @@
 ﻿"""
-Phase 9 - Mixed-urgency batch test: routed pipeline vs. non-routed baseline
+Mixed-urgency batch test: routed pipeline vs. non-routed baseline
 
 What this does:
 1. Assembles a mixed batch of real queries: 2 Emergency (one high-distress,
@@ -24,7 +24,6 @@ http://127.0.0.1:5000 before running this script.
 
 import os
 import time
-import json
 import requests
 import pandas as pd
 from dotenv import load_dotenv
@@ -188,7 +187,7 @@ def main():
 
     df = pd.DataFrame(results)
     os.makedirs("data/processed", exist_ok=True)
-    df.to_csv("data/processed/phase9_evaluation_results.csv", index=False)
+    df.to_csv("data/processed/evaluation_results.csv", index=False)
 
     print(f"\n\n{'='*70}")
     print("SUMMARY")
@@ -206,7 +205,7 @@ def main():
     print(f"  Non-routed baseline used explicit escalation language: "
           f"{emergency_rows['baseline_contains_escalation_language'].sum()}/{len(emergency_rows)}")
 
-    print(f"\nSaved full results to data/processed/phase9_evaluation_results.csv")
+    print("\nSaved full results to data/processed/evaluation_results.csv")
 
 
 if __name__ == "__main__":

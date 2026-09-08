@@ -90,6 +90,22 @@ APPOINTMENT_DEPARTMENTS = [
     "Gastroenterology",
 ]
 
+# Maps the short language codes the Flutter app's language switcher already
+# uses (kSupportedLanguages in theme.dart) to full names Gemini can act on
+# reliably in a system instruction. Falls back to English for anything
+# unrecognized rather than failing the request.
+LANGUAGE_NAMES = {
+    "en": "English",
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "mr": "Marathi",
+}
+
+
+def resolve_language_name(language_code):
+    return LANGUAGE_NAMES.get((language_code or "en").strip().lower(), "English")
+
 # Safety net for Appointment-classified messages: a request that reads as
 # routine scheduling can still describe a genuine emergency ("I want to
 # book an appointment, my father suddenly can't breathe"). This is a
@@ -113,6 +129,39 @@ def check_emergency_override(text):
     explicit life-threatening red-flag phrase, per the keyword list above."""
     lowered = text.lower()
     return any(kw in lowered for kw in EMERGENCY_OVERRIDE_KEYWORDS)
+
+
+# Mid-conversation escalation safety net that does NOT depend on the
+# classifier generalizing to phrasing it never saw in training. The
+# classifier was trained on single, full descriptive sentences (e.g. "I
+# have been experiencing chest pain for 2 days") - not on a short symptom
+# turn followed by a separate short follow-up chip like "it's getting
+# worse". Rather than hope re-classification on that stitched-together
+# context generalizes correctly, this is a deliberately narrow, explicit
+# trigger: worsening language AND a high-risk symptom keyword BOTH present
+# somewhere in the conversation so far. Kept narrow on purpose - symptoms
+# like fever/stomach pain/injury worsening are genuinely ambiguous without
+# more detail, so those are left to the classifier rather than
+# hard-coded, to avoid over-triggering on routine complaints.
+WORSENING_KEYWORDS = [
+    "getting worse", "worse now", "worsening", "still not okay",
+    "not okay", "need more help", "more help", "still the same and",
+]
+HIGH_RISK_SYMPTOM_KEYWORDS = [
+    "chest", "breath", "breathing", "faint", "unconscious", "bleeding",
+    "blood", "seizure", "stroke", "numb", "numbness", "collapse",
+    "turning blue", "blue lips",
+]
+
+
+def check_worsening_high_risk(context_text):
+    """True only if BOTH a worsening phrase and a high-risk symptom
+    keyword appear somewhere in the conversation so far (original message
+    + all follow-ups) - not either alone."""
+    lowered = context_text.lower()
+    has_worsening = any(kw in lowered for kw in WORSENING_KEYWORDS)
+    has_high_risk_symptom = any(kw in lowered for kw in HIGH_RISK_SYMPTOM_KEYWORDS)
+    return has_worsening and has_high_risk_symptom
 
 
 def classify_department(text):
@@ -434,6 +483,7 @@ def find_nearby_hospitals(lat, lon, radius_miles=HOSPITAL_SEARCH_RADIUS_MILES, l
             "distance_miles": round(distance_miles, 2),
             "rating": rating,
             "address": address,
+            "phone": tags.get("phone") or tags.get("contact:phone"),
         })
 
     # Primary sort: shortest distance. Secondary sort: highest rating
@@ -512,8 +562,15 @@ def build_booking_payload(hospital_name, hospital_address, hospital_lat, hospita
 
 
 def generate_response(category, text, distress_score=None, medicine_context=None,
-                       department_context=None):
+                       department_context=None, language_name="English"):
     system_prompt = SYSTEM_PROMPTS[category]
+    if language_name != "English":
+        system_prompt = (
+            f"{system_prompt}\n\nRespond in {language_name}, regardless of what "
+            "language the user's message is written in. Keep the required "
+            "structure and content of your response the same - only the "
+            "language changes."
+        )
 
     if category == "Emergency" and distress_score is not None:
         user_message = f"Query: {text}\nDistress score: {distress_score:.3f}"
@@ -555,6 +612,8 @@ def predict():
     if not query_text:
         return jsonify({"error": "'query' cannot be empty"}), 400
 
+    language_name = resolve_language_name(data.get("language"))
+
     english_text = translate_to_english(query_text)
     category, confidence = classify_query(english_text)
 
@@ -581,7 +640,8 @@ def predict():
 
     try:
         gpt_response = generate_response(
-            category, query_text, distress_score, medicine_context, department_context
+            category, query_text, distress_score, medicine_context, department_context,
+            language_name,
         )
     except Exception as e:
         gpt_response = None
@@ -621,6 +681,11 @@ def chat():
 
     history = data.get("history", [])
     category = data.get("category")
+    # Read on every turn, not just the first - the language switcher on the
+    # chat screen can change mid-conversation, and the reply language
+    # should follow it immediately rather than being locked to whatever
+    # was selected when the conversation started.
+    language_name = resolve_language_name(data.get("language"))
 
     is_first_message = not history or category is None
 
@@ -630,6 +695,8 @@ def chat():
     department_info = None
     department_context = None
     emergency_override = False
+    re_triaged_to_emergency = False
+
     if is_first_message:
         english_message = translate_to_english(message)
         category, confidence = classify_query(english_message)
@@ -644,9 +711,41 @@ def chat():
         elif category == "Appointment":
             department_info = classify_department(english_message)
             department_context = build_department_context(department_info)
+    elif category != "Emergency":
+        # Mid-conversation re-triage safety net. A thread that started as
+        # Medicine Query or Appointment can still turn into a real
+        # emergency as it goes on - e.g. "I have chest pain" -> "it's
+        # getting worse". The problem: the classifier only ever sees one
+        # message at a time, and a bare follow-up like "it's getting
+        # worse" carries no clinical meaning in isolation. So this
+        # reclassifies using the FULL conversation context (every prior
+        # user turn plus the new message), not the new message alone.
+        # Category is only ever promoted to Emergency here, never
+        # downgraded - once a thread reads as an emergency, it stays
+        # flagged as one for the rest of the conversation.
+        english_message = translate_to_english(message)
+        prior_user_turns = [turn["text"] for turn in history if turn.get("role") == "user"]
+        context_text = " ".join(prior_user_turns + [english_message])
+        re_triaged_category, _ = classify_query(context_text)
+        if (
+            re_triaged_category == "Emergency"
+            or check_emergency_override(english_message)
+            or check_worsening_high_risk(context_text)
+        ):
+            category = "Emergency"
+            re_triaged_to_emergency = True
+            distress_score = score_distress(english_message)
+
     escalation_flag = category == "Emergency"
 
     system_prompt = SYSTEM_PROMPTS[category]
+    if language_name != "English":
+        system_prompt = (
+            f"{system_prompt}\n\nRespond in {language_name}, regardless of what "
+            "language the user's message is written in. Keep the required "
+            "structure and content of your response the same - only the "
+            "language changes."
+        )
 
     contents = [
         types.Content(role=turn["role"], parts=[types.Part(text=turn["text"])])
@@ -693,6 +792,7 @@ def chat():
         "department_rationale": department_info["rationale"] if department_info else None,
         "department_secondary": department_info["secondary"] if department_info else None,
         "emergency_override": emergency_override,
+        "re_triaged_to_emergency": re_triaged_to_emergency,
     }
     if gpt_error:
         result["gpt_error"] = gpt_error
