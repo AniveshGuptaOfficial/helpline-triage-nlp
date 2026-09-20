@@ -60,8 +60,8 @@ MEDICINE_DATASET_FILE = "data/processed/medicine_dataset.csv"
 # need to change.
 OVERPASS_URLS = [
     "https://overpass-api.de/api/interpreter",       # primary - most reliable
-    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",  # fast EU mirror
-    "https://overpass.openstreetmap.ru/api/interpreter",        # RU mirror
+    "https://z.overpass-api.de/api/interpreter",     # z mirror
+    "https://lz4.overpass-api.de/api/interpreter",   # lz4 mirror
     "https://overpass.kumi.systems/api/interpreter", # fallback - sometimes slow
 ]
 # Overpass instances reject requests with generic/default User-Agent headers

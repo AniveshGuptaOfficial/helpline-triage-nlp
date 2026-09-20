@@ -27,6 +27,8 @@ TEST_LAT = 12.9724
 TEST_LON = 79.1581
 
 OVERPASS_URLS = [
+    "https://lz4.overpass-api.de/api/interpreter",
+    "https://z.overpass-api.de/api/interpreter",
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
 ]
@@ -76,7 +78,7 @@ def test_local_backend():
         resp = requests.post(
             "http://127.0.0.1:5000/hospitals",
             json={"latitude": TEST_LAT, "longitude": TEST_LON},
-            timeout=20,
+            timeout=60,
         )
         print(f"Status code: {resp.status_code}")
         print(json.dumps(resp.json(), indent=2))
