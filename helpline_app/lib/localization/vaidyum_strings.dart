@@ -12,8 +12,15 @@ library;
 class SymptomOption {
   final String emoji;
   final Map<String, String> phrasesByLanguage;
+  // Explicit machine-readable signal for follow-up chips whose UI meaning
+  // is stronger than their literal words - e.g. the SOS chip's phrase
+  // ("I need more help") has no red-flag keywords on its own, so without
+  // this the backend has no way to know the user pressed an SOS button
+  // specifically. Null for chips where the words alone are the whole
+  // signal (all of kQuickSymptoms, and most of kFollowUpOptions).
+  final String? intent;
 
-  const SymptomOption({required this.emoji, required this.phrasesByLanguage});
+  const SymptomOption({required this.emoji, required this.phrasesByLanguage, this.intent});
 
   /// Falls back to English if a language isn't covered for this entry
   /// (all five are covered below, but this keeps it safe against typos).
@@ -129,6 +136,7 @@ const List<SymptomOption> kFollowUpOptions = [
   ),
   SymptomOption(
     emoji: '🆘',
+    intent: 'sos',
     phrasesByLanguage: {
       'en': 'I need more help',
       'hi': 'मुझे और मदद चाहिए',

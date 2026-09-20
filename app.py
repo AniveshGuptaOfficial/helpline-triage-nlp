@@ -681,6 +681,7 @@ def chat():
 
     history = data.get("history", [])
     category = data.get("category")
+    follow_up_intent = data.get("follow_up_intent")
     # Read on every turn, not just the first - the language switcher on the
     # chat screen can change mid-conversation, and the reply language
     # should follow it immediately rather than being locked to whatever
@@ -697,7 +698,19 @@ def chat():
     emergency_override = False
     re_triaged_to_emergency = False
 
-    if is_first_message:
+    if follow_up_intent == "sos" and category != "Emergency":
+        # The SOS follow-up chip ("I need more help" / 🆘) is an explicit,
+        # unambiguous distress signal from the UI itself - but its literal
+        # words carry no red-flag keywords, so the classifier and the
+        # keyword-based safety nets below have nothing to catch here and
+        # will happily read it as a generic, low-urgency message. Trust
+        # the button the user actually pressed over a fresh guess at what
+        # their words mean.
+        english_message = translate_to_english(message)
+        re_triaged_to_emergency = category is not None
+        category = "Emergency"
+        distress_score = score_distress(english_message)
+    elif is_first_message:
         english_message = translate_to_english(message)
         category, confidence = classify_query(english_message)
         if category == "Appointment" and check_emergency_override(english_message):

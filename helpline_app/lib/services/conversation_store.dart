@@ -4,11 +4,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ChatMessage {
   final String role;
   final String text;
-  ChatMessage({required this.role, required this.text});
+  // The classification this SPECIFIC reply was generated under - null for
+  // user/system messages and for Appointment replies (which don't use the
+  // badge/answer-card layout). Kept per-message rather than as shared
+  // screen state so an older Emergency reply still reads as "EMERGENCY
+  // ALERT" even after a later message in the same thread gets classified
+  // differently.
+  final String? category;
+  final double? confidence;
+  final double? distressScore;
 
-  Map<String, String> toMap() => {'role': role, 'text': text};
-  static ChatMessage fromMap(Map<String, dynamic> m) =>
-      ChatMessage(role: m['role'], text: m['text']);
+  ChatMessage({
+    required this.role,
+    required this.text,
+    this.category,
+    this.confidence,
+    this.distressScore,
+  });
+
+  Map<String, dynamic> toMap() => {
+        'role': role,
+        'text': text,
+        if (category != null) 'category': category,
+        if (confidence != null) 'confidence': confidence,
+        if (distressScore != null) 'distressScore': distressScore,
+      };
+  static ChatMessage fromMap(Map<String, dynamic> m) => ChatMessage(
+        role: m['role'],
+        text: m['text'],
+        category: m['category'] as String?,
+        confidence: (m['confidence'] as num?)?.toDouble(),
+        distressScore: (m['distressScore'] as num?)?.toDouble(),
+      );
 }
 
 class Conversation {

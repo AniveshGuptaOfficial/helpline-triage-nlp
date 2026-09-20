@@ -9,7 +9,7 @@ import '../localization/vaidyum_strings.dart';
 class FollowUpChipBar extends StatelessWidget {
   final String languageCode;
   final String? category;
-  final ValueChanged<String> onFollowUpSelected;
+  final void Function(String phrase, {String? intent}) onFollowUpSelected;
 
   const FollowUpChipBar({
     super.key,
@@ -29,7 +29,7 @@ class FollowUpChipBar extends StatelessWidget {
         children: kFollowUpOptions.map((option) {
           final phrase = option.phraseFor(languageCode);
           return InkWell(
-            onTap: () => onFollowUpSelected(phrase),
+            onTap: () => onFollowUpSelected(phrase, intent: option.intent),
             borderRadius: BorderRadius.circular(20),
             child: Container(
               constraints: const BoxConstraints(minHeight: 44),

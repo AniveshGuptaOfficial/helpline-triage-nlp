@@ -201,7 +201,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  List<Map<String, String>> get _historyForApi => _messages
+  List<Map<String, dynamic>> get _historyForApi => _messages
       .where((m) => m.role == 'user' || m.role == 'model')
       .map((m) => m.toMap())
       .toList();
@@ -386,10 +386,10 @@ class _ChatPageState extends State<ChatPage> {
   /// exactly as if the user had typed and sent it themselves - reuses
   /// _sendMessage() so history, persistence, and the hospital-lookup flow
   /// all behave identically to a typed message.
-  void _sendQuickMessage(String phrase) {
+  void _sendQuickMessage(String phrase, {String? intent}) {
     if (_isLoading) return;
     _controller.text = phrase;
-    _sendMessage();
+    _sendMessage(followUpIntent: intent);
   }
 
   /// Emergency location sharing: reuses the same location fetch already
@@ -427,7 +427,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Future<void> _sendMessage() async {
+  Future<void> _sendMessage({String? followUpIntent}) async {
     final text = _controller.text.trim();
     if (text.isEmpty || _isLoading) return;
 
@@ -461,6 +461,7 @@ class _ChatPageState extends State<ChatPage> {
               'message': text,
               'category': _category,
               'language': _languageCode,
+              if (followUpIntent != null) 'follow_up_intent': followUpIntent,
             }),
           )
           .timeout(const Duration(seconds: 30));
@@ -493,7 +494,13 @@ class _ChatPageState extends State<ChatPage> {
           if (data['confidence'] != null) {
             _confidence = (data['confidence'] as num).toDouble();
           }
-          _messages.add(ChatMessage(role: 'model', text: replyText));
+          _messages.add(ChatMessage(
+            role: 'model',
+            text: replyText,
+            category: data['category'] as String?,
+            confidence: (data['confidence'] as num?)?.toDouble(),
+            distressScore: (data['distress_score'] as num?)?.toDouble(),
+          ));
         });
         if (_ttsEnabled) {
           setState(() => _speakingMessageIndex = _messages.length - 1);
@@ -933,9 +940,10 @@ class _ChatPageState extends State<ChatPage> {
   /// _buildMessageBubble below - this widget is only ever reached from
   /// there, never instead of it.
   Widget _buildAnswerCard(ChatMessage message, int index) {
-    final isEmergency = _category == 'Emergency';
-    final isMedicine = _category == 'Medicine Query';
-    final color = categoryColor(_category);
+    final msgCategory = message.category;
+    final isEmergency = msgCategory == 'Emergency';
+    final isMedicine = msgCategory == 'Medicine Query';
+    final color = categoryColor(msgCategory);
     final bgColor = isEmergency ? kEmergencyBg : kPrimaryLight;
     final borderColor = isEmergency ? kEmergencyBorder : color.withValues(alpha: 0.25);
     final points = _splitIntoPoints(message.text);
@@ -961,16 +969,16 @@ class _ChatPageState extends State<ChatPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  isEmergency ? 'EMERGENCY ALERT' : (_category ?? '').toUpperCase(),
+                  isEmergency ? 'EMERGENCY ALERT' : (msgCategory ?? '').toUpperCase(),
                   style: const TextStyle(
                       fontSize: 10.5, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ),
               const Spacer(),
-              if (isMedicine && _confidence != null)
-                _miniPill('${(_confidence! * 100).toStringAsFixed(0)}% Match', color),
-              if (isEmergency && _distressScore != null)
-                _miniPill('Distress: ${(_distressScore! * 100).toStringAsFixed(0)}%', kEmergency),
+              if (isMedicine && message.confidence != null)
+                _miniPill('${(message.confidence! * 100).toStringAsFixed(0)}% Match', color),
+              if (isEmergency && message.distressScore != null)
+                _miniPill('Distress: ${(message.distressScore! * 100).toStringAsFixed(0)}%', kEmergency),
             ],
           ),
           const SizedBox(height: 10),
@@ -1152,7 +1160,7 @@ class _ChatPageState extends State<ChatPage> {
     // Medicine Query / Emergency replies get the structured card layout
     // from the mockups; Appointment replies and user messages keep the
     // original chat-bubble rendering below unchanged.
-    if (!isUser && (_category == 'Emergency' || _category == 'Medicine Query')) {
+    if (!isUser && (message.category == 'Emergency' || message.category == 'Medicine Query')) {
       return _buildAnswerCard(message, index);
     }
 
