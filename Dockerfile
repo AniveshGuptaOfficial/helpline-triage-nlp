@@ -1,30 +1,33 @@
-# Dockerfile for deploying the Vaidyum Flask backend to Google Cloud Run.
-# Place this in the same folder as app.py and requirements.txt (repo root).
+# Secrets - never let these into the image. This is the one that matters
+# most: app.py calls load_dotenv(), so a local .env with the real
+# GEMINI_API_KEY sits at the repo root. Without this line, `COPY . .` in
+# the Dockerfile bakes that key directly into the image layer history -
+# recoverable even if a later step deletes the file.
+.env
+.env.*
 
-FROM python:3.10-slim
+# Version control - full git history has no reason to be inside a
+# runtime image, and can be large.
+.git
+.gitignore
+.gitattributes
 
-WORKDIR /app
+# Python environment/cache - your local venv is Windows-specific and
+# would be useless (and possibly broken) inside the Linux container;
+# pip already reinstalls everything from requirements.txt anyway.
+venv/
+.venv/
+__pycache__/
+*.pyc
 
-# Install dependencies first (better layer caching - only reinstalls if
-# requirements.txt actually changes).
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# The Flutter app is a separate project from this Flask backend - it
+# has no reason to be inside the backend's image.
+helpline_app/
 
-# Copy the rest of the project (app.py, models/, data/, etc.)
-COPY . .
+# Test suite - not needed at runtime.
+tests/
 
-# Cloud Run injects the actual port to listen on via $PORT at runtime
-# (defaults to 8080) - this ENV/EXPOSE is just documentation/local-testing
-# convenience, Cloud Run overrides it regardless.
-ENV PORT=8080
-EXPOSE 8080
-
-# Single worker process (the two transformer models load once at import
-# time, so multiple worker PROCESSES would each load their own copy and
-# multiply memory usage). --worker-class gthread with multiple threads
-# lets that one process still handle concurrent requests.
-# gthread (not the default "sync" worker) is required here - gunicorn's
-# sync worker has a known HTTP-parsing incompatibility with Cloud Run's
-# proxy layer that produces "Error while deserializing header: header
-# too large" and crash-loops the worker; gthread does not have this issue.
-CMD exec gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --worker-class gthread --timeout 120
+# Editor/OS noise
+.vscode/
+.idea/
+.DS_Store
