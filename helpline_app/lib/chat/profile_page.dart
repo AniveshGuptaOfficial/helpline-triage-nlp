@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:geolocator/geolocator.dart';
 import '../theme.dart';
+import '../services/location_service.dart';
 import '../widgets/app_bottom_nav.dart';
 import '../widgets/emergency_call_fab.dart';
 import '../localization/vaidyum_strings.dart';
@@ -193,21 +193,13 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => _isSharingEmergency = true);
     String locationLine = '';
     try {
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (serviceEnabled) {
-        LocationPermission permission = await Geolocator.checkPermission();
-        if (permission == LocationPermission.denied) {
-          permission = await Geolocator.requestPermission();
-        }
-        if (permission == LocationPermission.always ||
-            permission == LocationPermission.whileInUse) {
-          final position = await Geolocator.getCurrentPosition(
-            locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-          );
-          final mapsLink =
-              'https://www.google.com/maps?q=${position.latitude},${position.longitude}';
-          locationLine = 'My current location: $mapsLink\n\n';
-        }
+      // Best-effort and never blocking: LocationService avoids the
+      // getCurrentPosition() teardown that can freeze the app's main thread.
+      final position = await LocationService.tryCurrentPosition();
+      if (position != null) {
+        final mapsLink =
+            'https://www.google.com/maps?q=${position.latitude},${position.longitude}';
+        locationLine = 'My current location: $mapsLink\n\n';
       }
     } catch (_) {
       // Best-effort only - fall through and share without a location link.

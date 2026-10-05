@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
+import '../services/location_service.dart';
 import '../widgets/app_bottom_nav.dart';
 import '../widgets/emergency_call_fab.dart';
 import '../localization/vaidyum_strings.dart';
@@ -60,23 +61,11 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
     });
 
     try {
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw _LocationException('Location services are turned off. Please enable GPS and try again.');
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        throw _LocationException('Location permission denied. Please allow location access in your device settings.');
-      }
-
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-      );
+      // LocationService raises LocationUnavailable with copy that's already
+      // safe to show, so the "turn GPS on" / "allow location" messages below
+      // keep working. It also avoids getCurrentPosition(), whose GPS-session
+      // teardown can block Flutter's main thread and freeze the whole app.
+      final position = await LocationService.currentPosition();
 
       final res = await http
           .post(
@@ -104,7 +93,7 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
         _hospitals = list;
         _loading = false;
       });
-    } on _LocationException catch (e) {
+    } on LocationUnavailable catch (e) {
       if (!mounted) return;
       setState(() {
         _loading = false;
@@ -376,11 +365,4 @@ class _HospitalFinderPageState extends State<HospitalFinderPage> {
       ),
     );
   }
-}
-
-/// Thrown when the error is specifically a location/permission problem
-/// (as opposed to a network or server error).
-class _LocationException implements Exception {
-  const _LocationException(this.message);
-  final String message;
 }

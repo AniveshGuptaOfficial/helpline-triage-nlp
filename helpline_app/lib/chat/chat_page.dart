@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:convert';
 import '../theme.dart';
 import '../services/conversation_store.dart';
+import '../services/location_service.dart';
 import '../widgets/app_bottom_nav.dart';
 import '../widgets/symptom_chip_bar.dart';
 import '../widgets/follow_up_chip_bar.dart';
@@ -44,16 +45,23 @@ class _ChatPageState extends State<ChatPage> {
   bool _isListening = false;
 
   final FlutterTts _flutterTts = FlutterTts();
-  // Auto-read replies is ON by default, per the "keep it simple, no
-  // complicated voice settings" requirement - the toggle stays available
-  // for anyone who wants it off, but a rural/low-literacy user shouldn't
-  // have to discover and enable it first.
-  bool _ttsEnabled = true;
+
+  // The screen's single voice switch, driven by the speaker icon in the app
+  // bar. ON -> the app reads each reply aloud (auto-read replies). OFF -> the
+  // user talks to the app instead: mic input auto-stops after a short silence
+  // and auto-sends, so nothing has to be typed.
+  //
+  // These are one switch rather than two on purpose. A helpline user either
+  // talks to the app or it talks to them, never both at once, and a single
+  // control up in the app bar is far easier to find and to reason about than
+  // two chips squeezed above the keyboard. Default is ON, per the "keep it
+  // simple, no complicated voice settings" requirement - a rural/low-literacy
+  // user shouldn't have to discover and switch a mode on first.
+  bool _voiceRepliesOn = true;
   int? _speakingMessageIndex; // index of the message currently being read aloud, if any
 
-  // Voice-first mode: when on, mic input auto-stops after a short silence
-  // and auto-sends, instead of requiring a separate tap to send.
-  bool _voiceModeEnabled = false;
+  bool get _autoReadReplies => _voiceRepliesOn;
+  bool get _voiceInput => !_voiceRepliesOn;
 
   // Quick language switcher (chat screen) - shares the same persisted
   // preference the Profile screen's language list reads/writes.
@@ -140,12 +148,12 @@ class _ChatPageState extends State<ChatPage> {
     } else {
       setState(() => _isListening = true);
       await _speech.listen(
-        // Voice Mode: stop automatically after a short silence and send
-        // right away, instead of requiring a second tap. Regular mic tap
-        // (Voice Mode off) keeps the original behavior - dictate, then
-        // review/edit the text before sending manually.
-        pauseFor: _voiceModeEnabled ? const Duration(seconds: 3) : null,
-        listenFor: _voiceModeEnabled ? const Duration(seconds: 30) : null,
+        // Voice Mode (speaker off): stop automatically after a short silence
+        // and send right away, instead of requiring a second tap. Regular mic
+        // tap (speaker on, i.e. auto-read mode) keeps the original behavior -
+        // dictate, then review/edit the text before sending manually.
+        pauseFor: _voiceInput ? const Duration(seconds: 3) : null,
+        listenFor: _voiceInput ? const Duration(seconds: 30) : null,
         onResult: (result) {
           setState(() {
             _controller.text = result.recognizedWords;
@@ -153,7 +161,7 @@ class _ChatPageState extends State<ChatPage> {
               TextPosition(offset: _controller.text.length),
             );
           });
-          if (_voiceModeEnabled && result.finalResult) {
+          if (_voiceInput && result.finalResult) {
             setState(() => _isListening = false);
             if (_controller.text.trim().isNotEmpty) {
               _sendMessage();
@@ -164,15 +172,17 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _toggleVoiceMode() {
-    setState(() => _voiceModeEnabled = !_voiceModeEnabled);
-  }
-
-  void _toggleTts() {
-    setState(() => _ttsEnabled = !_ttsEnabled);
-    if (!_ttsEnabled) {
+  /// Flips between the two halves of [_voiceRepliesOn]. Turning auto-read
+  /// off also stops a reply that is mid-sentence, so the app never keeps
+  /// talking over someone who just switched to talking to it.
+  void _toggleVoiceReplies() {
+    final leavingAutoRead = _voiceRepliesOn;
+    setState(() {
+      _voiceRepliesOn = !_voiceRepliesOn;
+      if (leavingAutoRead) _speakingMessageIndex = null;
+    });
+    if (leavingAutoRead) {
       _flutterTts.stop();
-      setState(() => _speakingMessageIndex = null);
     }
   }
 
@@ -223,29 +233,14 @@ class _ChatPageState extends State<ChatPage> {
   // Hospital lookup + booking flow (Emergency / Appointment only)
   // ---------------------------------------------------------------
 
-  Future<Position?> _getCurrentLocation() async {
-    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return null;
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      return null;
-    }
-
-    try {
-      return await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high,
-        ),
-      );
-    } catch (_) {
-      return null;
-    }
-  }
+  /// Delegates to [LocationService] rather than calling
+  /// `Geolocator.getCurrentPosition()` directly: that call can block Flutter's
+  /// main thread in a synchronous Binder call while tearing down its GPS
+  /// session, which freezes the whole app (see LocationService for the full
+  /// write-up). Null here just means "no coordinates", which every caller
+  /// already handles.
+  Future<Position?> _getCurrentLocation() =>
+      LocationService.tryCurrentPosition();
 
   Future<void> _fetchNearbyHospitals() async {
     setState(() {
@@ -502,7 +497,7 @@ class _ChatPageState extends State<ChatPage> {
             distressScore: (data['distress_score'] as num?)?.toDouble(),
           ));
         });
-        if (_ttsEnabled) {
+        if (_autoReadReplies) {
           setState(() => _speakingMessageIndex = _messages.length - 1);
           _flutterTts.speak(replyText);
         }
@@ -1298,11 +1293,16 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
+          // The one voice control for the whole screen: on = the app reads
+          // replies aloud, off = you speak your message instead.
           IconButton(
-            icon: Icon(
-                _ttsEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded),
-            tooltip: _ttsEnabled ? 'Voice replies on' : 'Voice replies off',
-            onPressed: _toggleTts,
+            icon: Icon(_voiceRepliesOn
+                ? Icons.volume_up_rounded
+                : Icons.volume_off_rounded),
+            tooltip: _voiceRepliesOn
+                ? 'Auto-read replies on. Tap to switch to voice mode.'
+                : 'Voice mode on. Tap to switch to auto-read replies.',
+            onPressed: _toggleVoiceReplies,
           ),
           IconButton(
             icon: const Icon(Icons.history_rounded),
@@ -1441,148 +1441,77 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           SafeArea(
-            child: Column(
-              children: [
-                // Voice Mode / Auto-read toggles - kept visible right above
-                // the input since they're used every message, unlike the
-                // language switcher which changes rarely.
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _toggleChip(
-                          icon: Icons.record_voice_over_rounded,
-                          label: uiLabel('voiceMode', _languageCode),
-                          active: _voiceModeEnabled,
-                          onTap: _toggleVoiceMode,
-                        ),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 6,
+                      offset: const Offset(0, -2))
+                ],
+              ),
+              child: Row(
+                children: [
+                  if (_speechAvailable)
+                    IconButton(
+                      iconSize: 32,
+                      padding: const EdgeInsets.all(10),
+                      constraints: const BoxConstraints(
+                          minWidth: kMinTapTarget, minHeight: kMinTapTarget),
+                      icon: Icon(
+                          _isListening ? Icons.mic_rounded : Icons.mic_none_rounded),
+                      color: _isListening ? kEmergency : kPrimary,
+                      tooltip: _isListening ? 'Stop listening' : 'Speak your message',
+                      onPressed: _toggleListening,
+                    ),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      minLines: 1,
+                      maxLines: 4,
+                      style: const TextStyle(fontSize: kFontBody),
+                      decoration: InputDecoration(
+                        border:
+                            OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
+                        hintText: _isListening
+                            ? uiLabel('listening', _languageCode)
+                            : uiLabel('typeMessage', _languageCode),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: _toggleChip(
-                          icon: Icons.hearing_rounded,
-                          label: uiLabel('autoReadReplies', _languageCode),
-                          active: _ttsEnabled,
-                          onTap: _toggleTts,
-                        ),
-                      ),
-                    ],
+                      onSubmitted: (_) => _sendMessage(),
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 6,
-                          offset: const Offset(0, -2))
-                    ],
+                  const SizedBox(width: 8),
+                  IconButton.filled(
+                    iconSize: 26,
+                    padding: const EdgeInsets.all(12),
+                    constraints: const BoxConstraints(
+                        minWidth: kMinTapTarget, minHeight: kMinTapTarget),
+                    onPressed: _isLoading ? null : _sendMessage,
+                    icon: const Icon(Icons.send_rounded),
+                    style: IconButton.styleFrom(
+                        backgroundColor: kPrimary, foregroundColor: Colors.white),
                   ),
-                  child: Row(
-                    children: [
-                      if (_speechAvailable)
-                        IconButton(
-                          iconSize: 32,
-                          padding: const EdgeInsets.all(10),
-                          constraints: const BoxConstraints(
-                              minWidth: kMinTapTarget, minHeight: kMinTapTarget),
-                          icon: Icon(
-                              _isListening ? Icons.mic_rounded : Icons.mic_none_rounded),
-                          color: _isListening ? kEmergency : kPrimary,
-                          tooltip: _isListening ? 'Stop listening' : 'Speak your message',
-                          onPressed: _toggleListening,
-                        ),
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          minLines: 1,
-                          maxLines: 4,
-                          style: const TextStyle(fontSize: kFontBody),
-                          decoration: InputDecoration(
-                            border:
-                                OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
-                            hintText: _isListening
-                                ? uiLabel('listening', _languageCode)
-                                : uiLabel('typeMessage', _languageCode),
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          ),
-                          onSubmitted: (_) => _sendMessage(),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton.filled(
-                        iconSize: 26,
-                        padding: const EdgeInsets.all(12),
-                        constraints: const BoxConstraints(
-                            minWidth: kMinTapTarget, minHeight: kMinTapTarget),
-                        onPressed: _isLoading ? null : _sendMessage,
-                        icon: const Icon(Icons.send_rounded),
-                        style: IconButton.styleFrom(
-                            backgroundColor: kPrimary, foregroundColor: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
       ),
-      // Lifted above the Voice Mode/Auto-read toggle row + input bar, which
-      // (unlike the other 4 screens) live inside this screen's body as
-      // fixed content, not inside bottomNavigationBar - Scaffold's default
-      // FAB position only avoids bottomNavigationBar, so without this
-      // offset the button sits directly on top of the send button.
+      // Lifted clear of the input bar, which (unlike the other 4 screens)
+      // lives inside this screen's body as fixed content rather than inside
+      // bottomNavigationBar - Scaffold's default FAB position only avoids
+      // bottomNavigationBar, so without this offset the button sits directly
+      // on top of the send button. The input bar grows to 4 lines as you
+      // type, hence the roomy value.
       floatingActionButton: const Padding(
-        padding: EdgeInsets.only(bottom: 192),
+        padding: EdgeInsets.only(bottom: 132),
         child: EmergencyCallFab(),
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 0),
-    );
-  }
-
-  /// Small labeled on/off chip used for the Voice Mode and Auto-read
-  /// toggles - icon + short label + a filled/outline state so it reads
-  /// clearly even without careful reading of text.
-  Widget _toggleChip({
-    required IconData icon,
-    required String label,
-    required bool active,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        constraints: const BoxConstraints(minHeight: kMinTapTarget),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: active ? kPrimary : kPrimaryLight,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 18, color: active ? Colors.white : kPrimary),
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w700,
-                  color: active ? Colors.white : kPrimary,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
