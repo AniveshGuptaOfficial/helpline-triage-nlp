@@ -27,7 +27,10 @@ TEST_LAT = 12.9724
 TEST_LON = 79.1581
 
 OVERPASS_URLS = [
+    "https://overpass.openstreetmap.fr/api/interpreter",
     "https://overpass-api.de/api/interpreter",
+    "https://lz4.overpass-api.de/api/interpreter",
+    "https://z.overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
 ]
 # Overpass rejects requests with a generic/default User-Agent (406 Not

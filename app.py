@@ -59,10 +59,11 @@ MEDICINE_DATASET_FILE = "data/processed/medicine_dataset.csv"
 # real ratings and the rest of this pipeline (sort/display/booking) does not
 # need to change.
 OVERPASS_URLS = [
-    "https://overpass-api.de/api/interpreter",       # primary - most reliable
-    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",  # fast EU mirror
-    "https://overpass.openstreetmap.ru/api/interpreter",        # RU mirror
-    "https://overpass.kumi.systems/api/interpreter", # fallback - sometimes slow
+    "https://overpass.openstreetmap.fr/api/interpreter",       # primary - fast, reliable global mirror
+    "https://overpass-api.de/api/interpreter",                 # official German cluster
+    "https://lz4.overpass-api.de/api/interpreter",             # German backend mirror
+    "https://z.overpass-api.de/api/interpreter",               # German backend mirror
+    "https://overpass.kumi.systems/api/interpreter",           # fallback mirror
 ]
 # Overpass instances reject requests with generic/default User-Agent headers
 # (returns 406 Not Acceptable) - a descriptive UA is required.
@@ -423,7 +424,7 @@ def find_nearby_hospitals(lat, lon, radius_miles=HOSPITAL_SEARCH_RADIUS_MILES, l
         for url in OVERPASS_URLS:
             try:
                 resp = http_requests.post(
-                    url, data={"data": query}, headers=OVERPASS_HEADERS, timeout=12
+                    url, data={"data": query}, headers=OVERPASS_HEADERS, timeout=15
                 )
                 resp.raise_for_status()
                 break
