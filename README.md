@@ -84,12 +84,6 @@ flowchart TD
     classDef endTerminal fill:#062d36,stroke:#06b6d4,stroke-width:2px,color:#ffffff;
 ```
 
-<p align="center">
-  <img src="assets/system_architecture.svg" alt="Vaidyum Flowchart & State Transition Diagram" width="100%">
-</p>
-
-> 💡 **Interactive Telemetry Simulator**: Open [`assets/architecture_preview.html`](assets/architecture_preview.html) in your browser to simulate live queries and observe data payloads flowing through each triage branch.
-
 <details>
 <summary><b>📐 View Plain Text Representation (ASCII)</b></summary>
 
