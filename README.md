@@ -27,6 +27,15 @@ Non-English queries across regional languages (**Hindi, Tamil, Telugu, Marathi**
 
 ## 🏗️ System Architecture
 
+<p align="center">
+  <img src="assets/system_architecture.svg" alt="Vaidyum Pipeline System Architecture" width="100%">
+</p>
+
+> 💡 **Interactive Telemetry Simulator**: Open [`assets/architecture_preview.html`](assets/architecture_preview.html) in your browser to simulate live queries and observe data payloads flowing through each triage branch.
+
+<details>
+<summary><b>📐 View Plain Text Representation (ASCII)</b></summary>
+
 ```
                                   [ User Input ]
                          (Voice / Text in 5 Languages)
@@ -79,6 +88,8 @@ Non-English queries across regional languages (**Hindi, Tamil, Telugu, Marathi**
             │ Static Map & Turn-by-Turn Google Maps Nav │
             └───────────────────────────────────────────┘
 ```
+
+</details>
 
 ---
 
