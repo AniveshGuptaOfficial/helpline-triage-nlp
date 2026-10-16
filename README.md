@@ -29,59 +29,34 @@ Non-English queries across regional languages (**Hindi, Tamil, Telugu, Marathi**
 
 ```mermaid
 flowchart TD
-    %% Start Terminal
-    START(["🟢 STATE 0: User Query Input<br/>(Voice Audio STT / Typed Text in 5 Languages)"]):::startTerminal
-    
-    %% Ingestion Processes
-    MOBILE["📱 PROCESS: Flutter Mobile Client<br/>• Firebase Auth & Session Tokens<br/>• Speech-to-Text Audio Streaming<br/>• 108 Emergency FAB & GPS Stream"]:::process
-    BACKEND["⚙️ PROCESS: Flask Backend Service<br/>(Endpoints: /predict, /chat)"]:::process
-    LANG["🌐 PROCESS: Language Normalization & Translation<br/>(HI / TA / TE / MR ➔ English Bridge)"]:::process
+    %% Input & Client
+    IN(["🎙️ User Input (Voice / Text in 5 Languages)"]):::start --> CLIENT["📱 Mobile Client (Flutter) & GPS Stream"]:::client
+    CLIENT -->|"JSON /predict, /chat"| BACKEND["⚙️ Flask Backend & Regional Translation"]:::backend
+    BACKEND --> TRIAGE{"🧠 DistilBERT Triage<br/>(3-Way Intent Classifier)"}:::triage
 
-    %% Classifier Decision State
-    TRIAGE{"🧠 DECISION: DistilBERT 3-Way Classifier<br/>(AniveshGupta/vaidyum-emergency-classifier)"}:::decision
+    %% 3-Way State Transitions
+    TRIAGE -->|Emergency| EP["🚨 EMERGENCY PATH<br/>• DistilRoBERTa Fear Scoring (0-1)<br/>• Overpass OSM Hospital Locator<br/>• 108 Emergency Direct FAB"]:::emerg
+    TRIAGE -->|Medicine| MP["💊 MEDICINE PATH (RAG)<br/>• 699-Drug Grounding Corpus<br/>• Speculative Dosage Guardrails<br/>• Clinical Disclaimer"]:::med
+    TRIAGE -->|Appointment| AP["📅 APPOINTMENT PATH<br/>• 10 Clinical Dept Routing<br/>• Default General Med Fallback<br/>• Nearby Clinic Search"]:::appt
 
-    %% 3 Core State Transitions
-    EMERGENCY["🚨 STATE: Emergency Pipeline<br/>• DistilRoBERTa Fear/Distress Scoring (0.0-1.0)<br/>• Priority Queueing & High Distress Flag<br/>• Overpass OSM Nearby Hospital Locator (8-mi)"]:::emergencyState
+    %% Mid-Thread Dynamic Re-Triage Loops
+    MP -.->|"Dynamic Re-Triage (Worsening Symptoms)"| EP
+    AP -.->|"SOS Keyword Override"| EP
 
-    MEDICINE["💊 STATE: Medicine Query Pipeline (RAG)<br/>• 699 Curated Drug Records Search<br/>• Strict Grounding Context Injection<br/>• Dosage Hallucination Guardrails"]:::medicineState
+    %% LLM & Dispatch
+    EP & MP & AP --> LLM["✨ Gemini Flash Lite (Category-Conditioned Prompts)"]:::llm
+    LLM --> DISPATCH(["🏁 Response Delivery, Slot Booking & Google Maps Nav"]):::dispatch
 
-    APPOINTMENT["📅 STATE: Appointment Pipeline<br/>• 10 Clinical Department Routing via LLM<br/>• Default Safe General Medicine Fallback<br/>• Overpass OSM Nearby Clinic Search"]:::appointmentState
-
-    %% Mid-Thread Dynamic Re-Triage Loops (State Transitions)
-    MEDICINE -.->|"Dynamic Re-Triage<br/>(Worsening Symptoms Detected)"| EMERGENCY
-    APPOINTMENT -.->|"Dynamic Re-Triage<br/>(Acute SOS Keyword Override)"| EMERGENCY
-
-    %% LLM Generation State
-    LLM["✨ PROCESS: Category-Conditioned LLM Generation<br/>(Gemini Flash Lite + Dedicated Intent Prompts)"]:::llmProcess
-
-    %% Final Terminal State
-    DISPATCH(["🏁 TERMINAL STATE: Multi-Modal Action Dispatch<br/>• Native Audio Voice TTS & Localized Text Response<br/>• Specialist Appointment Token Confirmation<br/>• Static Map Preview & Turn-by-Turn Google Maps Nav<br/>• Direct 1-Tap 108 Ambulance Cellular Escalation"]):::endTerminal
-
-    %% Edge Connections & State Transitions
-    START --> MOBILE
-    MOBILE -->|"HTTP POST (JSON Payload)"| BACKEND
-    BACKEND --> LANG
-    LANG --> TRIAGE
-
-    TRIAGE -->|"State Transition: EMERGENCY"| EMERGENCY
-    TRIAGE -->|"State Transition: MEDICINE"| MEDICINE
-    TRIAGE -->|"State Transition: APPOINTMENT"| APPOINTMENT
-
-    EMERGENCY --> LLM
-    MEDICINE --> LLM
-    APPOINTMENT --> LLM
-
-    LLM --> DISPATCH
-
-    %% Styles
-    classDef startTerminal fill:#0c253d,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    classDef process fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#e2e8f0;
-    classDef decision fill:#201038,stroke:#c084fc,stroke-width:2px,color:#f3e8ff;
-    classDef emergencyState fill:#2a0a0e,stroke:#ef4444,stroke-width:2px,color:#fca5a5;
-    classDef medicineState fill:#062319,stroke:#10b981,stroke-width:2px,color:#6ee7b7;
-    classDef appointmentState fill:#091b36,stroke:#3b82f6,stroke-width:2px,color:#93c5fd;
-    classDef llmProcess fill:#291506,stroke:#f59e0b,stroke-width:2px,color:#fde68a;
-    classDef endTerminal fill:#062d36,stroke:#06b6d4,stroke-width:2px,color:#ffffff;
+    %% Sleek Compact Styling
+    classDef start fill:#0c253d,stroke:#38bdf8,stroke-width:1.5px,color:#fff;
+    classDef client fill:#0f172a,stroke:#0284c7,stroke-width:1.5px,color:#e2e8f0;
+    classDef backend fill:#08221b,stroke:#10b981,stroke-width:1.5px,color:#e2e8f0;
+    classDef triage fill:#201038,stroke:#a855f7,stroke-width:2px,color:#f3e8ff;
+    classDef emerg fill:#2a0a0e,stroke:#ef4444,stroke-width:1.5px,color:#fca5a5;
+    classDef med fill:#062319,stroke:#10b981,stroke-width:1.5px,color:#6ee7b7;
+    classDef appt fill:#091b36,stroke:#3b82f6,stroke-width:1.5px,color:#93c5fd;
+    classDef llm fill:#291506,stroke:#f59e0b,stroke-width:1.5px,color:#fde68a;
+    classDef dispatch fill:#062d36,stroke:#06b6d4,stroke-width:1.5px,color:#fff;
 ```
 
 <details>
