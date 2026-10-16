@@ -1,577 +1,227 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 1420" width="100%" height="100%" style="background:#070b14; border-radius:16px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1160" width="100%" height="100%" style="background:#070b14; border-radius:14px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   <defs>
-    <!-- Background Radial Gradients -->
-    <radialGradient id="bgGlowTop" cx="50%" cy="0%" r="55%">
-      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#070b14" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="bgGlowCenter" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#111827" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#070b14" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Card Background Gradients -->
-    <linearGradient id="cardGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#111c30" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#080e1a" stop-opacity="0.98"/>
-    </linearGradient>
-    <linearGradient id="inputCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0c253d" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#071424" stop-opacity="0.98"/>
-    </linearGradient>
-    <linearGradient id="distilbertCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#23133d" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#10081e" stop-opacity="0.98"/>
-    </linearGradient>
-    <linearGradient id="geminiCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2c1a12" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#140a0e" stop-opacity="0.98"/>
-    </linearGradient>
-
-    <!-- 3-Way Triage Card Gradients -->
-    <linearGradient id="emergCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2a0d12" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#140507" stop-opacity="0.98"/>
-    </linearGradient>
-    <linearGradient id="medCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a261c" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#04140e" stop-opacity="0.98"/>
-    </linearGradient>
-    <linearGradient id="apptCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0b1f3d" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#050e1c" stop-opacity="0.98"/>
-    </linearGradient>
-
-    <!-- Arrow Markers -->
-    <marker id="arrowCyan" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#38bdf8"/>
+    <!-- Markers for Flowchart Arrows -->
+    <marker id="flowArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#38bdf8"/>
     </marker>
-    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#c084fc"/>
+    <marker id="arrowRed" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#ef4444"/>
     </marker>
-    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#f87171"/>
+    <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#10b981"/>
     </marker>
-    <marker id="arrowEmerald" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#34d399"/>
+    <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#3b82f6"/>
     </marker>
-    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#60a5fa"/>
+    <marker id="arrowAmber" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#f59e0b"/>
     </marker>
-    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
-      <path d="M1,1 L7,4 L1,7 Z" fill="#fbbf24"/>
+    <marker id="arrowPurple" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <polygon points="1 1, 8 4.5, 1 8" fill="#c084fc"/>
     </marker>
   </defs>
 
   <style>
-    /* Clean Dashoffset Animations for Flowing Connections */
-    @keyframes flowDown {
-      from { stroke-dashoffset: 28; }
+    @keyframes dashMove {
+      from { stroke-dashoffset: 24; }
       to { stroke-dashoffset: 0; }
     }
-    .flow-cyan {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.4s linear infinite;
+    .flow-line {
+      stroke-dasharray: 6 6;
+      animation: dashMove 1.2s linear infinite;
     }
-    .flow-purple {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.2s linear infinite;
+    .retriage-line {
+      stroke-dasharray: 4 4;
+      animation: dashMove 1.6s linear infinite;
     }
-    .flow-red {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.0s linear infinite;
-    }
-    .flow-emerald {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.2s linear infinite;
-    }
-    .flow-blue {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.2s linear infinite;
-    }
-    .flow-amber {
-      stroke-dasharray: 6 8;
-      animation: flowDown 1.3s linear infinite;
-    }
-
-    /* Subtle Card Border Breathing (pure color pulse, no scale transforms) */
-    @keyframes pulseRedBorder {
-      0%, 100% { stroke: #ef4444; }
-      50% { stroke: #f87171; }
-    }
-    @keyframes pulseGreenBorder {
-      0%, 100% { stroke: #10b981; }
-      50% { stroke: #34d399; }
-    }
-    @keyframes pulseBlueBorder {
-      0%, 100% { stroke: #3b82f6; }
-      50% { stroke: #60a5fa; }
-    }
-    @keyframes pulsePurpleBorder {
-      0%, 100% { stroke: #8b5cf6; }
-      50% { stroke: #c084fc; }
-    }
-    @keyframes pulseAmberBorder {
-      0%, 100% { stroke: #f59e0b; }
-      50% { stroke: #fbbf24; }
-    }
-
-    .border-emerg { animation: pulseRedBorder 2.4s ease-in-out infinite; }
-    .border-med { animation: pulseGreenBorder 3.0s ease-in-out infinite; }
-    .border-appt { animation: pulseBlueBorder 3.0s ease-in-out infinite; }
-    .border-distilbert { animation: pulsePurpleBorder 2.5s ease-in-out infinite; }
-    .border-gemini { animation: pulseAmberBorder 2.5s ease-in-out infinite; }
   </style>
 
-  <!-- Canvas Background -->
-  <rect x="0" y="0" width="1060" height="1420" fill="#070b14"/>
-  <rect x="0" y="0" width="1060" height="360" fill="url(#bgGlowTop)"/>
-  <rect x="0" y="460" width="1060" height="600" fill="url(#bgGlowCenter)"/>
+  <!-- Flowchart Canvas Background -->
+  <rect x="0" y="0" width="960" height="1160" fill="#070b14"/>
 
-  <!-- ==================== HEADER BAR ==================== -->
-  <g transform="translate(40, 20)">
-    <rect x="0" y="0" width="980" height="46" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-    
-    <!-- Status Indicator Beacon (using native SMIL animate to avoid transform-origin bugs) -->
-    <circle cx="24" cy="23" r="5" fill="#10b981"/>
-    <circle cx="24" cy="23" r="5" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.8">
-      <animate attributeName="r" values="5;15" dur="2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0" dur="2s" repeatCount="indefinite"/>
-    </circle>
-    
-    <text x="44" y="27" font-size="12" font-weight="700" fill="#38bdf8" letter-spacing="1.2">VAIDYUM PIPELINE ARCHITECTURE</text>
-    <text x="350" y="27" font-size="11" fill="#64748b">• Automated Urgency-First Triage for Rural Healthcare Helplines</text>
-
-    <!-- Header Badges -->
-    <g transform="translate(735, 11)">
-      <rect x="0" y="0" width="105" height="24" rx="4" fill="#1e1b4b" stroke="#6366f1" stroke-width="1"/>
-      <text x="12" y="16" font-size="10" font-weight="700" fill="#a5b4fc">95% ACCURACY</text>
-    </g>
-    <g transform="translate(850, 11)">
-      <rect x="0" y="0" width="115" height="24" rx="4" fill="#2d1515" stroke="#ef4444" stroke-width="1"/>
-      <text x="10" y="16" font-size="10" font-weight="700" fill="#fca5a5">93% REC EMERGENCY</text>
-    </g>
+  <!-- ==================== FLOWCHART HEADER ==================== -->
+  <g transform="translate(40, 24)">
+    <rect x="0" y="0" width="880" height="42" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+    <circle cx="22" cy="21" r="5" fill="#38bdf8"/>
+    <text x="38" y="26" font-size="13" font-weight="700" fill="#38bdf8" letter-spacing="1">SYSTEM FLOWCHART &amp; STATE TRANSITION ARCHITECTURE</text>
+    <text x="590" y="26" font-size="11" fill="#64748b">Vaidyum Intent-Routed Helpline</text>
   </g>
 
-  <!-- ==================== TIER 1: USER INPUT ==================== -->
-  <g transform="translate(190, 86)">
-    <rect x="0" y="0" width="680" height="78" rx="14" fill="url(#inputCardGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-    
-    <!-- Mic Icon -->
-    <g transform="translate(20, 22)">
-      <circle cx="17" cy="17" r="17" fill="#0369a1" opacity="0.4"/>
-      <path d="M17 9 C15.34 9 14 10.34 14 12 L14 17 C14 18.66 15.34 20 17 20 C18.66 20 20 18.66 20 17 L20 12 C20 10.34 18.66 9 17 9 Z" fill="#38bdf8"/>
-      <path d="M11 16 C11 19.3 13.7 22 17 22 C20.3 22 23 19.3 23 16 M17 22 L17 26 M13 26 L21 26" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-    </g>
-
-    <!-- Card Title & Description with ample horizontal clearance -->
-    <text x="68" y="32" font-size="15" font-weight="700" fill="#ffffff">User Input (Voice / Text Helpline)</text>
-    <text x="68" y="52" font-size="12" fill="#94a3b8">Multi-lingual streaming audio speech or typed SMS queries</text>
-
-    <!-- Language Badges placed cleanly on the right -->
-    <g transform="translate(450, 28)">
-      <rect x="0" y="0" width="36" height="22" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
-      <text x="8" y="15" font-size="10" font-weight="700" fill="#38bdf8">EN</text>
-
-      <rect x="42" y="0" width="36" height="22" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
-      <text x="50" y="15" font-size="10" font-weight="700" fill="#fb923c">HI</text>
-
-      <rect x="84" y="0" width="36" height="22" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
-      <text x="92" y="15" font-size="10" font-weight="700" fill="#facc15">TA</text>
-
-      <rect x="126" y="0" width="36" height="22" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
-      <text x="134" y="15" font-size="10" font-weight="700" fill="#4ade80">TE</text>
-
-      <rect x="168" y="0" width="36" height="22" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
-      <text x="175" y="15" font-size="10" font-weight="700" fill="#e879f9">MR</text>
-    </g>
+  <!-- ==================== 1. START TERMINAL ==================== -->
+  <!-- Stadium / Oval: Start State -->
+  <g transform="translate(320, 85)">
+    <rect x="0" y="0" width="320" height="52" rx="26" fill="#0c253d" stroke="#38bdf8" stroke-width="2"/>
+    <text x="160" y="24" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">STATE 0: USER QUERY INPUT</text>
+    <text x="160" y="40" font-size="11" fill="#94a3b8" text-anchor="middle">Voice Audio (STT) or Text in 5 Languages</text>
   </g>
 
-  <!-- Flow 1: Input -> Flutter Client -->
-  <line x1="530" y1="164" x2="530" y2="208" stroke="#38bdf8" stroke-width="2.5" class="flow-cyan" marker-end="url(#arrowCyan)"/>
+  <!-- Transition 0 -> 1 -->
+  <line x1="480" y1="137" x2="480" y2="175" stroke="#38bdf8" stroke-width="2" class="flow-line" marker-end="url(#flowArrow)"/>
 
-  <!-- ==================== TIER 2: MOBILE CLIENT (FLUTTER) ==================== -->
-  <g transform="translate(180, 208)">
-    <rect x="0" y="0" width="700" height="120" rx="14" fill="url(#cardGradDark)" stroke="#0284c7" stroke-width="1.5"/>
-
-    <!-- Header bar within card -->
-    <rect x="0" y="0" width="700" height="38" rx="14" fill="#0b172a"/>
-    <rect x="0" y="24" width="700" height="14" fill="#0b172a"/>
-    
-    <!-- Flutter Icon & Title -->
-    <g transform="translate(20, 11)">
-      <path d="M10 2 L2 10 L5 13 L15 3 Z M10 12 L6 16 L9 19 L16 12 Z M13 9 L9 13 L11 15 L18 8 Z" fill="#02569B"/>
-      <path d="M10 2 L5 7 L10 12 L15 7 Z" fill="#0175C2"/>
-    </g>
-    <text x="48" y="25" font-size="14" font-weight="700" fill="#ffffff">Mobile Client Application</text>
-    
-    <!-- Badges on right side with ample padding -->
-    <g transform="translate(450, 9)">
-      <rect x="0" y="0" width="78" height="20" rx="4" fill="#02569b" opacity="0.4"/>
-      <rect x="0" y="0" width="78" height="20" rx="4" fill="none" stroke="#38bdf8" stroke-width="1"/>
-      <text x="14" y="14" font-size="10" font-weight="700" fill="#38bdf8">FLUTTER</text>
-
-      <rect x="88" y="0" width="146" height="20" rx="4" fill="#854d0e" opacity="0.3"/>
-      <rect x="088" y="0" width="146" height="20" rx="4" fill="none" stroke="#eab308" stroke-width="1"/>
-      <text x="96" y="14" font-size="10" font-weight="700" fill="#facc15">FIREBASE AUTH &amp; DB</text>
-    </g>
-
-    <!-- Client Features in 2 columns -->
-    <g transform="translate(28, 52)">
-      <!-- Col 1 -->
-      <circle cx="6" cy="12" r="3.5" fill="#38bdf8"/>
-      <text x="18" y="16" font-size="12" font-weight="600" fill="#e2e8f0">Speech-to-Text &amp; Voice TTS</text>
-      <text x="18" y="32" font-size="11" fill="#94a3b8">Real-time STT streaming &amp; vocal playback</text>
-
-      <circle cx="6" cy="46" r="3.5" fill="#facc15"/>
-      <text x="18" y="50" font-size="12" font-weight="600" fill="#e2e8f0">Offline First Aid Handbook</text>
-      <text x="18" y="64" font-size="11" fill="#94a3b8">6 vital step-by-step guides cache</text>
-
-      <!-- Col 2 -->
-      <g transform="translate(340, 0)">
-        <circle cx="6" cy="12" r="3.5" fill="#ef4444"/>
-        <text x="18" y="16" font-size="12" font-weight="600" fill="#fca5a5">108 Ambulance Direct FAB</text>
-        <text x="18" y="32" font-size="11" fill="#94a3b8">One-tap cellular emergency bypass</text>
-
-        <circle cx="6" cy="46" r="3.5" fill="#34d399"/>
-        <text x="18" y="50" font-size="12" font-weight="600" fill="#e2e8f0">GPS Location Stream</text>
-        <text x="18" y="64" font-size="11" fill="#94a3b8">High-precision lat/long coordination</text>
-      </g>
-    </g>
+  <!-- ==================== 2. MOBILE INGESTION PROCESS ==================== -->
+  <!-- Process Box: Mobile Client -->
+  <g transform="translate(260, 175)">
+    <rect x="0" y="0" width="440" height="64" rx="8" fill="#0e1b30" stroke="#0284c7" stroke-width="1.8"/>
+    <text x="220" y="25" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">PROCESS: Mobile Client Ingestion (Flutter)</text>
+    <text x="220" y="46" font-size="11" fill="#94a3b8" text-anchor="middle">Firebase Session Auth • Speech-to-Text • GPS Location Stream</text>
   </g>
 
-  <!-- Flow 2: Flutter -> Flask with JSON request pill -->
-  <line x1="530" y1="328" x2="530" y2="394" stroke="#38bdf8" stroke-width="2.5" class="flow-cyan" marker-end="url(#arrowCyan)"/>
-  <g transform="translate(425, 348)">
-    <rect x="0" y="0" width="210" height="24" rx="12" fill="#091b33" stroke="#0284c7" stroke-width="1"/>
-    <text x="16" y="16" font-size="11" font-weight="600" fill="#7dd3fc">JSON: /predict &amp; /chat payload</text>
+  <!-- Transition 1 -> 2 (with payload label) -->
+  <line x1="480" y1="239" x2="480" y2="295" stroke="#38bdf8" stroke-width="2" class="flow-line" marker-end="url(#flowArrow)"/>
+  <g transform="translate(385, 252)">
+    <rect x="0" y="0" width="190" height="22" rx="11" fill="#07192b" stroke="#0284c7" stroke-width="1"/>
+    <text x="95" y="15" font-size="10" font-weight="600" fill="#7dd3fc" text-anchor="middle">HTTP POST /predict, /chat</text>
   </g>
 
-  <!-- ==================== TIER 3: FLASK BACKEND & TRANSLATION ==================== -->
-  <g transform="translate(180, 394)">
-    <rect x="0" y="0" width="700" height="100" rx="14" fill="url(#cardGradDark)" stroke="#10b981" stroke-width="1.5"/>
-
-    <rect x="0" y="0" width="700" height="34" rx="14" fill="#08221b"/>
-    <rect x="0" y="20" width="700" height="14" fill="#08221b"/>
-
-    <text x="24" y="23" font-size="14" font-weight="700" fill="#ffffff">Flask Backend Service &amp; Ingestion Pipeline</text>
-    
-    <g transform="translate(565, 7)">
-      <rect x="0" y="0" width="115" height="20" rx="4" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
-      <text x="12" y="14" font-size="10" font-weight="700" fill="#6ee7b7">PYTHON 3.10+</text>
-    </g>
-
-    <!-- Submodule: Language Detection & Translation -->
-    <g transform="translate(20, 44)">
-      <rect x="0" y="0" width="660" height="44" rx="8" fill="#061a15" stroke="#059669" stroke-width="1" stroke-dasharray="3 3"/>
-      <text x="16" y="22" font-size="12" font-weight="700" fill="#34d399">Language Identification &amp; Translation Bridge</text>
-      <text x="16" y="36" font-size="11" fill="#94a3b8">Translates Hindi, Tamil, Telugu, Marathi ➔ English for standardized high-accuracy triage</text>
-      <g transform="translate(525, 12)">
-        <rect x="0" y="0" width="120" height="20" rx="4" fill="#042f2e" stroke="#14b8a6" stroke-width="1"/>
-        <text x="10" y="14" font-size="10" font-weight="700" fill="#5eead4">NORMALIZED EN</text>
-      </g>
-    </g>
+  <!-- ==================== 3. BACKEND & TRANSLATION PROCESS ==================== -->
+  <g transform="translate(240, 295)">
+    <rect x="0" y="0" width="480" height="64" rx="8" fill="#07221b" stroke="#10b981" stroke-width="1.8"/>
+    <text x="240" y="25" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">PROCESS: Language Normalization &amp; Translation</text>
+    <text x="240" y="46" font-size="11" fill="#94a3b8" text-anchor="middle">Translates HI / TA / TE / MR ➔ English for standardized triage</text>
   </g>
 
-  <!-- Flow 3: Translation -> DistilBERT Classifier -->
-  <line x1="530" y1="494" x2="530" y2="538" stroke="#c084fc" stroke-width="2.5" class="flow-purple" marker-end="url(#arrowPurple)"/>
+  <!-- Transition 2 -> Decision -->
+  <line x1="480" y1="359" x2="480" y2="400" stroke="#c084fc" stroke-width="2" class="flow-line" marker-end="url(#arrowPurple)"/>
 
-  <!-- ==================== TIER 4: DISTILBERT INTENT CLASSIFIER ==================== -->
-  <g transform="translate(160, 538)">
-    <!-- Card expanded to 140px height so route badges don't overflow! -->
-    <rect x="0" y="0" width="740" height="142" rx="14" fill="url(#distilbertCardGrad)" stroke="#8b5cf6" stroke-width="2" class="border-distilbert"/>
-
-    <!-- Header bar -->
-    <rect x="0" y="0" width="740" height="36" rx="14" fill="#1b0e33"/>
-    <rect x="0" y="22" width="740" height="14" fill="#1b0e33"/>
-
-    <!-- Neural Network Icon -->
-    <g transform="translate(20, 9)">
-      <circle cx="10" cy="10" r="9" fill="#7c3aed" opacity="0.4"/>
-      <circle cx="6" cy="7" r="2" fill="#c084fc"/>
-      <circle cx="14" cy="7" r="2" fill="#c084fc"/>
-      <circle cx="10" cy="14" r="2" fill="#c084fc"/>
-      <line x1="6" y1="7" x2="14" y2="7" stroke="#c084fc" stroke-width="1"/>
-      <line x1="6" y1="7" x2="10" y2="14" stroke="#c084fc" stroke-width="1"/>
-      <line x1="14" y1="7" x2="10" y2="14" stroke="#c084fc" stroke-width="1"/>
-    </g>
-    <text x="48" y="24" font-size="14" font-weight="700" fill="#ffffff">Fine-Tuned DistilBERT Intent Classifier</text>
-    
-    <!-- HF Model Badge with safe right margin -->
-    <g transform="translate(440, 8)">
-      <rect x="0" y="0" width="280" height="20" rx="4" fill="#2e1065" stroke="#a855f7" stroke-width="1"/>
-      <text x="10" y="14" font-size="10" font-weight="600" fill="#e9d5ff">🤗 AniveshGupta/vaidyum-emergency-classifier</text>
-    </g>
-
-    <!-- Description Lines -->
-    <g transform="translate(24, 48)">
-      <text x="0" y="14" font-size="12" fill="#e2e8f0">
-        <tspan font-weight="700" fill="#c084fc">3-Way Fast Sequence Triage:</tspan> Evaluates message urgency first before generating conversational responses.
-      </text>
-      <text x="0" y="32" font-size="11" fill="#94a3b8">
-        Outperforms baseline TF-IDF + Logistic Regression (95% vs 88% Accuracy, 93% vs 87% Emergency Recall).
-      </text>
-
-      <!-- 3 Branch Route Badges (cleanly positioned inside the card with ample room) -->
-      <g transform="translate(15, 46)">
-        <!-- Emergency Badge (Center X in SVG: 160 + 24 + 15 + 95 = 294) -->
-        <rect x="0" y="0" width="190" height="26" rx="6" fill="#3b0f14" stroke="#ef4444" stroke-width="1.2"/>
-        <circle cx="16" cy="13" r="4" fill="#ef4444"/>
-        <text x="30" y="17" font-size="11" font-weight="700" fill="#fca5a5">ROUTE ➔ EMERGENCY</text>
-
-        <!-- Medicine Badge (Center X in SVG: 160 + 24 + 250 + 95 = 529) -->
-        <rect x="235" y="0" width="190" height="26" rx="6" fill="#082b1d" stroke="#10b981" stroke-width="1.2"/>
-        <circle cx="251" cy="13" r="4" fill="#10b981"/>
-        <text x="265" y="17" font-size="11" font-weight="700" fill="#6ee7b7">ROUTE ➔ MEDICINE</text>
-
-        <!-- Appointment Badge (Center X in SVG: 160 + 24 + 485 + 95 = 764) -->
-        <rect x="470" y="0" width="195" height="26" rx="6" fill="#0c2042" stroke="#3b82f6" stroke-width="1.2"/>
-        <circle cx="486" cy="13" r="4" fill="#3b82f6"/>
-        <text x="500" y="17" font-size="11" font-weight="700" fill="#93c5fd">ROUTE ➔ APPOINTMENT</text>
-      </g>
-    </g>
+  <!-- ==================== 4. DECISION DIAMOND: DISTILBERT ==================== -->
+  <g transform="translate(480, 470)">
+    <!-- Decision Diamond: Center at (480, 470), Half-width 170, Half-height 65 -->
+    <polygon points="0 -65, 170 0, 0 65, -170 0" fill="#201038" stroke="#a855f7" stroke-width="2.2"/>
+    <text x="0" y="-12" font-size="12" font-weight="800" fill="#f3e8ff" text-anchor="middle">DECISION / CLASSIFIER</text>
+    <text x="0" y="6" font-size="13" font-weight="700" fill="#c084fc" text-anchor="middle">DistilBERT 3-Way Triage</text>
+    <text x="0" y="24" font-size="10" fill="#cbd5e1" text-anchor="middle">Detect Urgency First (95% Accuracy)</text>
   </g>
 
-  <!-- ==================== 3-WAY BRANCH FLOW LINES ==================== -->
-  <!-- Left Branch: from Emergency Badge (294, 680) to Emergency Card (195, 736) -->
-  <path d="M294 680 C 294 710, 195 710, 195 736" fill="none" stroke="#f87171" stroke-width="2.5" class="flow-red" marker-end="url(#arrowRed)"/>
+  <!-- ==================== 3 STATE TRANSITION BRANCHES ==================== -->
   
-  <!-- Middle Branch: from Medicine Badge (529, 680) straight to Medicine Card (529, 736) -->
-  <path d="M529 680 L 529 736" fill="none" stroke="#34d399" stroke-width="2.5" class="flow-emerald" marker-end="url(#arrowEmerald)"/>
-
-  <!-- Right Branch: from Appointment Badge (764, 680) to Appointment Card (865, 736) -->
-  <path d="M764 680 C 764 710, 865 710, 865 736" fill="none" stroke="#60a5fa" stroke-width="2.5" class="flow-blue" marker-end="url(#arrowBlue)"/>
-
-  <!-- ==================== TIER 5: THE 3 PARALLEL TRIAGE PATHS ==================== -->
-  
-  <!-- PATH 1 (LEFT): EMERGENCY PATH -->
-  <g transform="translate(40, 738)">
-    <rect x="0" y="0" width="310" height="240" rx="14" fill="url(#emergCardGrad)" stroke="#ef4444" stroke-width="2" class="border-emerg"/>
-
-    <!-- Header bar -->
-    <rect x="0" y="0" width="310" height="42" rx="14" fill="#360c12"/>
-    <rect x="0" y="24" width="310" height="18" fill="#360c12"/>
-
-    <!-- Emergency Pulse Beacon (Pure SMIL animations, no CSS scale transforms) -->
-    <circle cx="24" cy="21" r="5" fill="#ef4444"/>
-    <circle cx="24" cy="21" r="5" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.8">
-      <animate attributeName="r" values="5;14" dur="1.8s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0" dur="1.8s" repeatCount="indefinite"/>
-    </circle>
-    <text x="44" y="26" font-size="14" font-weight="800" fill="#fca5a5" letter-spacing="0.5">EMERGENCY PATH</text>
-
-    <!-- Card Content -->
-    <g transform="translate(18, 54)">
-      <!-- Item 1: DistilRoBERTa Emotion -->
-      <circle cx="4" cy="10" r="3.5" fill="#ef4444"/>
-      <text x="16" y="14" font-size="12" font-weight="700" fill="#f87171">DistilRoBERTa Emotion Scoring</text>
-      <text x="16" y="30" font-size="11" fill="#e2e8f0">• Continuous Fear/Distress Metric (0.0 - 1.0)</text>
-      <text x="16" y="44" font-size="11" fill="#94a3b8">• Prioritizes call queue by distress severity</text>
-
-      <!-- Item 2: High Distress Flag -->
-      <circle cx="4" cy="68" r="3.5" fill="#ef4444"/>
-      <text x="16" y="72" font-size="12" font-weight="700" fill="#f87171">High-Distress Escalation Flag</text>
-      <text x="16" y="88" font-size="11" fill="#e2e8f0">• Emergency UI banner trigger on mobile</text>
-      <text x="16" y="102" font-size="11" fill="#94a3b8">• Direct 108 ambulance prompt</text>
-
-      <!-- Item 3: Hospital Locator -->
-      <circle cx="4" cy="126" r="3.5" fill="#ef4444"/>
-      <text x="16" y="130" font-size="12" font-weight="700" fill="#f87171">Overpass OSM 8-Mile Locator</text>
-      <text x="16" y="146" font-size="11" fill="#e2e8f0">• Real-time search of nearby hospitals (~13km)</text>
-      <text x="16" y="160" font-size="11" fill="#94a3b8">• Instant address, distance &amp; emergency contact</text>
-    </g>
+  <!-- Branch 1: Left ➔ State: Emergency -->
+  <path d="M310 470 L 160 470 L 160 565" fill="none" stroke="#ef4444" stroke-width="2" class="flow-line" marker-end="url(#arrowRed)"/>
+  <!-- Branch 1 Transition Label -->
+  <g transform="translate(145, 485)">
+    <rect x="0" y="0" width="135" height="24" rx="4" fill="#300d11" stroke="#ef4444" stroke-width="1"/>
+    <text x="67" y="16" font-size="10" font-weight="700" fill="#fca5a5" text-anchor="middle">State: EMERGENCY</text>
   </g>
 
-  <!-- PATH 2 (CENTER): MEDICINE QUERY PATH -->
-  <g transform="translate(375, 738)">
-    <rect x="0" y="0" width="310" height="240" rx="14" fill="url(#medCardGrad)" stroke="#10b981" stroke-width="1.8" class="border-med"/>
-
-    <!-- Header bar -->
-    <rect x="0" y="0" width="310" height="42" rx="14" fill="#082b20"/>
-    <rect x="0" y="24" width="310" height="18" fill="#082b20"/>
-
-    <!-- Status Icon -->
-    <circle cx="24" cy="21" r="5" fill="#10b981"/>
-    <circle cx="24" cy="21" r="5" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.8">
-      <animate attributeName="r" values="5;12" dur="2.4s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.8;0" dur="2.4s" repeatCount="indefinite"/>
-    </circle>
-    <text x="44" y="26" font-size="14" font-weight="800" fill="#6ee7b7" letter-spacing="0.5">MEDICINE QUERY PATH</text>
-
-    <!-- Card Content -->
-    <g transform="translate(18, 54)">
-      <!-- Item 1: 699 Curated Medicines Dataset -->
-      <circle cx="4" cy="10" r="3.5" fill="#10b981"/>
-      <text x="16" y="14" font-size="12" font-weight="700" fill="#34d399">699 Verified Medicine Corpus</text>
-      <text x="16" y="30" font-size="11" fill="#e2e8f0">• darkknight25/medical_medicine_dataset</text>
-      <text x="16" y="44" font-size="11" fill="#94a3b8">• Uses, verified side effects &amp; compositions</text>
-
-      <!-- Item 2: Grounding RAG Context -->
-      <circle cx="4" cy="68" r="3.5" fill="#10b981"/>
-      <text x="16" y="72" font-size="12" font-weight="700" fill="#34d399">Grounding Injection (RAG)</text>
-      <text x="16" y="88" font-size="11" fill="#e2e8f0">• Strict prompt grounding on matched drugs</text>
-      <text x="16" y="102" font-size="11" fill="#94a3b8">• Prevents hallucinated clinical facts</text>
-
-      <!-- Item 3: Anti-Hallucination Guardrails -->
-      <circle cx="4" cy="126" r="3.5" fill="#10b981"/>
-      <text x="16" y="130" font-size="12" font-weight="700" fill="#34d399">Clinical Safety Guardrails</text>
-      <text x="16" y="146" font-size="11" fill="#e2e8f0">• Suppresses speculative dosage recommendations</text>
-      <text x="16" y="160" font-size="11" fill="#94a3b8">• Mandates physician consult advisory disclaimer</text>
-    </g>
+  <!-- Branch 2: Center ➔ State: Medicine Query -->
+  <line x1="480" y1="535" x2="480" y2="565" stroke="#10b981" stroke-width="2" class="flow-line" marker-end="url(#arrowGreen)"/>
+  <!-- Branch 2 Transition Label -->
+  <g transform="translate(412, 540)">
+    <rect x="0" y="0" width="135" height="22" rx="4" fill="#082b1d" stroke="#10b981" stroke-width="1"/>
+    <text x="67" y="15" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">State: MEDICINE</text>
   </g>
 
-  <!-- PATH 3 (RIGHT): APPOINTMENT PATH -->
-  <g transform="translate(710, 738)">
-    <rect x="0" y="0" width="310" height="240" rx="14" fill="url(#apptCardGrad)" stroke="#3b82f6" stroke-width="1.8" class="border-appt"/>
-
-    <!-- Header bar -->
-    <rect x="0" y="0" width="310" height="42" rx="14" fill="#0b2347"/>
-    <rect x="0" y="24" width="310" height="18" fill="#0b2347"/>
-
-    <!-- Status Icon -->
-    <circle cx="24" cy="21" r="5" fill="#3b82f6"/>
-    <circle cx="24" cy="21" r="5" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.8">
-      <animate attributeName="r" values="5;12" dur="2.4s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.8;0" dur="2.4s" repeatCount="indefinite"/>
-    </circle>
-    <text x="44" y="26" font-size="14" font-weight="800" fill="#93c5fd" letter-spacing="0.5">APPOINTMENT PATH</text>
-
-    <!-- Card Content -->
-    <g transform="translate(18, 54)">
-      <!-- Item 1: 10 Clinical Departments -->
-      <circle cx="4" cy="10" r="3.5" fill="#3b82f6"/>
-      <text x="16" y="14" font-size="12" font-weight="700" fill="#60a5fa">10 Clinical Dept Routing</text>
-      <text x="16" y="30" font-size="11" fill="#e2e8f0">• Cardiology, Ortho, Ped, Derm, Neuro, ENT...</text>
-      <text x="16" y="44" font-size="11" fill="#94a3b8">• LLM symptom ➔ department specialist match</text>
-
-      <!-- Item 2: Fallback -->
-      <circle cx="4" cy="68" r="3.5" fill="#3b82f6"/>
-      <text x="16" y="72" font-size="12" font-weight="700" fill="#60a5fa">Default General Med Fallback</text>
-      <text x="16" y="88" font-size="11" fill="#e2e8f0">• Ambiguous or multi-symptom queries safely</text>
-      <text x="16" y="102" font-size="11" fill="#94a3b8">• Routed to General Medicine without failure</text>
-
-      <!-- Item 3: Overpass OSM Clinic Search -->
-      <circle cx="4" cy="126" r="3.5" fill="#3b82f6"/>
-      <text x="16" y="130" font-size="12" font-weight="700" fill="#60a5fa">Overpass OSM Clinic Search</text>
-      <text x="16" y="146" font-size="11" fill="#e2e8f0">• Queries clinics &amp; primary health centers (PHC)</text>
-      <text x="16" y="160" font-size="11" fill="#94a3b8">• Provides direct navigation link &amp; slot booking</text>
-    </g>
+  <!-- Branch 3: Right ➔ State: Appointment -->
+  <path d="M650 470 L 800 470 L 800 565" fill="none" stroke="#3b82f6" stroke-width="2" class="flow-line" marker-end="url(#arrowBlue)"/>
+  <!-- Branch 3 Transition Label -->
+  <g transform="translate(680, 485)">
+    <rect x="0" y="0" width="145" height="24" rx="4" fill="#0c2142" stroke="#3b82f6" stroke-width="1"/>
+    <text x="72" y="16" font-size="10" font-weight="700" fill="#93c5fd" text-anchor="middle">State: APPOINTMENT</text>
   </g>
 
-  <!-- ==================== CONVERGENCE FLOW LINES ==================== -->
-  <!-- Left Path to Gemini: from (195, 978) to (430, 1024) -->
-  <path d="M195 978 C 195 1004, 430 1004, 430 1024" fill="none" stroke="#f87171" stroke-width="2.2" class="flow-red" marker-end="url(#arrowAmber)"/>
-  
-  <!-- Middle Path to Gemini: from (530, 978) to (530, 1024) -->
-  <path d="M530 978 L 530 1024" fill="none" stroke="#34d399" stroke-width="2.2" class="flow-emerald" marker-end="url(#arrowAmber)"/>
+  <!-- ==================== 5. THE 3 TRIAGE STATE NODES ==================== -->
 
-  <!-- Right Path to Gemini: from (865, 978) to (630, 1024) -->
-  <path d="M865 978 C 865 1004, 630 1004, 630 1024" fill="none" stroke="#60a5fa" stroke-width="2.2" class="flow-blue" marker-end="url(#arrowAmber)"/>
-
-  <!-- ==================== TIER 6: CATEGORY-CONDITIONED LLM GENERATION ==================== -->
-  <g transform="translate(170, 1025)">
-    <!-- Expanded height and width (720 x 146) to completely eliminate text cutoff! -->
-    <rect x="0" y="0" width="720" height="146" rx="14" fill="url(#geminiCardGrad)" stroke="#f59e0b" stroke-width="2" class="border-gemini"/>
-
-    <!-- Header bar -->
-    <rect x="0" y="0" width="720" height="38" rx="14" fill="#291811"/>
-    <rect x="0" y="24" width="720" height="14" fill="#291811"/>
-
-    <!-- Sparkle / Gemini Icon -->
-    <g transform="translate(18, 10)">
-      <path d="M10 2 C10 7 14 10 18 10 C14 10 10 13 10 18 C10 13 6 10 2 10 C6 10 10 7 10 2 Z" fill="#fbbf24"/>
-    </g>
-    <text x="44" y="25" font-size="14" font-weight="700" fill="#ffffff">Category-Conditioned LLM Generation</text>
+  <!-- STATE A: EMERGENCY -->
+  <g transform="translate(30, 568)">
+    <rect x="0" y="0" width="260" height="150" rx="10" fill="#200a0d" stroke="#ef4444" stroke-width="2"/>
+    <rect x="0" y="0" width="260" height="30" rx="10" fill="#380d13"/>
+    <rect x="0" y="18" width="260" height="12" fill="#380d13"/>
+    <circle cx="16" cy="15" r="4" fill="#ef4444"/>
+    <text x="26" y="19" font-size="12" font-weight="800" fill="#fca5a5">STATE: EMERGENCY</text>
     
-    <!-- Badges with plenty of space -->
-    <g transform="translate(390, 9)">
-      <rect x="0" y="0" width="160" height="20" rx="4" fill="#451a03" stroke="#f59e0b" stroke-width="1"/>
-      <text x="10" y="14" font-size="10" font-weight="700" fill="#fde68a">⚡ GEMINI FLASH LITE</text>
+    <g transform="translate(14, 46)">
+      <text x="0" y="12" font-size="11" font-weight="700" fill="#f87171">• Fear/Distress Scoring</text>
+      <text x="10" y="27" font-size="10" fill="#94a3b8">DistilRoBERTa metric (0.0-1.0)</text>
 
-      <rect x="170" y="0" width="140" height="20" rx="4" fill="#3b0764" stroke="#c084fc" stroke-width="1"/>
-      <text x="10" y="14" font-size="10" font-weight="700" fill="#e9d5ff">DEDICATED PROMPTS</text>
-    </g>
+      <text x="0" y="47" font-size="11" font-weight="700" fill="#f87171">• High Distress Flag</text>
+      <text x="10" y="62" font-size="10" fill="#94a3b8">Direct 108 ambulance trigger</text>
 
-    <!-- Details: Wrapped cleanly into 2 readable lines per feature so nothing ever cuts off! -->
-    <g transform="translate(24, 50)">
-      <!-- Line 1: Dedicated Prompts -->
-      <circle cx="6" cy="10" r="3.5" fill="#fbbf24"/>
-      <text x="18" y="14" font-size="12" font-weight="700" fill="#fef3c7">Category-Conditioned Synthesis:</text>
-      <text x="235" y="14" font-size="11" fill="#cbd5e1">Dedicated instructions per intent (emergency brevity, drug grounding, clinic slotting).</text>
-
-      <!-- Line 2: Safety Nets & Re-Triage -->
-      <circle cx="6" cy="38" r="3.5" fill="#ef4444"/>
-      <text x="18" y="42" font-size="12" font-weight="700" fill="#fca5a5">Mid-Thread Dynamic Re-Triage:</text>
-      <text x="235" y="42" font-size="11" fill="#cbd5e1">Re-evaluates history on worsening cues ("getting worse", "chest pain") ➔ auto-escalates to Emergency.</text>
-
-      <!-- Line 3: SOS Override -->
-      <circle cx="6" cy="66" r="3.5" fill="#f43f5e"/>
-      <text x="18" y="70" font-size="12" font-weight="700" fill="#fecdd3">Acute SOS Keyword Override:</text>
-      <text x="235" y="70" font-size="11" fill="#cbd5e1">Immediate red-flag trigger bypasses normal conversational queues into locked directive guidance.</text>
+      <text x="0" y="82" font-size="11" font-weight="700" fill="#f87171">• Hospital Locator</text>
+      <text x="10" y="97" font-size="10" fill="#94a3b8">Overpass OSM 8-mi (~13km)</text>
     </g>
   </g>
 
-  <!-- Flow 6: Gemini -> Response Delivery -->
-  <line x1="530" y1="1171" x2="530" y2="1215" stroke="#fbbf24" stroke-width="2.5" class="flow-amber" marker-end="url(#arrowCyan)"/>
+  <!-- STATE B: MEDICINE QUERY -->
+  <g transform="translate(350, 568)">
+    <rect x="0" y="0" width="260" height="150" rx="10" fill="#061c14" stroke="#10b981" stroke-width="2"/>
+    <rect x="0" y="0" width="260" height="30" rx="10" fill="#082b1d"/>
+    <rect x="0" y="18" width="260" height="12" fill="#082b1d"/>
+    <circle cx="16" cy="15" r="4" fill="#10b981"/>
+    <text x="26" y="19" font-size="12" font-weight="800" fill="#6ee7b7">STATE: MEDICINE QUERY</text>
+    
+    <g transform="translate(14, 46)">
+      <text x="0" y="12" font-size="11" font-weight="700" fill="#34d399">• 699 Verified Medicines</text>
+      <text x="10" y="27" font-size="10" fill="#94a3b8">Symptom &amp; drug fuzzy indexing</text>
 
-  <!-- ==================== TIER 7: RESPONSE DELIVERY & NAVIGATION ==================== -->
-  <g transform="translate(170, 1216)">
-    <rect x="0" y="0" width="720" height="126" rx="14" fill="url(#cardGradDark)" stroke="#06b6d4" stroke-width="1.6"/>
+      <text x="0" y="47" font-size="11" font-weight="700" fill="#34d399">• Grounding Injection (RAG)</text>
+      <text x="10" y="62" font-size="10" fill="#94a3b8">Strict indications &amp; side effects</text>
 
-    <!-- Header bar -->
-    <rect x="0" y="0" width="720" height="36" rx="14" fill="#082830"/>
-    <rect x="0" y="22" width="720" height="14" fill="#082830"/>
-
-    <!-- Checkmark Icon -->
-    <g transform="translate(18, 9)">
-      <circle cx="9" cy="9" r="9" fill="#0891b2" opacity="0.4"/>
-      <path d="M6 9 L8.5 11.5 L12.5 6.5" stroke="#22d3ee" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="0" y="82" font-size="11" font-weight="700" fill="#34d399">• Anti-Hallucination Guard</text>
+      <text x="10" y="97" font-size="10" fill="#94a3b8">Suppresses speculative dosage</text>
     </g>
-    <!-- Clear concise title with ample space before badge -->
-    <text x="44" y="24" font-size="14" font-weight="700" fill="#ffffff">Response Delivery, Slot Confirmation &amp; Turn-by-Turn Nav</text>
+  </g>
 
-    <!-- Header Badge -->
-    <g transform="translate(580, 8)">
-      <rect x="0" y="0" width="125" height="20" rx="4" fill="#042f2e" stroke="#14b8a6" stroke-width="1"/>
-      <text x="10" y="14" font-size="10" font-weight="700" fill="#5eead4">MULTI-MODAL OUT</text>
+  <!-- STATE C: APPOINTMENT -->
+  <g transform="translate(670, 568)">
+    <rect x="0" y="0" width="260" height="150" rx="10" fill="#081830" stroke="#3b82f6" stroke-width="2"/>
+    <rect x="0" y="0" width="260" height="30" rx="10" fill="#0c2447"/>
+    <rect x="0" y="18" width="260" height="12" fill="#0c2447"/>
+    <circle cx="16" cy="15" r="4" fill="#3b82f6"/>
+    <text x="26" y="19" font-size="12" font-weight="800" fill="#93c5fd">STATE: APPOINTMENT</text>
+    
+    <g transform="translate(14, 46)">
+      <text x="0" y="12" font-size="11" font-weight="700" fill="#60a5fa">• 10 Clinical Departments</text>
+      <text x="10" y="27" font-size="10" fill="#94a3b8">Specialty symptom match via LLM</text>
+
+      <text x="0" y="47" font-size="11" font-weight="700" fill="#60a5fa">• Safe Fallback Logic</text>
+      <text x="10" y="62" font-size="10" fill="#94a3b8">Defaults to General Medicine</text>
+
+      <text x="0" y="82" font-size="11" font-weight="700" fill="#60a5fa">• Nearby Clinic Locator</text>
+      <text x="10" y="97" font-size="10" fill="#94a3b8">Overpass OSM facility match</text>
     </g>
+  </g>
 
-    <!-- Content Items in clean 2x2 grid with generous padding -->
-    <g transform="translate(26, 48)">
-      <!-- Item 1 -->
-      <g transform="translate(0, 0)">
-        <circle cx="6" cy="12" r="3.5" fill="#22d3ee"/>
-        <text x="18" y="16" font-size="12" font-weight="600" fill="#e2e8f0">Multi-Lingual Audio / Text Response</text>
-        <text x="18" y="30" font-size="11" fill="#94a3b8">Voice TTS streamed back in caller's native regional language</text>
-      </g>
-      
-      <!-- Item 2 -->
-      <g transform="translate(360, 0)">
-        <circle cx="6" cy="12" r="3.5" fill="#3b82f6"/>
-        <text x="18" y="16" font-size="12" font-weight="600" fill="#e2e8f0">Specialist Appointment Confirmation</text>
-        <text x="18" y="30" font-size="11" fill="#94a3b8">Slot token generation, dept schedule &amp; facility info</text>
-      </g>
+  <!-- ==================== DYNAMIC RE-TRIAGE TRANSITIONS ==================== -->
+  <!-- Dotted Re-Triage from Medicine to Emergency -->
+  <path d="M350 635 C 320 635, 305 635, 290 635" fill="none" stroke="#f87171" stroke-width="2" class="retriage-line" marker-end="url(#arrowRed)"/>
+  
+  <!-- Dotted Re-Triage from Appointment to Emergency (Arc across bottom) -->
+  <path d="M800 718 C 800 760, 160 760, 160 722" fill="none" stroke="#f87171" stroke-width="1.8" class="retriage-line" marker-end="url(#arrowRed)"/>
+  <g transform="translate(360, 746)">
+    <rect x="0" y="0" width="240" height="20" rx="4" fill="#2b0a0e" stroke="#ef4444" stroke-width="1"/>
+    <text x="120" y="14" font-size="10" font-weight="700" fill="#fca5a5" text-anchor="middle">↺ DYNAMIC MID-THREAD RE-TRIAGE</text>
+  </g>
 
-      <!-- Item 3 -->
-      <g transform="translate(0, 36)">
-        <circle cx="6" cy="12" r="3.5" fill="#10b981"/>
-        <text x="18" y="16" font-size="12" font-weight="600" fill="#e2e8f0">Static Map Preview &amp; Turn-by-Turn Nav</text>
-        <text x="18" y="30" font-size="11" fill="#94a3b8">Direct Google Maps navigation deep-link to verified hospital</text>
-      </g>
+  <!-- ==================== CONVERGENCE TO LLM ==================== -->
+  <path d="M160 720 L 160 805 L 360 805" fill="none" stroke="#ef4444" stroke-width="2" class="flow-line"/>
+  <line x1="480" y1="720" x2="480" y2="805" stroke="#10b981" stroke-width="2" class="flow-line"/>
+  <path d="M800 720 L 800 805 L 600 805" fill="none" stroke="#3b82f6" stroke-width="2" class="flow-line"/>
+  <line x1="480" y1="805" x2="480" y2="835" stroke="#f59e0b" stroke-width="2.5" class="flow-line" marker-end="url(#arrowAmber)"/>
 
-      <!-- Item 4 -->
-      <g transform="translate(360, 36)">
-        <circle cx="6" cy="12" r="3.5" fill="#ef4444"/>
-        <text x="18" y="16" font-size="12" font-weight="600" fill="#fca5a5">108 Emergency Cellular Escalation</text>
-        <text x="18" y="30" font-size="11" fill="#94a3b8">Instant 1-tap dial with patient coordinates pre-staged</text>
-      </g>
-    </g>
+  <!-- ==================== 6. LLM GENERATION PROCESS ==================== -->
+  <g transform="translate(200, 836)">
+    <rect x="0" y="0" width="560" height="90" rx="10" fill="#261608" stroke="#f59e0b" stroke-width="2"/>
+    <text x="280" y="26" font-size="13" font-weight="800" fill="#fde68a" text-anchor="middle">PROCESS: Category-Conditioned LLM Generation</text>
+    <text x="280" y="44" font-size="11" font-weight="600" fill="#fbbf24" text-anchor="middle">Google Gemini Flash Lite + Dedicated Prompts</text>
+    <text x="280" y="64" font-size="11" fill="#cbd5e1" text-anchor="middle">• Directive Brevity (Emergency) • Grounded RAG (Drugs) • Clinic Prep (Appt)</text>
+    <text x="280" y="80" font-size="10" fill="#94a3b8" text-anchor="middle">Safety Nets: Acute SOS Keyword Override &amp; Symptom Deterioration Escalation</text>
+  </g>
+
+  <!-- Transition LLM -> Final State -->
+  <line x1="480" y1="926" x2="480" y2="975" stroke="#38bdf8" stroke-width="2" class="flow-line" marker-end="url(#flowArrow)"/>
+
+  <!-- ==================== 7. TERMINAL STATE: RESPONSE DISPATCH ==================== -->
+  <g transform="translate(220, 975)">
+    <rect x="0" y="0" width="520" height="110" rx="28" fill="#08222b" stroke="#06b6d4" stroke-width="2"/>
+    <text x="260" y="28" font-size="13" font-weight="800" fill="#67e8f9" text-anchor="middle">TERMINAL STATE: MULTI-MODAL ACTION DISPATCH</text>
+    <text x="260" y="52" font-size="11" fill="#e2e8f0" text-anchor="middle">📢 Voice Audio TTS &amp; Regional Translated Text Response</text>
+    <text x="260" y="70" font-size="11" fill="#e2e8f0" text-anchor="middle">🗺️ Static Map Preview &amp; Turn-by-Turn Google Maps Navigation Deep-Link</text>
+    <text x="260" y="88" font-size="11" fill="#e2e8f0" text-anchor="middle">🚨 High-Distress Emergency Banner &amp; One-Tap 108 Ambulance Dial</text>
   </g>
 
   <!-- ==================== FOOTER ==================== -->
-  <g transform="translate(40, 1370)">
-    <line x1="0" y1="0" x2="980" y2="0" stroke="#1e293b" stroke-width="1"/>
-    <text x="0" y="24" font-size="11" fill="#64748b">Vaidyum Healthcare Helpline Architecture • DistilBERT + Gemini Flash Lite + DistilRoBERTa + Flutter Client</text>
-    <text x="825" y="24" font-size="11" font-weight="600" fill="#38bdf8">Interactive Multi-Path Flow</text>
+  <g transform="translate(40, 1120)">
+    <line x1="0" y1="0" x2="880" y2="0" stroke="#1e293b" stroke-width="1"/>
+    <text x="0" y="20" font-size="11" fill="#64748b">Vaidyum System Architecture • State Transition &amp; Flowchart Specification</text>
+    <text x="690" y="20" font-size="11" font-weight="600" fill="#38bdf8">UML Flowchart Standard</text>
   </g>
 </svg>

@@ -27,8 +27,65 @@ Non-English queries across regional languages (**Hindi, Tamil, Telugu, Marathi**
 
 ## 🏗️ System Architecture
 
+```mermaid
+flowchart TD
+    %% Start Terminal
+    START(["🟢 STATE 0: User Query Input<br/>(Voice Audio STT / Typed Text in 5 Languages)"]):::startTerminal
+    
+    %% Ingestion Processes
+    MOBILE["📱 PROCESS: Flutter Mobile Client<br/>• Firebase Auth & Session Tokens<br/>• Speech-to-Text Audio Streaming<br/>• 108 Emergency FAB & GPS Stream"]:::process
+    BACKEND["⚙️ PROCESS: Flask Backend Service<br/>(Endpoints: /predict, /chat)"]:::process
+    LANG["🌐 PROCESS: Language Normalization & Translation<br/>(HI / TA / TE / MR ➔ English Bridge)"]:::process
+
+    %% Classifier Decision State
+    TRIAGE{"🧠 DECISION: DistilBERT 3-Way Classifier<br/>(AniveshGupta/vaidyum-emergency-classifier)"}:::decision
+
+    %% 3 Core State Transitions
+    EMERGENCY["🚨 STATE: Emergency Pipeline<br/>• DistilRoBERTa Fear/Distress Scoring (0.0-1.0)<br/>• Priority Queueing & High Distress Flag<br/>• Overpass OSM Nearby Hospital Locator (8-mi)"]:::emergencyState
+
+    MEDICINE["💊 STATE: Medicine Query Pipeline (RAG)<br/>• 699 Curated Drug Records Search<br/>• Strict Grounding Context Injection<br/>• Dosage Hallucination Guardrails"]:::medicineState
+
+    APPOINTMENT["📅 STATE: Appointment Pipeline<br/>• 10 Clinical Department Routing via LLM<br/>• Default Safe General Medicine Fallback<br/>• Overpass OSM Nearby Clinic Search"]:::appointmentState
+
+    %% Mid-Thread Dynamic Re-Triage Loops (State Transitions)
+    MEDICINE -.->|"Dynamic Re-Triage<br/>(Worsening Symptoms Detected)"| EMERGENCY
+    APPOINTMENT -.->|"Dynamic Re-Triage<br/>(Acute SOS Keyword Override)"| EMERGENCY
+
+    %% LLM Generation State
+    LLM["✨ PROCESS: Category-Conditioned LLM Generation<br/>(Gemini Flash Lite + Dedicated Intent Prompts)"]:::llmProcess
+
+    %% Final Terminal State
+    DISPATCH(["🏁 TERMINAL STATE: Multi-Modal Action Dispatch<br/>• Native Audio Voice TTS & Localized Text Response<br/>• Specialist Appointment Token Confirmation<br/>• Static Map Preview & Turn-by-Turn Google Maps Nav<br/>• Direct 1-Tap 108 Ambulance Cellular Escalation"]):::endTerminal
+
+    %% Edge Connections & State Transitions
+    START --> MOBILE
+    MOBILE -->|"HTTP POST (JSON Payload)"| BACKEND
+    BACKEND --> LANG
+    LANG --> TRIAGE
+
+    TRIAGE -->|"State Transition: EMERGENCY"| EMERGENCY
+    TRIAGE -->|"State Transition: MEDICINE"| MEDICINE
+    TRIAGE -->|"State Transition: APPOINTMENT"| APPOINTMENT
+
+    EMERGENCY --> LLM
+    MEDICINE --> LLM
+    APPOINTMENT --> LLM
+
+    LLM --> DISPATCH
+
+    %% Styles
+    classDef startTerminal fill:#0c253d,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef process fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#e2e8f0;
+    classDef decision fill:#201038,stroke:#c084fc,stroke-width:2px,color:#f3e8ff;
+    classDef emergencyState fill:#2a0a0e,stroke:#ef4444,stroke-width:2px,color:#fca5a5;
+    classDef medicineState fill:#062319,stroke:#10b981,stroke-width:2px,color:#6ee7b7;
+    classDef appointmentState fill:#091b36,stroke:#3b82f6,stroke-width:2px,color:#93c5fd;
+    classDef llmProcess fill:#291506,stroke:#f59e0b,stroke-width:2px,color:#fde68a;
+    classDef endTerminal fill:#062d36,stroke:#06b6d4,stroke-width:2px,color:#ffffff;
+```
+
 <p align="center">
-  <img src="assets/system_architecture.svg" alt="Vaidyum Pipeline System Architecture" width="100%">
+  <img src="assets/system_architecture.svg" alt="Vaidyum Flowchart & State Transition Diagram" width="100%">
 </p>
 
 > 💡 **Interactive Telemetry Simulator**: Open [`assets/architecture_preview.html`](assets/architecture_preview.html) in your browser to simulate live queries and observe data payloads flowing through each triage branch.
